@@ -14,7 +14,7 @@ public class Document {
 
     private final String path;
     private final String title;
-    private final Score score;
+    // private final Score score;
     private int wordsCount = 0;
     private final Set<String> vocabulary;
     private Map<String, Integer> wordsMap;
@@ -29,7 +29,7 @@ public class Document {
     public Document(String path, String title, Set<String> vocabulary) throws IOException {
         this.path = path;
         this.title = title;
-        this.score = new Score();
+        // this.score = new Score();
         this.vocabulary = vocabulary;
         wordsCounter();
         createWordsMap();
@@ -51,13 +51,6 @@ public class Document {
         return title;
     }
     
-    /**
-     *
-     * @return score
-     */
-    public Score getScore() {
-        return score;
-    }
     
     /**
      *

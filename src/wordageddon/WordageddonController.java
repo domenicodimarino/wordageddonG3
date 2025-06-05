@@ -174,15 +174,6 @@ public class WordageddonController implements Initializable {
         qs.start();
         qs.setOnSucceeded(e -> {
             
-            // Calcolo dello score di ogni documento
-            docs.forEach(d -> {
-                d.getScore().calculateIndex(d.getWordsMap(), qs.getValue());
-            });
-
-            // Mostro i documenti in ordine discendente di score
-            obsDocs.sort(Comparator.comparing(d -> d.getScore().getRi()));
-            FXCollections.reverse(obsDocs);
-            documentTable.refresh();
         });
     }
     
