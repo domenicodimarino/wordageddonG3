@@ -5,10 +5,16 @@
  */
 package wordageddon.database;
 
+import java.sql.SQLException;
+import java.util.List;
+import wordageddon.Punteggio;
+
 /**
  *
  * @author domenicodimarino
  */
 public interface PunteggioDAO {
-    
+    public void inserisci(Punteggio p) throws SQLException;
+    public List<Punteggio> elencaTutti() throws SQLException;
+    public void cancellaTutti() throws SQLException;
 }

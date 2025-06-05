@@ -13,7 +13,7 @@ public class SessioneDAOSQL implements SessioneDAO {
 
     @Override
     public void insertSessione(Sessione s) throws Exception {
-        String sql = "INSERT INTO sessione (username, data_inizio, data_fine, punteggio_totale) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO sessione (username, data_inizio, data_fine, punteggio_totale, livello_corrente, tempo_residuo, stato_gioco_json, stato) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (
             Connection c = DatabaseManager.getConnection();
             PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
@@ -22,6 +22,10 @@ public class SessioneDAOSQL implements SessioneDAO {
             ps.setString(2, s.getDataInizio());
             ps.setString(3, s.getDataFine());
             ps.setInt(4, s.getPunteggioTotale());
+            ps.setInt(5, s.getLivelloCorrente());
+            ps.setInt(6, s.getTempoResiduo());
+            ps.setString(7, s.getStatoGiocoJson());
+            ps.setString(8, s.getStato());
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) s.setId(rs.getInt(1));
@@ -44,7 +48,11 @@ public class SessioneDAOSQL implements SessioneDAO {
                     rs.getString("username"),
                     rs.getString("data_inizio"),
                     rs.getString("data_fine"),
-                    rs.getInt("punteggio_totale")
+                    rs.getInt("punteggio_totale"),
+                    rs.getInt("livello_corrente"),
+                    rs.getInt("tempo_residuo"),
+                    rs.getString("stato_gioco_json"),
+                    rs.getString("stato")
                 ));
             }
         }
@@ -76,7 +84,11 @@ public class SessioneDAOSQL implements SessioneDAO {
                         rs.getString("username"),
                         rs.getString("data_inizio"),
                         rs.getString("data_fine"),
-                        rs.getInt("punteggio_totale")
+                        rs.getInt("punteggio_totale"),
+                        rs.getInt("livello_corrente"),
+                        rs.getInt("tempo_residuo"),
+                        rs.getString("stato_gioco_json"),
+                        rs.getString("stato")
                     );
                 }
             }

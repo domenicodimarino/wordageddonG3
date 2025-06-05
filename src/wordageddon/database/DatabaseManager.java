@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package wordageddon.database;
 
 import java.sql.Connection;
@@ -35,6 +30,10 @@ public class DatabaseManager {
             "data_inizio TEXT," +
             "data_fine TEXT," +
             "punteggio_totale INTEGER," +
+            "livello_corrente INTEGER,"+
+            "tempo_residuo INTEGER,"+
+            "stato_gioco_json TEXT," +
+            "stato TEXT," +
             "FOREIGN KEY(username) REFERENCES utente(username)" +
             ");";
         stmt.execute(createSessione);
@@ -44,6 +43,9 @@ public class DatabaseManager {
             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "username TEXT NOT NULL," +
             "valore INTEGER NOT NULL," +
+            "risposteCorrette INTEGER," +
+            "tempoResiduo INTEGER," +
+            "difficolta INTEGER," +
             "data TEXT," +
             "FOREIGN KEY(username) REFERENCES utente(username)" +
             ");";

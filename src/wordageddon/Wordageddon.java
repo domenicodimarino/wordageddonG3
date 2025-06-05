@@ -14,7 +14,7 @@ public class Wordageddon extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Resources/MySimpleIRToolUI.fxml"));
         Scene scene = new Scene(root, 900, 600);
-        stage.setTitle("MySimpleIRTool");
+        stage.setTitle("Wordageddon");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("Resources/icon.png")));
         stage.setScene(scene);
         stage.show();
@@ -22,5 +22,6 @@ public class Wordageddon extends Application {
 
     public static void main(String[] args) {
         launch(args);
+        
     }
 }
