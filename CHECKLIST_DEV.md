@@ -10,41 +10,41 @@ Checklist Giornaliera – Progetto Wordageddon
 ---
 
 ## Giorno 1
-- [ ] **Dev 1:** Inizio logica gioco (timer, livelli, schermata lettura a tempo)
-- [ ] **Dev 2:** Setup database (scelta engine), tabelle utenti/punteggi
-- [ ] **Dev 3:** Prima bozza GUI: login, home, gioco, area admin
+- [ ] **Callœ:** Inizio logica gioco (timer, livelli, schermata lettura a tempo)
+- [ ] **Il Dom:** Setup database (scelta engine), tabelle utenti/punteggi
+- [ ] **John:** Prima bozza GUI: login, home, gioco, area admin
 - [ ] **IL FRA:** Studia struttura progetto e inizia bozza Javadoc
 
 ---
 
 ## Giorno 2
-- [ ] **Dev 1:** Struttura classi per domande/risposte/punteggio, primi test
-- [ ] **Dev 2:** Funzioni login/registrazione utenti
-- [ ] **Dev 3:** GUI: caricamento documenti/stopwords, design area admin
+- [ ] **Callœ:** Struttura classi per domande/risposte/punteggio, primi test
+- [ ] **Il Dom:** Funzioni login/registrazione utenti
+- [ ] **John:** GUI: caricamento documenti/stopwords, design area admin
 - [ ] **IL FRA:** Javadoc sulle classi esistenti (analisi testi, documenti, stopword)
 
 ---
 
 ## Giorno 3
-- [ ] **Dev 1:** Generazione automatica domande a risposta multipla
-- [ ] **Dev 2:** Salvataggio sessioni e storico punteggi
-- [ ] **Dev 3:** Integrazione logica gioco in GUI, migliorie schermate
+- [ ] **Callœ:** Generazione automatica domande a risposta multipla
+- [ ] **Il Dom:** Salvataggio sessioni e storico punteggi
+- [ ] **John:** Integrazione logica gioco in GUI, migliorie schermate
 - [ ] **IL FRA:** Aggiornamento Javadoc con nuove classi/metodi
 
 ---
 
 ## Giorno 4
-- [ ] **Dev 1:** Gestione risposte utente e calcolo punteggio sessione
-- [ ] **Dev 2:** Leaderboard/statistiche base (se richiesto)
+- [ ] **Callœ:** Gestione risposte utente e calcolo punteggio sessione
+- [ ] **Il Dom:** Leaderboard/statistiche base (se richiesto)
 - [ ] **Dev 3:** Pannello admin: upload documenti/stopwords
 - [ ] **IL FRA:** Bozza relazione finale, raccolta screenshot
 
 ---
 
 ## Giorno 5
-- [ ] **Dev 1:** Test integrazione logica gioco + GUI
-- [ ] **Dev 2:** Test autenticazione e database
-- [ ] **Dev 3:** Test caricamento/admin, styling base
+- [ ] **Callœ:** Test integrazione logica gioco + GUI
+- [ ] **Il Dom:** Test autenticazione e database
+- [ ] **John:** Test caricamento/admin, styling base
 - [ ] **IL FRA:** Rivedi Javadoc su progetto stabile
 
 ---
