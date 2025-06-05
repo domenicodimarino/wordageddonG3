@@ -21,14 +21,33 @@ public class DatabaseManager {
     public static void initializeDatabase() throws SQLException {
     try (Connection conn = getConnection();
          Statement stmt = conn.createStatement()) {
-        // Esempio tabella Utente
+        // Tabella Utente
         String createUtente = "CREATE TABLE IF NOT EXISTS utente (" +
                               "username TEXT PRIMARY KEY," +
                               "password TEXT NOT NULL" +
                               ");";
         stmt.execute(createUtente);
 
-        // Altre tabelle...
+        // Tabella Sessione
+        String createSessione = "CREATE TABLE IF NOT EXISTS sessione (" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "username TEXT NOT NULL," +
+            "data_inizio TEXT," +
+            "data_fine TEXT," +
+            "punteggio_totale INTEGER," +
+            "FOREIGN KEY(username) REFERENCES utente(username)" +
+            ");";
+        stmt.execute(createSessione);
+
+        // Tabella Punteggio
+        String createPunteggio = "CREATE TABLE IF NOT EXISTS punteggio (" +
+            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "username TEXT NOT NULL," +
+            "valore INTEGER NOT NULL," +
+            "data TEXT," +
+            "FOREIGN KEY(username) REFERENCES utente(username)" +
+            ");";
+        stmt.execute(createPunteggio);
     }
 }
 

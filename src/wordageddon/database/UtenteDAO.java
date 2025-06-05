@@ -1,14 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package wordageddon.database;
 
-/**
- *
- * @author domenicodimarino
- */
+import wordageddon.Utente;
+import java.util.List;
+
 public interface UtenteDAO {
-    
+    void inserisci(Utente u) throws Exception;
+    Utente cercaPerUsername(String username) throws Exception;
+    List<Utente> elencaTutti() throws Exception;
+    void cancellaTutti() throws Exception;
 }

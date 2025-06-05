@@ -1,14 +1,75 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package wordageddon.database;
 
-/**
- *
- * @author domenicodimarino
- */
-public class UtenteDAOSQL {
-    
+import wordageddon.Utente;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class UtenteDAOSQL implements UtenteDAO {
+
+    @Override
+    public void inserisci(Utente u) throws Exception {
+        String sql = "INSERT INTO utente (username, password) VALUES (?, ?)";
+        try (
+            Connection c = DatabaseManager.getConnection();
+            PreparedStatement ps = c.prepareStatement(sql)
+        ) {
+            ps.setString(1, u.getUsername());
+            ps.setString(2, u.getPasswordHash()); // salva direttamente l'hash
+            ps.executeUpdate();
+        }
+    }
+
+    @Override
+    public Utente cercaPerUsername(String username) throws Exception {
+        String sql = "SELECT * FROM utente WHERE username = ?";
+        try (
+            Connection c = DatabaseManager.getConnection();
+            PreparedStatement ps = c.prepareStatement(sql)
+        ) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Utente(
+                        rs.getString("username"),
+                        rs.getString("password") // qui è l'hash!
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Utente> elencaTutti() throws Exception {
+        List<Utente> lista = new ArrayList<>();
+        String sql = "SELECT * FROM utente ORDER BY username ASC";
+        try (
+            Connection c = DatabaseManager.getConnection();
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(sql)
+        ) {
+            while (rs.next()) {
+                lista.add(new Utente(
+                    rs.getString("username"),
+                    rs.getString("password") // qui è l'hash!
+                ));
+            }
+        }
+        return lista;
+    }
+
+    @Override
+    public void cancellaTutti() throws Exception {
+        try (
+            Connection c = DatabaseManager.getConnection();
+            Statement st = c.createStatement()
+        ) {
+            st.executeUpdate("DELETE FROM utente;");
+        }
+    }
 }

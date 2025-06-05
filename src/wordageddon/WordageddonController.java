@@ -1,5 +1,6 @@
 package wordageddon;
 
+import wordageddon.service.VocabularyService;
 import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,7 +9,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -29,8 +29,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -142,40 +140,7 @@ public class WordageddonController implements Initializable {
         });
     }
     
-    /**
-     * Triggered by the button "Invia".
-     * @param event 
-     */
-    @FXML
-    private void sendQueryByBtn(ActionEvent event) {
-        sendQuery();
-    }
     
-    /**
-     * Triggered by pushing Enter key.
-     * @param event 
-     */
-    @FXML
-    private void sendQueryByEnter(KeyEvent event) {
-        if (event.getCode().equals(KeyCode.ENTER) && !queryField.getText().isEmpty() && !obsVocabulary.isEmpty()) {
-            sendQuery();
-        }
-    }
-    
-    /**
-     * Calculate the index of relevance of the files starting the QueryService and
-     * show the documents in the table sorted by their score in descending order.
-     */
-    private void sendQuery(){
-        String query = queryField.getText();
-        queryLabel.setText("Query: " + query);
-        
-        QueryService qs = new QueryService(query.toLowerCase().split("\\s+"), vocabulary);
-        qs.start();
-        qs.setOnSucceeded(e -> {
-            
-        });
-    }
     
     /**
      * Triggered by the button "Scegli stop-word".
