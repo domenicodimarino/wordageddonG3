@@ -7,7 +7,7 @@ package wordageddon.database;
 
 import java.sql.SQLException;
 import java.util.List;
-import wordageddon.Punteggio;
+import wordageddon.model.Punteggio;
 
 /**
  *

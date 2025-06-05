@@ -1,5 +1,6 @@
 package wordageddon;
 
+import wordageddon.model.Document;
 import wordageddon.service.VocabularyService;
 import java.awt.Desktop;
 import java.io.BufferedReader;

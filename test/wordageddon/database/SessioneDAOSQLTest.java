@@ -2,7 +2,7 @@ package wordageddon.database;
 
 import org.junit.*; // JUnit 4
 import static org.junit.Assert.*;
-import wordageddon.Sessione;
+import wordageddon.model.Sessione;
 
 import java.util.List;
 

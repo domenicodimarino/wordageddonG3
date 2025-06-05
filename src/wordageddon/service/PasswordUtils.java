@@ -1,4 +1,4 @@
-package wordageddon;
+package wordageddon.service;
 
 import java.security.MessageDigest;
 

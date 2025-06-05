@@ -1,7 +1,6 @@
 package wordageddon.service;
 
-import wordageddon.PasswordUtils;
-import wordageddon.Utente;
+import wordageddon.model.Utente;
 import wordageddon.database.UtenteDAO;
 
 public class UtenteService {

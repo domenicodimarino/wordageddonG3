@@ -2,7 +2,7 @@ package wordageddon.database;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-import wordageddon.Utente;
+import wordageddon.model.Utente;
 
 import java.util.List;
 

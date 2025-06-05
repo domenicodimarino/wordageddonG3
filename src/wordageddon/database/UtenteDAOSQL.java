@@ -1,6 +1,6 @@
 package wordageddon.database;
 
-import wordageddon.Utente;
+import wordageddon.model.Utente;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

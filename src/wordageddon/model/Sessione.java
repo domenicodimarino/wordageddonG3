@@ -1,4 +1,4 @@
-package wordageddon;
+package wordageddon.model;
 
 public class Sessione {
     private int id;

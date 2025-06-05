@@ -1,4 +1,4 @@
-package wordageddon;
+package wordageddon.model;
 
 import java.io.*;
 import java.util.LinkedHashMap;

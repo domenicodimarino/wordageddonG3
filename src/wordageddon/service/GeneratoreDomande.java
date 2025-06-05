@@ -1,5 +1,7 @@
-package wordageddon;
+package wordageddon.service;
 
+import wordageddon.model.Domanda;
+import wordageddon.model.Document;
 import java.util.*;
 
 /**

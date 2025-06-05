@@ -1,7 +1,7 @@
 package wordageddon.database;
 
 import org.junit.*;
-import wordageddon.Punteggio;
+import wordageddon.model.Punteggio;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;

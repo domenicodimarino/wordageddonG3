@@ -1,4 +1,4 @@
-package wordageddon;
+package wordageddon.model;
 
 
 //utente dell'applicazione

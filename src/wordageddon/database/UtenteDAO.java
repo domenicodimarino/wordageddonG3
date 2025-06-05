@@ -1,6 +1,6 @@
 package wordageddon.database;
 
-import wordageddon.Utente;
+import wordageddon.model.Utente;
 import java.util.List;
 
 public interface UtenteDAO {

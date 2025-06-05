@@ -1,6 +1,6 @@
 package wordageddon.database;
 
-import wordageddon.Sessione;
+import wordageddon.model.Sessione;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
