@@ -140,8 +140,3 @@
 3. **Aggiungere/migliorare styling CSS, aggiorna icona.**
 4. **Implementare supporto multilingua e ripresa sessione (se vuoi bonus).**
 5. **Completare Javadoc, relazione finale, UML, demo e presentazione.**
-
----
-
-**Se vuoi una tabella Excel/checklist operativa task per task, chiedi pure.**
-**Se vuoi snippet di codice per timer, schermata domande, leaderboard… chiedi!**
