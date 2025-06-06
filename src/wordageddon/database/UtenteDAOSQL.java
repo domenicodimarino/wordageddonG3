@@ -8,18 +8,20 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import wordageddon.model.RuoloUtente;
 
 public class UtenteDAOSQL implements UtenteDAO {
 
     @Override
     public void inserisci(Utente u) throws Exception {
-        String sql = "INSERT INTO utente (username, password) VALUES (?, ?)";
+        String sql = "INSERT INTO utente (username, password, ruolo) VALUES (?, ?, ?)";
         try (
             Connection c = DatabaseManager.getConnection();
             PreparedStatement ps = c.prepareStatement(sql)
         ) {
             ps.setString(1, u.getUsername());
-            ps.setString(2, u.getPasswordHash()); // salva direttamente l'hash
+            ps.setString(2, u.getPasswordHash());
+            ps.setString(3, u.getRuolo().toString());
             ps.executeUpdate();
         }
     }
@@ -36,7 +38,8 @@ public class UtenteDAOSQL implements UtenteDAO {
                 if (rs.next()) {
                     return new Utente(
                         rs.getString("username"),
-                        rs.getString("password") // qui è l'hash!
+                        rs.getString("password"),
+                        RuoloUtente.valueOf(rs.getString("ruolo"))
                     );
                 }
             }
@@ -56,7 +59,8 @@ public class UtenteDAOSQL implements UtenteDAO {
             while (rs.next()) {
                 lista.add(new Utente(
                     rs.getString("username"),
-                    rs.getString("password") // qui è l'hash!
+                    rs.getString("password"),
+                    RuoloUtente.valueOf(rs.getString("ruolo"))
                 ));
             }
         }

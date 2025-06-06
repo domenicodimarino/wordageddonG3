@@ -2,6 +2,7 @@ package wordageddon.service;
 
 import wordageddon.model.Utente;
 import wordageddon.database.UtenteDAO;
+import wordageddon.model.RuoloUtente;
 
 public class UtenteService {
     private UtenteDAO utenteDAO;
@@ -10,14 +11,24 @@ public class UtenteService {
         this.utenteDAO = utenteDAO;
     }
 
-    // REGISTRAZIONE
+    // REGISTRAZIONE NORMALE - SOLO USER
     public boolean registra(String username, String passwordChiara) throws Exception {
-        // Controlla se esiste già
         if (utenteDAO.cercaPerUsername(username) != null) {
             return false; // Username già in uso
         }
         String hash = PasswordUtils.hash(passwordChiara);
-        Utente nuovo = new Utente(username, hash);
+        Utente nuovo = new Utente(username, hash, RuoloUtente.USER);
+        utenteDAO.inserisci(nuovo);
+        return true;
+    }
+
+    // METODO SPECIALE: CREAZIONE ADMIN (NON usare dalla GUI, solo script/setup)
+    public boolean creaAdmin(String username, String passwordChiara) throws Exception {
+        if (utenteDAO.cercaPerUsername(username) != null) {
+            return false; // Username già in uso
+        }
+        String hash = PasswordUtils.hash(passwordChiara);
+        Utente nuovo = new Utente(username, hash, RuoloUtente.ADMIN);
         utenteDAO.inserisci(nuovo);
         return true;
     }

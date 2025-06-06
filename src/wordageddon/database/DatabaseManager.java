@@ -19,7 +19,8 @@ public class DatabaseManager {
         // Tabella Utente
         String createUtente = "CREATE TABLE IF NOT EXISTS utente (" +
                               "username TEXT PRIMARY KEY," +
-                              "password TEXT NOT NULL" +
+                              "password TEXT NOT NULL," +
+                              "ruolo TEXT NOT NULL DEFAULT 'USER'"+
                               ");";
         stmt.execute(createUtente);
 
