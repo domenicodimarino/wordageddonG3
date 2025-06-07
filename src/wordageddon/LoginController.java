@@ -15,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import wordageddon.database.UtenteDAOSQL;
 import wordageddon.model.Utente;
+import wordageddon.service.SessionManager;
 import wordageddon.service.UtenteService;
 import wordageddon.util.DialogUtils;
 
@@ -87,9 +88,10 @@ public class LoginController implements Initializable {
             try {
                 if (utenteService.login(username, password)) {
                     Utente utente = utenteService.getUtente(username);
+                    SessionManager.setUtente(utente);
                     DialogUtils.showAlert(AlertType.INFORMATION, "Login riuscito", null, "Benvenuto " + username + "!");
                     userField.clear(); passwordField.clear(); confirmPasswordField.clear();
-                    goToMainScreen(utente);
+                    goToMainScreen();
                     
                 } else {
                     DialogUtils.showAlert(AlertType.ERROR, "Login fallito", "Credenziali non valide", "Assicurati di aver inserito correttamente username e password.");
@@ -118,14 +120,10 @@ public class LoginController implements Initializable {
             }
         }
     }
-    private void goToMainScreen(Utente utente) {
+    private void goToMainScreen() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Wordageddon.fxml"));
             Parent root = loader.load();
-
-            // Ottieni il controller e passa l'utente
-            WordageddonController mainController = loader.getController();
-            mainController.setUtente(utente);
 
             Stage stage = (Stage) submitButton.getScene().getWindow();
             stage.setScene(new Scene(root));

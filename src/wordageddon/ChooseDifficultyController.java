@@ -1,28 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package wordageddon;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import wordageddon.database.SessioneDAOSQL;
+import wordageddon.model.Difficolta;
+import wordageddon.model.GameConfig;
+import wordageddon.model.GameDifficultyConfig;
+import wordageddon.model.Sessione;
+import wordageddon.model.Utente;
+import wordageddon.service.SessionManager;
+import wordageddon.util.DialogUtils;
 
-/**
- * FXML Controller class
- *
- * @author Gruppo 3
- */
 public class ChooseDifficultyController implements Initializable {
 
     @FXML
@@ -40,25 +43,73 @@ public class ChooseDifficultyController implements Initializable {
     @FXML
     private Hyperlink infoLink;
 
-    /**
-     * Initializes the controller class.
-     */
+    private Utente utente;
+
+    private SessioneDAOSQL sessioneDAO = new SessioneDAOSQL();
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         menuBtn.setOnAction(e -> goToMenu());
+        easyBtn.setOnAction(e -> scegliDifficolta(Difficolta.FACILE));
+        mediumBtn.setOnAction(e -> scegliDifficolta(Difficolta.MEDIO));
+        hardBtn.setOnAction(e -> scegliDifficolta(Difficolta.DIFFICILE));
+        utente = SessionManager.getUtente();
     }
-    private void goToMenu(){
+
+    private void scegliDifficolta(Difficolta diff) {
+        GameDifficultyConfig config = GameConfig.getConfig(diff);
+
+        // Crea una nuova sessione
+        String dataInizio = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Sessione nuovaSessione = new Sessione(
+            utente.getUsername(),
+            dataInizio,
+            null, // dataFine
+            0,    // punteggioTotale
+            config.getTempoLettura(), // tempoResiduo (o altro valore iniziale)
+            null, // statoGiocoJson (puoi serializzare lo stato più avanti)
+            "in_corso",
+            diff
+        );
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Wordageddon.fxml"));
+            sessioneDAO.insertSessione(nuovaSessione); // Dopo questa chiamata, l'ID viene impostato
+            // (Opzionale) Salva la sessione corrente in SessionManager se vuoi accedervi globalmente
+            SessionManager.setSessione(nuovaSessione);
+
+            vaiALetturaTesto(diff, config, nuovaSessione);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            // Mostra errore all'utente se vuoi
+        }
+    }
+
+    private void vaiALetturaTesto(Difficolta diff, GameDifficultyConfig config, Sessione sessione) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/LetturaTesto.fxml"));
             Parent root = loader.load();
 
+            // Passa la sessione e la difficoltà al controller LetturaTesto
+            LetturaTestoController controller = loader.getController();
+            controller.impostaSessione(sessione, config);
 
-            Stage stage = (Stage) menuBtn.getScene().getWindow();
+            Stage stage = (Stage) easyBtn.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
+    private void goToMenu() {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Wordageddon.fxml"));
+                Parent root = loader.load();
+                Stage stage = (Stage) menuBtn.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
 }

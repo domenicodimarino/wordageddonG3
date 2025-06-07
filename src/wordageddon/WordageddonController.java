@@ -26,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import wordageddon.model.Utente;
+import wordageddon.service.SessionManager;
 import wordageddon.util.DialogUtils;
 
 /**
@@ -69,6 +70,8 @@ public class WordageddonController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         logoutMenu.setOnAction(e -> logout());
         playBtn.setOnAction(e -> startGame());
+        
+        Utente utente = SessionManager.getUtente();
     }
     private void logout(){
         ButtonType yes = new ButtonType("Sì");
@@ -82,6 +85,7 @@ public class WordageddonController implements Initializable {
         );
 
         if (result.isPresent() && result.get() == yes) {
+            SessionManager.logout(); 
             goToLogin();
         }
     }
