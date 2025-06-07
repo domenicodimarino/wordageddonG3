@@ -40,4 +40,7 @@ public class UtenteService {
         String hash = PasswordUtils.hash(passwordChiara);
         return hash.equals(user.getPasswordHash());
     }
+    public Utente getUtente(String username) throws Exception {
+        return utenteDAO.cercaPerUsername(username);
+    }
 }

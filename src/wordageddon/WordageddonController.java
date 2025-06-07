@@ -1,238 +1,102 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package wordageddon;
 
-import wordageddon.model.Document;
-import wordageddon.service.VocabularyService;
-import java.awt.Desktop;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import wordageddon.model.Utente;
+import wordageddon.util.DialogUtils;
 
+/**
+ * FXML Controller class
+ *
+ * @author Gruppo 3
+ */
 public class WordageddonController implements Initializable {
+
+    @FXML
+    private ImageView logoImage;
+    @FXML
+    private Label appNameLabel;
+    @FXML
+    private Button storicoBtn;
+    @FXML
+    private ComboBox<?> linguaCombo;
+    @FXML
+    private Button leaderboardBtn;
+    @FXML
+    private MenuButton userMenu;
+    @FXML
+    private MenuItem impostazioniMenu;
+    @FXML
+    private MenuItem logoutMenu;
+    @FXML
+    private StackPane mainStackPane;
+    @FXML
+    private Hyperlink privacyLink;
+    @FXML
+    private Hyperlink infoLink;
     
-    @FXML
-    private TextField queryField;
-    @FXML
-    private Label queryLabel;
-    @FXML
-    private Label docsCountField;
-    @FXML
-    private Label wordsCountField;
-    @FXML
-    private TableView<Document> documentTable;
-    @FXML
-    private TableColumn<Document, String> fileNameCln;
-    @FXML
-    private TableColumn<Document, BigDecimal> indexCln;
-    @FXML
-    private Label directoryLabel;
-    @FXML
-    private ListView<String> vocabularyLV;
-    @FXML
-    private Button sendButton;
-    @FXML
-    private Button clearButton;
-    
-    private Set<String> vocabulary;
-    private List<Document> docs;
-    private Set<String> stopWords;
-    
-    private ObservableList<String> obsVocabulary;
-    private ObservableList<Document> obsDocs;
-    
-    private File folder;
-    
+    private Utente utente;
+
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        vocabulary = new LinkedHashSet<>();
-        docs = new ArrayList<>();
-        stopWords = new HashSet<>();
-        obsVocabulary = FXCollections.observableArrayList();
-        obsDocs = FXCollections.observableArrayList();
-        
-        fileNameCln.setCellValueFactory(new PropertyValueFactory("title"));
-        indexCln.setCellValueFactory(new PropertyValueFactory("score"));
-        
-        documentTable.setItems(obsDocs);
-        vocabularyLV.setItems(obsVocabulary);
-        
-        initStopWords();
-        initBindings();
-        initEventHandlers();
-        
+        logoutMenu.setOnAction(e -> logout());
     }
-    
-    /**
-     * Triggered by the button "Scegli cartella".
-     * The user choose a folder.
-     * @param event
-     * @throws IOException 
-     */
-    @FXML
-    private void chooseFolder(ActionEvent event) throws IOException {
-        
-        DirectoryChooser dc = new DirectoryChooser();
-        folder = dc.showDialog(queryField.getParent().getScene().getWindow());
+    private void logout(){
+        ButtonType yes = new ButtonType("Sì");
+        ButtonType no = new ButtonType("No");
+        Optional<ButtonType> result = DialogUtils.showCustomAlert(
+            Alert.AlertType.CONFIRMATION,
+            "Conferma logout",
+            "Sei sicuro?",
+            "Vuoi effettuare il logout?",
+            yes, no
+        );
 
-        if(folder != null) {
-            
-            clearVariables();
-        
-            String directoryPath = folder.getAbsolutePath();
-            directoryLabel.setText("Directory: " + directoryPath);
-
-            List<File> files = Stream.of(folder.listFiles()).collect(Collectors.toList());
-
-            createVocabulary(directoryPath, files);
-        }
-        
-    }
-    
-    /**
-     * Called by chooseFolder().
-     * Create the vocabulary starting the VocabularyService.
-     * @param directoryPath the path of the directory chosen by the user
-     * @param files the list of the .txt files
-     */
-    private void createVocabulary(String directoryPath, List<File> files) {
-        
-        VocabularyService vs = new VocabularyService(directoryPath, stopWords);
-        vs.start();
-        vs.setOnSucceeded(e -> {
-            
-            vocabulary.addAll(vs.getValue());
-            files.forEach(f -> {
-                try {
-                    docs.add(new Document(f.getAbsolutePath(), f.getName(), vocabulary));
-                } catch (IOException ex) { }
-            });
-            obsVocabulary.addAll(vocabulary);
-            obsVocabulary.sort(String::compareTo);
-            obsDocs.addAll(docs);
-            docsCountField.setText("Numero di documenti: " + docs.size());
-        });
-    }
-    
-    
-    
-    /**
-     * Triggered by the button "Scegli stop-word".
-     * Rielaborate the vocabulary based on the chosen stop-word file.
-     * @param event 
-     */
-    @FXML
-    private void chooseStopWords(ActionEvent event) {
-        
-        FileChooser fc = new FileChooser();
-        fc.getExtensionFilters().add(new ExtensionFilter("Text Files", "*.txt"));
-        File f = fc.showOpenDialog(queryField.getParent().getScene().getWindow());
-        
-        if(f != null) {
-            
-            stopWords.clear();
-            try(BufferedReader br = new BufferedReader(new FileReader(f))) {
-                String stopWord;
-                while ((stopWord = br.readLine()) != null)
-                    stopWords.add(stopWord);
-            } catch (IOException ex) { }
-            
-            clearVariables();
-            
-            List<File> files = Stream.of(folder.listFiles()).collect(Collectors.toList());
-            createVocabulary(folder.getAbsolutePath(), files);
+        if (result.isPresent() && result.get() == yes) {
+            goToLogin();
         }
     }
-    
-    /**
-     * Triggered by the button "X".
-     * Clear the field of input query.
-     * @param event 
-     */
-    @FXML
-    private void clearQueryField(ActionEvent event) {
-        queryField.clear();
+    private void goToLogin(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/login.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) userMenu.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    
-    /**
-     * Called by initialize() method.
-     * Automatically choose a default stop-word file.
-     */
-    private void initStopWords() {
-        
-        try(BufferedReader br = new BufferedReader(new FileReader("stopwords-it.txt"))) {
-            String stopWord;
-            while ((stopWord = br.readLine()) != null)
-                stopWords.add(stopWord);
-        } catch (IOException ex) { }
-    }
-    
-    /**
-     * Called by initialize() method.
-     * Disable button if query field is empty.
-     */
-    private void initBindings() {
-        
-        // SendButton Binding
-        sendButton.disableProperty().bind(Bindings.isEmpty(queryField.textProperty()).or(Bindings.isEmpty(obsVocabulary)));
-        // ClearButton Binding
-        clearButton.disableProperty().bind(Bindings.equal("", queryField.textProperty()));
-    }
-    
-    /**
-     * Called by initialize() method.
-     * Open the selected file on the table by clicking twice.
-     */
-    private void initEventHandlers() {
-        
-        // DocumentTable EventHandler
-        documentTable.setOnMouseClicked(event -> {
-            if(event.getButton().equals(MouseButton.PRIMARY) && !documentTable.getSelectionModel().isEmpty()) {
-                wordsCountField.setText(" | Numero di parole: " + documentTable.getSelectionModel().getSelectedItem().getWordsCount());
-                if(event.getClickCount() == 2) {
-                    try {
-                        Desktop.getDesktop().open(new File(documentTable.getSelectionModel().getSelectedItem().getPath()));
-                    } catch (IOException ex) { }
-                }
-            }
-        });
-    }
-    
-    /**
-     * Reset the vocabulary and the list of document.
-     */
-    private void clearVariables() {
-        vocabulary.clear();
-        docs.clear();
-        obsVocabulary.clear();
-        obsDocs.clear();
+    public void setUtente(Utente utente) {
+        this.utente = utente;
+        // Aggiorna la GUI se serve!
     }
     
 }

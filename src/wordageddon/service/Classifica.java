@@ -7,7 +7,7 @@ package wordageddon.service;
 
 /**
  *
- * @author domenicodimarino
+ * @author Gruppo 3
  */
 public class Classifica {
     

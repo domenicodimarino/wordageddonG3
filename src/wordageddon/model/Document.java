@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * Document represents the .txt file in the selected folder.
- * @author group11
+ * @author Gruppo 3
  */
 public class Document {
 

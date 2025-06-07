@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 /**
  *
- * @author domenicodimarino
+ * @author Gruppo 3
  */
 public class DatabaseManager {
     private static final String URL = "jdbc:sqlite:wordageddon.db";

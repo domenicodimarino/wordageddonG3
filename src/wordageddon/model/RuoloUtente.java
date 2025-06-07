@@ -2,7 +2,7 @@ package wordageddon.model;
 
 /**
  *
- * @author ferdi
+ * @author Gruppo 3
  */
 public enum RuoloUtente {
     USER,

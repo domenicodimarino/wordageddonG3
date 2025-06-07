@@ -3,7 +3,7 @@ package wordageddon.model;
 import java.util.List;
 /**
  *
- * @author domenicodimarino
+ * @author Gruppo 3
  * Rappresenta una domanda a risposta multipla.
  */
 public class Domanda {

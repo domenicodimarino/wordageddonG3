@@ -11,7 +11,7 @@ import wordageddon.model.Punteggio;
 
 /**
  *
- * @author domenicodimarino
+ * @author Gruppo 3
  */
 public interface PunteggioDAO {
     public void inserisci(Punteggio p) throws SQLException;

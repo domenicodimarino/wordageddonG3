@@ -13,7 +13,7 @@ import javafx.concurrent.Task;
 /**
  * VocabularyService represents the Service
  * that creates the Set of the words of all the files in the folder.
- * @author group11
+ * @author Gruppo 3
  */
 public class VocabularyService extends Service<Set<String>> {
 
