@@ -14,7 +14,10 @@ public class Wordageddon extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Resources/fxml/login.fxml"));
         Scene scene = new Scene(root, 900, 600);
+        
+        scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/login.css").toExternalForm());
         stage.setTitle("Wordageddon");
+        
         stage.getIcons().add(new Image(getClass().getResourceAsStream("Resources/icon.png")));
         stage.setScene(scene);
         stage.show();

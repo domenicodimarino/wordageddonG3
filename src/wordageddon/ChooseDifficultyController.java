@@ -105,8 +105,11 @@ public class ChooseDifficultyController implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Wordageddon.fxml"));
                 Parent root = loader.load();
+                Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
+                
                 Stage stage = (Stage) menuBtn.getScene().getWindow();
-                stage.setScene(new Scene(root));
+                stage.setScene(scene);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();

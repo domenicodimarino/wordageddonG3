@@ -11,7 +11,7 @@
     <children>
       <VBox alignment="TOP_CENTER" prefHeight="430.0" prefWidth="817.0">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="804.0" text="Wordageddon" textAlignment="CENTER">
+            <Label fx:id="Titolo" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="804.0" text="Wordageddon" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
@@ -42,12 +42,12 @@
                </VBox.margin>
             </PasswordField>
             <!-- Conferma password: nascosto di default -->
-            <Label fx:id="confirmPasswordLabel" alignment="CENTER" prefHeight="17.0" prefWidth="826.0" text="Conferma password" textAlignment="CENTER" visible="false" managed="false">
+            <Label fx:id="confirmPasswordLabel" alignment="CENTER" managed="false" prefHeight="17.0" prefWidth="826.0" text="Conferma password" textAlignment="CENTER" visible="false">
                <VBox.margin>
                   <Insets top="15.0" />
                </VBox.margin>
             </Label>
-            <PasswordField fx:id="confirmPasswordField" visible="false" managed="false">
+            <PasswordField fx:id="confirmPasswordField" managed="false" visible="false">
                <VBox.margin>
                   <Insets left="150.0" right="150.0" top="5.0" />
                </VBox.margin>

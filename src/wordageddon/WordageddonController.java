@@ -94,8 +94,11 @@ public class WordageddonController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/login.fxml"));
             Parent root = loader.load();
 
+            Scene scene = new Scene(root);
+
+        scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/login.css").toExternalForm());
             Stage stage = (Stage) userMenu.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -110,8 +113,12 @@ public class WordageddonController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/ChooseDifficulty.fxml"));
             Parent root = loader.load();
 
+            Scene scene = new Scene(root);
+       
+        scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
+        
             Stage stage = (Stage) playBtn.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
