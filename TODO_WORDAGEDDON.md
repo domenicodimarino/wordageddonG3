@@ -4,7 +4,7 @@
 - **Checklist:** Giorno 2 “Il Dom” — login/registrazione: ✓ FATTO
 - **Traccia:** Multiutente, login, salvataggio sessioni/punteggi
 - **Repo:**  
-  - `Utente.java`, `UtenteDAO`, `UtenteDAOSQL`, `UtenteService`, `PasswordUtils` — tutto presente e funzionante
+  - `Utente.java`, `UtenteDAO`, `UtenteDAOSQL`, `UtenteService`, `PasswordUtils`
   - Test automatici su DAO utenti
 - **Stato:**  
   ✔️ COMPLETO
@@ -15,35 +15,33 @@
 - **Checklist:** Giorno 1 e 3 — setup database, salvataggio sessioni, storico punteggi: ✓ FATTO
 - **Traccia:** Ogni sessione produce un punteggio, storicizzato
 - **Repo:**  
-  - `DatabaseManager.java` (schema ok)
+  - `DatabaseManager.java`
   - `Sessione.java`, `Punteggio.java`, DAO e test relativi
 - **Stato:**  
   ✔️ COMPLETO lato backend/test
-  🟡 Manca solo l’integrazione sicura nella GUI (cioè che ogni sessione e punteggio vengano salvati davvero quando si gioca)
+  🟡 Integrazione nella GUI: **DA VERIFICARE CHE SALVI SEMPRE**
 
 ---
 
 ## 3. Caricamento documenti, stopwords, analisi testi
-- **Checklist:** Giorno 2 John — GUI caricamento documenti/stopwords, area admin: 🟡 INCOMPLETO
+- **Checklist:** Giorno 2 John — GUI caricamento documenti/stopwords, area admin: ✓ SOLO CARICAMENTO BASE
 - **Traccia:** Caricamento file e stopwords, analisi testi
 - **Repo:**  
   - `WordageddonController.java` — logica per scegliere cartella documenti e file stopwords, usa `VocabularyService`
   - `Document.java`, `VocabularyService.java` — parsing file, filtraggio stopwords, conteggio parole, vocabolario
 - **Stato:**  
   ✔️ LOGICA BACKEND OK  
-  🟡 GUI funziona solo per caricamento base; mancano funzioni avanzate/admin panel vero e proprio  
-  🟡 La GUI è solo abbozzata (FXML incompleto, serve terminare la schermata e testarla a fondo)
+  🟡 GUI: caricamento funzionante (ma **admin panel NON ESISTE**), manca gestione utenti/caricamento avanzato
 
 ---
 
 ## 4. Lettura a tempo, livelli, parametri difficoltà
-- **Checklist:** Giorno 1 Callœ — logica timer, livelli, lettura a tempo: ❌ NON FATTO
+- **Checklist:** Giorno 1 Callœ — logica timer, livelli, lettura a tempo: ✓ FATTO
 - **Traccia:** Lettura documenti a tempo, parametri in base a difficoltà
 - **Repo:**  
-  - Nessun controller/timer/gestione livelli trovato  
-  - FXML/Controller non mostrano schermata di lettura a tempo/documenti in base a livello
+  - `LetturaTestoController.java`
 - **Stato:**  
-  ❌ **DA FARE**: serve implementare la fase di lettura a tempo, scelta livello e parametri in GUI/controllore
+  ✔️ IMPLEMENTATO E FUNZIONANTE
 
 ---
 
@@ -51,58 +49,55 @@
 - **Checklist:** Giorno 3 Callœ — generazione domande: ✓ FATTO
 - **Traccia:** Domande multiple-choice di vari tipi, dipendenti da analisi documenti
 - **Repo:**  
-  - `Domanda.java`, `GeneratoreDomande.java` — tutte le tipologie richieste sono coperte (frequenza, confronto, esclusione, parola-documento)
+  - `Domanda.java`, `GeneratoreDomande.java`
 - **Stato:**  
   ✔️ LOGICA DI GENERAZIONE PRONTA  
-  🟡 **Manca** la vera integrazione nella GUI:  
-    - Non c’è una schermata in cui vengono poste domande all’utente
-    - Non c’è flusso partita (lettura → domande → salvataggio)
+  ✔️ Flusso partita presente: lettura → domande → risposte → punteggio
 
 ---
 
 ## 6. Gestione risposte/calcolo punteggio/sessione
-- **Checklist:** Giorno 4 Callœ — gestione risposte/calcolo punteggio: ❌ NON FATTO
+- **Checklist:** Giorno 4 Callœ — gestione risposte/calcolo punteggio: ✓ FATTO
 - **Traccia:** Flusso partita, gestione risposte, timer sessione, assegnazione punteggio
 - **Repo:**  
-  - Manca controller/view per la gestione delle domande/risposte, timer e salvataggio sessione/punteggio a fine partita
+  - `QuizController.java`
 - **Stato:**  
-  ❌ **DA FARE**: va integrato in GUI e logica di flusso partita
+  ✔️ COMPLETO E FUNZIONANTE
 
 ---
 
 ## 7. Classifica, storico, statistiche post-gioco
-- **Checklist:** Giorno 4 — leaderboard/statistiche: 🟡 Solo abbozzato
+- **Checklist:** Giorno 4 — leaderboard/statistiche: 🟡 Solo abbozzato/test parziale
 - **Traccia:** Leaderboard globale/personale, storico utente, statistiche post-gioco
 - **Repo:**  
-  - `Classifica.java` vuota; `PunteggioDAOSQL` supporta query classifica
-  - FXML: pulsanti “Storico”, “Leaderboard” già previsti, ma logica/view non implementata
-  - NESSUNA schermata storico/classifica/statistiche implementata
+  - `Classifica.java`, `PunteggioDAOSQL`
+  - FXML: pulsanti “Storico”, “Leaderboard” previsti, ma logica/view da rifinire/testare
 - **Stato:**  
-  ❌ **DA FARE**: implementare logica e schermate classifica, storico, statistiche post-partita
+  🟡 **DA COMPLETARE** (alcune schermate/logica non ancora definitive)
 
 ---
 
 ## 8. GUI — FXML, CSS, icona, pannello admin
-- **Checklist:** Giorno 1-3 John — GUI e styling: 🟡 Solo abbozzato
+- **Checklist:** Giorno 1-3 John — GUI e styling: 🟡 Solo base/parziale
 - **Traccia:** GUI JavaFX per tutte le fasi; styling CSS; pannello admin
 - **Repo:**  
-  - `MySimpleIRToolUI.fxml` — solo una bozza, mancano molte funzionalità e schermate (gioco, domande, punteggio, admin, ecc.)
-  - CSS: presente (`MySimpleIRTool.css`), ma **VEROSIMILMENTE DA CAMBIARE** (come da nota tua)
-  - Icona: presente (`icon.png`), **DA CAMBIARE** (come da nota tua)
+  - Tutte le schermate FXML principali ci sono, ma serve revisione/finitura
+  - CSS presente ma da rifinire
+  - Icona da aggiornare
 - **Stato:**  
-  🟡 **GUI solo base/parziale**, da completare con tutte le funzionalità richieste  
-  🟡 Styling/icone non definitivi
+  🟡 **GUI OK per il flusso base**, da rifinire per dettagli/styling/funzionalità avanzate  
+  ❌ **PANNELLO ADMIN NON ESISTE**
 
 ---
 
 ## 9. Supporto multilingua, ripresa sessioni, extra
-- **Checklist:** Non assegnato ancora
+- **Checklist:** Task Extra
 - **Traccia:** Supporto documenti in più lingue, resume sessione, extra feature
 - **Repo:**  
-  - FXML: ComboBox lingua già presente (ma non collegato a logica)
-  - Logica multilingua/multisessione/ripresa sessione: **non presente**
+  - FXML: ComboBox lingua presente **ma NON collegato**
+  - Logica multilingua/ripresa sessione **assente**
 - **Stato:**  
-  🟡 **Solo parzialmente pianificato, DA IMPLEMENTARE**
+  ❌ **DA FARE**
 
 ---
 
@@ -110,10 +105,10 @@
 - **Checklist:** Giorno 2+ — IL FRA: javadoc, relazione, diagrammi, deliverable: 🟡 Parzialmente
 - **Traccia:** Javadoc, relazione, UML, presentazione, demo
 - **Repo:**  
-  - Javadoc solo su alcune classi
-  - Nessun file relazione/UML/demo presente
+  - Javadoc quasi assente o solo su poche classi
+  - Relazione/UML/demo **assenti**
 - **Stato:**  
-  🟡 **DA COMPLETARE**
+  ❌ **DA FARE**
 
 ---
 
@@ -122,21 +117,22 @@
 - **Backend:**
   - CRUD utenti/sessioni/punteggi e generazione domande: ✔️ PRONTO
 - **GUI:**
-  - Caricamento documenti/stopwords: ✔️ BASE
-  - Lettura a tempo, domande, risposte, punteggio, flusso gioco: ❌ DA FARE
-  - Classifica, storico, statistiche: ❌ DA FARE
-  - Multilingua, ripresa sessione: 🟡 Parzialmente pianificato, DA FARE
-  - Styling, icone, FXML: 🟡 Da migliorare/concludere
+  - Caricamento documenti/stopwords: ✔️
+  - Lettura a tempo, domande, risposte, punteggio, flusso gioco: ✔️
+  - Classifica, storico, statistiche: 🟡 DA COMPLETARE
+  - Multilingua, ripresa sessione: ❌ DA FARE
+  - Styling, icone, FXML: 🟡 Da rifinire
+  - Pannello admin: ❌ NON ESISTE
 
 - **Documentazione:**
-  - Javadoc, relazione, UML: 🟡 Parziale, DA FARE
+  - Javadoc, relazione, UML: ❌ DA FARE
 
 ---
 
 ## COSA FARE SUBITO (roadmap finale)
 
-1. **Chiudere la GUI completa**: flusso partita (lettura a tempo → domande → risposte → punteggio → storico/statistiche).
-2. **Integrare gestione sessioni/punteggi/classifica/statistiche nella GUI.**
-3. **Aggiungere/migliorare styling CSS, aggiorna icona.**
-4. **Implementare supporto multilingua e ripresa sessione (se vuoi bonus).**
-5. **Completare Javadoc, relazione finale, UML, demo e presentazione.**
+1. **Completare GUI (storico, leaderboard, admin, styling)**
+2. **Aggiungere supporto multilingua e ripresa sessione**
+3. **Completare Javadoc, relazione, UML, demo**
+4. **Testing generale, bugfixing, backup, simulazione consegna**
+5. **Caricamento piattaforma/consegna**
