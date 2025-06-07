@@ -7,12 +7,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="817.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wordageddon.WordageddonController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="600.0" prefWidth="900.0"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="wordageddon.WordageddonController">
    <children>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="817.0" spacing="10.0">
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="54.0" prefWidth="900.0" spacing="10.0">
          <children>
             <ImageView fx:id="logoImage" fitHeight="55.0" fitWidth="109.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="appNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="91.0" prefWidth="540.0" text="Wordageddon" textAlignment="CENTER">
+            <Label fx:id="appNameLabel" alignment="CENTER" contentDisplay="CENTER"
+                   prefHeight="54.0" prefWidth="540.0" text="Wordageddon" textAlignment="CENTER">
                <font>
                   <Font size="30.0" />
                </font>
@@ -20,23 +25,23 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <Region prefHeight="453.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="storicoBtn" mnemonicParsing="false" prefHeight="27.0" prefWidth="350.0" text="Storico">
+            <Region prefHeight="54.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="storicoBtn" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="Storico">
                <HBox.margin>
                   <Insets top="10.0" />
                </HBox.margin>
             </Button>
-            <ComboBox fx:id="linguaCombo" prefHeight="27.0" prefWidth="365.0" promptText="Lingua">
+            <ComboBox fx:id="linguaCombo" prefHeight="27.0" prefWidth="140.0" promptText="Lingua">
                <HBox.margin>
                   <Insets top="10.0" />
                </HBox.margin>
             </ComboBox>
-            <Button fx:id="leaderboardBtn" mnemonicParsing="false" prefHeight="27.0" prefWidth="372.0" text="LeaderBoard">
+            <Button fx:id="leaderboardBtn" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="LeaderBoard">
                <HBox.margin>
                   <Insets top="10.0" />
                </HBox.margin>
             </Button>
-            <MenuButton fx:id="userMenu" mnemonicParsing="false" prefHeight="27.0" prefWidth="349.0" text="Menu" textAlignment="CENTER">
+            <MenuButton fx:id="userMenu" mnemonicParsing="false" prefHeight="27.0" prefWidth="120.0" text="Menu" textAlignment="CENTER">
                <items>
                   <MenuItem fx:id="impostazioniMenu" mnemonicParsing="false" text="Impostazioni" />
                   <MenuItem fx:id="logoutMenu" mnemonicParsing="false" text="Logout" />
@@ -47,15 +52,16 @@
             </MenuButton>
          </children>
       </HBox>
-      <StackPane fx:id="mainStackPane" prefHeight="430.0" prefWidth="817.0">
+      <StackPane fx:id="mainStackPane" prefHeight="347.0" prefWidth="900.0">
          <children>
-            <Button fx:id="playBtn" mnemonicParsing="false" prefHeight="71.0" prefWidth="117.0" text="Gioca">
+            <Button fx:id="playBtn" mnemonicParsing="false" prefHeight="71.0" prefWidth="200.0" text="Gioca">
                <font>
                   <Font name="System Bold" size="26.0" />
                </font>
             </Button>
-         </children></StackPane>
-      <HBox alignment="CENTER_LEFT" prefHeight="123.0" prefWidth="817.0">
+         </children>
+      </StackPane>
+      <HBox alignment="CENTER_LEFT" prefHeight="130.0" prefWidth="900.0">
          <children>
             <Label contentDisplay="CENTER" text="©2025 Wordageddon">
                <HBox.margin>
