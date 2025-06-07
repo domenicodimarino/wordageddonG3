@@ -18,6 +18,7 @@ import wordageddon.model.Domanda;
 import wordageddon.model.RispostaUtente;
 import wordageddon.model.Sessione;
 import wordageddon.model.Punteggio;
+import wordageddon.util.DialogUtils;
 
 public class QuizController implements Initializable {
 
@@ -36,7 +37,7 @@ public class QuizController implements Initializable {
     private int punteggio = 0;
 
     // TIMER
-    private int tempoTotale = 120; // 2 minuti in secondi (puoi parametrizzarlo)
+    private int tempoTotale = 60; // 1 minuto in secondi (puoi parametrizzarlo)
     private Timeline timeline;
 
     private List<RispostaUtente> risposteUtente = new ArrayList<>();
@@ -128,12 +129,7 @@ public class QuizController implements Initializable {
 
     private void mostraRisultato() {
         nextBtn.setDisable(true);
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Quiz completato!");
-        alert.setHeaderText(null);
-        alert.setContentText("Hai totalizzato " + punteggio + " punti su " + domande.size());
-        alert.showAndWait();
+        DialogUtils.showAlert(Alert.AlertType.INFORMATION, "Quiz completato!", null, "Hai totalizzato " + punteggio + " punti su " + domande.size());
 
         tempoQuizResiduo = tempoTotale; // Salva il tempo rimasto correttamente
 

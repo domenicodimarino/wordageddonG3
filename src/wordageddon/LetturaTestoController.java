@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import wordageddon.model.GameDifficultyConfig;
 import wordageddon.model.Sessione;
 import wordageddon.model.Document;
+import wordageddon.util.WordStats;
 
 import java.io.File;
 import java.io.FileReader;
@@ -20,7 +21,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -88,18 +88,16 @@ public class LetturaTestoController implements Initializable {
             .limit(config.getNumDocumenti())
             .collect(Collectors.toList());
 
-        // Estrai il vocabolario globale qui!
-        Set<String> vocabolarioGlobale = estraiVocabolarioGlobale(selezionati);
-
+        Set<String> stopwords = caricaStopwords(AppConfig.getStopwordsPath());
+        Set<String> vocabolarioGlobale = new HashSet<>();
         List<Document> result = new ArrayList<>();
+
         for (File f : selezionati) {
-            try {
-                result.add(new Document(f.getAbsolutePath(), f.getName(), vocabolarioGlobale));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            WordStats stats = processaFile(f, stopwords);
+            vocabolarioGlobale.addAll(stats.parole);
+            result.add(new Document(f.getAbsolutePath(), f.getName(), stats.frequenze));
         }
-        // Salva il vocabolario globale come campo per poi usarlo in vaiAlQuiz
+
         this.vocabolarioGlobale = vocabolarioGlobale;
         return result;
     }
@@ -107,15 +105,28 @@ public class LetturaTestoController implements Initializable {
     private int contaParole(File file) {
         try {
             String contenuto = new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
-            // Split su uno o più spazi (o newline)
             String[] parole = contenuto.trim().split("\\s+");
-            // Evita di contare 1 parola se il file è vuoto
             if (parole.length == 1 && parole[0].isEmpty()) return 0;
             return parole.length;
         } catch (IOException e) {
-            return Integer.MAX_VALUE; // Così i file che danno errore non vengono scelti
+            return Integer.MAX_VALUE;
         }
     }
+
+    private WordStats processaFile(File file, Set<String> stopwords) {
+        WordStats stats = new WordStats();
+        try (Scanner s = new Scanner(new BufferedReader(new FileReader(file)))) {
+            s.useDelimiter("\\s+|\\,|\\-|\\:|\\;|\\?|\\!|\\+|\\-|\\_|\\.|\\—|\\–|\\'|\\’");
+            while (s.hasNext()) {
+                String parola = s.next().toLowerCase();
+                if (stopwords.contains(parola) || parola.isEmpty()) continue;
+                stats.parole.add(parola);
+                stats.frequenze.put(parola, stats.frequenze.getOrDefault(parola, 0) + 1);
+            }
+        } catch (IOException ex) { }
+        return stats;
+    }
+
     private void mostraDocumento(int indice) {
         Document doc = documenti.get(indice);
         documentLabel.setText("Documento " + (indice + 1) + " di " + documenti.size() + " (" + doc.getTitle() + ")");
@@ -185,7 +196,7 @@ public class LetturaTestoController implements Initializable {
         Task<List<Domanda>> task = new Task<List<Domanda>>() {
             @Override
             protected List<Domanda> call() throws Exception {
-                int numDomande = 3;
+                int numDomande = 5;
                 List<Domanda> domande = new ArrayList<>();
                 Set<String> testiDomande = new HashSet<>();
                 GeneratoreDomande generatore = new GeneratoreDomande(documenti, vocabolarioGlobale);
@@ -211,7 +222,6 @@ public class LetturaTestoController implements Initializable {
         progressBar.progressProperty().bind(task.progressProperty());
         progressLabel.textProperty().bind(task.messageProperty());
 
-        // Se chiudi la progress, cancella il task!
         progressStage.setOnCloseRequest(event -> {
             task.cancel();
             event.consume();
@@ -221,8 +231,7 @@ public class LetturaTestoController implements Initializable {
             progressStage.close();
             List<Domanda> domandeQuiz = task.getValue();
             if (domandeQuiz == null || domandeQuiz.isEmpty()) {
-                Alert error = new Alert(Alert.AlertType.ERROR, "Impossibile generare le domande. Riprova o scegli altri documenti.");
-                error.showAndWait();
+                DialogUtils.showAlert(Alert.AlertType.ERROR, "Impossibile generare le domande.", " Riprova o scegli altri documenti.", null);
                 return;
             }
             try {
@@ -243,8 +252,7 @@ public class LetturaTestoController implements Initializable {
 
         task.setOnFailed(ev -> {
             progressStage.close();
-            Alert error = new Alert(Alert.AlertType.ERROR, "Errore durante la preparazione del quiz: " + task.getException());
-            error.showAndWait();
+            DialogUtils.showAlert(Alert.AlertType.ERROR, "Errore durante la preparazione del quiz: ", task.getException().toString(), null);
         });
 
         progressStage.show();
@@ -252,7 +260,6 @@ public class LetturaTestoController implements Initializable {
     }
 
     private void goToMenu() {
-        
         ButtonType yes = new ButtonType("Sì");
         ButtonType no = new ButtonType("No");
         Optional<ButtonType> result = DialogUtils.showCustomAlert(
@@ -262,10 +269,9 @@ public class LetturaTestoController implements Initializable {
             "Vuoi terminare la partita?",
             yes, no
         );
-        
+
         if (result.isPresent() && result.get() == yes) {
             try {
-                
                 SessioneDAOSQL sessioneDAO = new SessioneDAOSQL();
                 try {
                     sessioneDAO.deleteSessioneById(sessione.getId());
@@ -273,13 +279,13 @@ public class LetturaTestoController implements Initializable {
                     ex.printStackTrace();
                 }
                 SessionManager.setSessione(null);
-                
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Wordageddon.fxml"));
                 Parent root = loader.load();
-                
+
                 Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
-                
+                scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
+
                 Stage stage = (Stage) quitGameBtn.getScene().getWindow();
                 stage.setScene(scene);
                 stage.show();
@@ -287,21 +293,6 @@ public class LetturaTestoController implements Initializable {
                 e.printStackTrace();
             }
         }
-    }
-    private Set<String> estraiVocabolarioGlobale(List<File> files) {
-        Set<String> stopwords = caricaStopwords(AppConfig.getStopwordsPath());
-        Set<String> vocabolario = new HashSet<>();
-        for (File f : files) {
-            try (Scanner s = new Scanner(new BufferedReader(new FileReader(f)))) {
-                s.useDelimiter("\\s+|\\,|\\-|\\:|\\;|\\?|\\!|\\+|\\-|\\_|\\.|\\—|\\–|\\'|\\’");
-                while (s.hasNext()) {
-                    String parola = s.next().toLowerCase();
-                    if (stopwords.contains(parola)) continue;
-                    vocabolario.add(parola);
-                }
-            } catch (IOException ex) { }
-        }
-        return vocabolario;
     }
 
     private Set<String> caricaStopwords(String stopwordsPath) {

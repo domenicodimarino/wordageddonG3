@@ -111,65 +111,11 @@ public class MySimpleIRController implements Initializable {
 
             List<File> files = Stream.of(folder.listFiles()).collect(Collectors.toList());
 
-            createVocabulary(directoryPath, files);
+            //createVocabulary(directoryPath, files);
         }
         
     }
-    
-    /**
-     * Called by chooseFolder().
-     * Create the vocabulary starting the VocabularyService.
-     * @param directoryPath the path of the directory chosen by the user
-     * @param files the list of the .txt files
-     */
-    private void createVocabulary(String directoryPath, List<File> files) {
-        
-        VocabularyService vs = new VocabularyService(directoryPath, stopWords);
-        vs.start();
-        vs.setOnSucceeded(e -> {
-            
-            vocabulary.addAll(vs.getValue());
-            files.forEach(f -> {
-                try {
-                    docs.add(new Document(f.getAbsolutePath(), f.getName(), vocabulary));
-                } catch (IOException ex) { }
-            });
-            obsVocabulary.addAll(vocabulary);
-            obsVocabulary.sort(String::compareTo);
-            obsDocs.addAll(docs);
-            docsCountField.setText("Numero di documenti: " + docs.size());
-        });
-    }
-    
-    
-    
-    /**
-     * Triggered by the button "Scegli stop-word".
-     * Rielaborate the vocabulary based on the chosen stop-word file.
-     * @param event 
-     */
-    @FXML
-    private void chooseStopWords(ActionEvent event) {
-        
-        FileChooser fc = new FileChooser();
-        fc.getExtensionFilters().add(new ExtensionFilter("Text Files", "*.txt"));
-        File f = fc.showOpenDialog(queryField.getParent().getScene().getWindow());
-        
-        if(f != null) {
-            
-            stopWords.clear();
-            try(BufferedReader br = new BufferedReader(new FileReader(f))) {
-                String stopWord;
-                while ((stopWord = br.readLine()) != null)
-                    stopWords.add(stopWord);
-            } catch (IOException ex) { }
-            
-            clearVariables();
-            
-            List<File> files = Stream.of(folder.listFiles()).collect(Collectors.toList());
-            createVocabulary(folder.getAbsolutePath(), files);
-        }
-    }
+   
     
     /**
      * Triggered by the button "X".
