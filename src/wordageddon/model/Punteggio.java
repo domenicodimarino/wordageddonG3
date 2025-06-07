@@ -27,7 +27,7 @@ public class Punteggio {
 
     // Calcola il punteggio secondo la tua logica
     private int calcolaPunteggio() {
-        return (risposteCorrette * 10 + tempoResiduo) * difficolta;
+        return (risposteCorrette * (10 + tempoResiduo)) * difficolta;
     }
 
     public String getUsername() {
