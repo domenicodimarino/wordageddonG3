@@ -230,6 +230,7 @@ public class LetturaTestoController implements Initializable {
                 Parent root = loader.load();
 
                 QuizController quizController = loader.getController();
+                quizController.impostaSessione(sessione);
                 quizController.impostaDomande(domandeQuiz);
 
                 Stage stage = (Stage) nextBtn.getScene().getWindow();
