@@ -1,5 +1,6 @@
 package wordageddon;
 
+import java.io.BufferedReader;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -13,21 +14,27 @@ import wordageddon.model.Sessione;
 import wordageddon.model.Document;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import wordageddon.config.AppConfig;
 import wordageddon.database.SessioneDAOSQL;
 import wordageddon.model.Difficolta;
+import wordageddon.model.Domanda;
+import wordageddon.service.GeneratoreDomande;
 import wordageddon.service.SessionManager;
 import wordageddon.util.DialogUtils;
 
@@ -45,6 +52,7 @@ public class LetturaTestoController implements Initializable {
     private int indiceCorrente = 0;
     private int tempoResiduo;
     private Timeline timeline;
+    private Set<String> vocabolarioGlobale;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -66,32 +74,33 @@ public class LetturaTestoController implements Initializable {
     }
 
     private List<Document> caricaDocumenti(GameDifficultyConfig config) {
-        String cartellaBase = AppConfig.getDocumentiBasePath(); // ad esempio "DocumentFolder"
+        String cartellaBase = AppConfig.getDocumentiBasePath();
         File folder = new File(cartellaBase);
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".txt"));
         if (files == null) return Collections.emptyList();
 
-        // Filtra i file in base al numero di parole
         List<File> fileList = Arrays.stream(files)
             .filter(f -> contaParole(f) <= config.getLunghezzaTesto())
             .collect(Collectors.toList());
 
-        // Mescola la lista per la casualità
         Collections.shuffle(fileList);
-
-        // Prendi solo il numero richiesto
         List<File> selezionati = fileList.stream()
             .limit(config.getNumDocumenti())
             .collect(Collectors.toList());
 
+        // Estrai il vocabolario globale qui!
+        Set<String> vocabolarioGlobale = estraiVocabolarioGlobale(selezionati);
+
         List<Document> result = new ArrayList<>();
         for (File f : selezionati) {
             try {
-                result.add(new Document(f.getAbsolutePath(), f.getName(), Collections.emptySet()));
+                result.add(new Document(f.getAbsolutePath(), f.getName(), vocabolarioGlobale));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
+        // Salva il vocabolario globale come campo per poi usarlo in vaiAlQuiz
+        this.vocabolarioGlobale = vocabolarioGlobale;
         return result;
     }
 
@@ -159,7 +168,86 @@ public class LetturaTestoController implements Initializable {
     }
 
     private void vaiAlQuiz() {
-        // TODO: Carica la schermata del quiz, passa sessione e config se necessario
+        ProgressBar progressBar = new ProgressBar(0);
+        Label progressLabel = new Label("Sto preparando le domande del quiz...");
+        VBox box = new VBox(15, progressLabel, progressBar);
+        box.setAlignment(javafx.geometry.Pos.CENTER);
+        box.setPadding(new javafx.geometry.Insets(20));
+        Scene scene = new Scene(box, 400, 120);
+
+        Stage progressStage = new Stage();
+        progressStage.setTitle("Preparazione quiz");
+        progressStage.setScene(scene);
+        progressStage.setResizable(false);
+        progressStage.initOwner(nextBtn.getScene().getWindow());
+        progressStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+
+        Task<List<Domanda>> task = new Task<List<Domanda>>() {
+            @Override
+            protected List<Domanda> call() throws Exception {
+                int numDomande = 3;
+                List<Domanda> domande = new ArrayList<>();
+                Set<String> testiDomande = new HashSet<>();
+                GeneratoreDomande generatore = new GeneratoreDomande(documenti, vocabolarioGlobale);
+                int tentativi = 0;
+                int maxTentativi = numDomande * 15;
+                while (domande.size() < numDomande && tentativi < maxTentativi) {
+                    if (isCancelled()) return null;
+                    Domanda domanda = generatore.generaDomandaRandom();
+                    tentativi++;
+                    if (domanda == null || domanda.getTesto() == null || testiDomande.contains(domanda.getTesto())) continue;
+                    domande.add(domanda);
+                    testiDomande.add(domanda.getTesto());
+                    updateProgress(domande.size(), numDomande);
+                    updateMessage("Domanda " + domande.size() + " di " + numDomande + "...");
+                }
+                if (domande.size() < numDomande) {
+                    throw new Exception("Impossibile generare abbastanza domande! Aggiungi più documenti o usa testi più lunghi.");
+                }
+                return domande;
+            }
+        };
+
+        progressBar.progressProperty().bind(task.progressProperty());
+        progressLabel.textProperty().bind(task.messageProperty());
+
+        // Se chiudi la progress, cancella il task!
+        progressStage.setOnCloseRequest(event -> {
+            task.cancel();
+            event.consume();
+        });
+
+        task.setOnSucceeded(ev -> {
+            progressStage.close();
+            List<Domanda> domandeQuiz = task.getValue();
+            if (domandeQuiz == null || domandeQuiz.isEmpty()) {
+                Alert error = new Alert(Alert.AlertType.ERROR, "Impossibile generare le domande. Riprova o scegli altri documenti.");
+                error.showAndWait();
+                return;
+            }
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Quiz.fxml"));
+                Parent root = loader.load();
+
+                QuizController quizController = loader.getController();
+                quizController.impostaDomande(domandeQuiz);
+
+                Stage stage = (Stage) nextBtn.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        task.setOnFailed(ev -> {
+            progressStage.close();
+            Alert error = new Alert(Alert.AlertType.ERROR, "Errore durante la preparazione del quiz: " + task.getException());
+            error.showAndWait();
+        });
+
+        progressStage.show();
+        new Thread(task).start();
     }
 
     private void goToMenu() {
@@ -194,5 +282,33 @@ public class LetturaTestoController implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+    private Set<String> estraiVocabolarioGlobale(List<File> files) {
+        Set<String> stopwords = caricaStopwords(AppConfig.getStopwordsPath());
+        Set<String> vocabolario = new HashSet<>();
+        for (File f : files) {
+            try (Scanner s = new Scanner(new BufferedReader(new FileReader(f)))) {
+                s.useDelimiter("\\s+|\\,|\\-|\\:|\\;|\\?|\\!|\\+|\\-|\\_|\\.|\\—|\\–|\\'|\\’");
+                while (s.hasNext()) {
+                    String parola = s.next().toLowerCase();
+                    if (stopwords.contains(parola)) continue;
+                    vocabolario.add(parola);
+                }
+            } catch (IOException ex) { }
+        }
+        return vocabolario;
+    }
+
+    private Set<String> caricaStopwords(String stopwordsPath) {
+        Set<String> stopwords = new HashSet<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(stopwordsPath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                stopwords.add(line.trim().toLowerCase());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return stopwords;
     }
 }

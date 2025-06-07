@@ -19,7 +19,7 @@
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <Label text="Testo della domanda">
+            <Label fx:id="questionLabel" text="Testo della domanda">
                <font>
                   <Font size="24.0" />
                </font>
