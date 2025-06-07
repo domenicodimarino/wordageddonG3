@@ -1,15 +1,23 @@
 package wordageddon;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import wordageddon.model.Domanda;
+import wordageddon.model.RispostaUtente;
+import wordageddon.model.Sessione;
+import wordageddon.model.Punteggio;
 
 public class QuizController implements Initializable {
 
@@ -31,14 +39,21 @@ public class QuizController implements Initializable {
     private int tempoTotale = 120; // 2 minuti in secondi (puoi parametrizzarlo)
     private Timeline timeline;
 
+    private List<RispostaUtente> risposteUtente = new ArrayList<>();
+    private Sessione sessione;
+    private int tempoQuizResiduo = 0;
+
+    // Metodo per ricevere la sessione dal controller precedente
+    public void impostaSessione(Sessione sessione) {
+        this.sessione = sessione;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         nextBtn.setDisable(true);
-
         optionsGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
             nextBtn.setDisable(newToggle == null);
         });
-
         nextBtn.setOnAction(e -> {
             controllaRisposta();
             domandaCorrente++;
@@ -78,13 +93,17 @@ public class QuizController implements Initializable {
 
     private void controllaRisposta() {
         RadioButton selected = (RadioButton) optionsGroup.getSelectedToggle();
-        if (selected != null) {
-            String rispostaUtente = selected.getText();
-            String rispostaCorretta = domande.get(domandaCorrente).getRispostaCorretta();
-            if (rispostaUtente.equals(rispostaCorretta)) {
-                punteggio++;
-            }
-        }
+        String rispostaUtente = selected != null ? selected.getText() : "";
+        Domanda domanda = domande.get(domandaCorrente);
+        String rispostaCorretta = domanda.getRispostaCorretta();
+        boolean esatta = rispostaUtente.equals(rispostaCorretta);
+        if (esatta) punteggio++;
+        risposteUtente.add(new RispostaUtente(
+            domanda.getTesto(),
+            rispostaUtente,
+            rispostaCorretta,
+            esatta
+        ));
     }
 
     private void startTimerGlobale() {
@@ -109,11 +128,49 @@ public class QuizController implements Initializable {
 
     private void mostraRisultato() {
         nextBtn.setDisable(true);
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Quiz completato!");
         alert.setHeaderText(null);
         alert.setContentText("Hai totalizzato " + punteggio + " punti su " + domande.size());
         alert.showAndWait();
-        // Qui puoi aggiungere codice per tornare al menu o altro
+
+        tempoQuizResiduo = tempoTotale; // Salva il tempo rimasto correttamente
+
+        // Calcolo punteggio usando la classe Punteggio!
+        int risposteCorrette = (int) risposteUtente.stream().filter(RispostaUtente::isEsatto).count();
+        int difficoltaInt = getDifficoltaAsInt(sessione.getDifficolta().toString());
+        String username = sessione.getUsername();
+
+        Punteggio punteggioObj = new Punteggio(username, risposteCorrette, tempoQuizResiduo, difficoltaInt);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Results.fxml"));
+            Parent root = loader.load();
+            ResultsController resultsController = loader.getController();
+
+            resultsController.setResults(
+                risposteUtente,
+                sessione,
+                tempoQuizResiduo,
+                punteggioObj
+            );
+
+            Stage stage = (Stage) nextBtn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Utility per convertire la difficoltà in intero (adatta alla tua enum)
+    private int getDifficoltaAsInt(String difficolta) {
+        switch (difficolta.toUpperCase()) {
+            case "FACILE": return 1;
+            case "MEDIO": return 2;
+            case "DIFFICILE": return 3;
+            default: return 1;
+        }
     }
 }
