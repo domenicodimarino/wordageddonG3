@@ -8,4 +8,5 @@ public interface SessioneDAO {
     List<Sessione> elencaTutte() throws Exception;
     void cancellaTutte() throws Exception;
     Sessione getSessioneById(int id) throws Exception;
+    public void deleteSessioneById(int id) throws Exception;
 }

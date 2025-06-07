@@ -96,4 +96,15 @@ public class SessioneDAOSQL implements SessioneDAO {
         }
         return null;
     }
+    @Override
+    public void deleteSessioneById(int id) throws Exception {
+        String sql = "DELETE FROM sessione WHERE id = ?";
+        try (
+            Connection c = DatabaseManager.getConnection();
+            PreparedStatement ps = c.prepareStatement(sql)
+        ) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
 }

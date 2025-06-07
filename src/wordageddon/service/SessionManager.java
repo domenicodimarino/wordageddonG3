@@ -1,5 +1,6 @@
 package wordageddon.service;
 
+import wordageddon.model.Sessione;
 import wordageddon.model.Utente;
 
 /**
@@ -8,7 +9,11 @@ import wordageddon.model.Utente;
  */
 public class SessionManager {
     private static Utente utente;
+    private static Sessione sessione;
 
+    public static void setSessione(Sessione s) { sessione = s; }
+    public static Sessione getSessione() { return sessione; }
+    public static void clearSessione() { sessione = null; }
     /**
      * Imposta l'utente attualmente loggato.
      * @param u utente autenticato
