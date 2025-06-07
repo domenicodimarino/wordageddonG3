@@ -3,8 +3,11 @@ package wordageddon.database;
 import org.junit.*; // JUnit 4
 import static org.junit.Assert.*;
 import wordageddon.model.Sessione;
+import wordageddon.model.Difficolta;
 
 import java.util.List;
+import wordageddon.database.DatabaseManager;
+import wordageddon.database.SessioneDAOSQL;
 
 public class SessioneDAOSQLTest {
     private SessioneDAOSQL dao;
@@ -20,7 +23,7 @@ public class SessioneDAOSQLTest {
     public void testInsertSessioneAndGetById() throws Exception {
         Sessione s = new Sessione(
                 "pippo", "2025-06-05T13:00", null, 123,
-                2, 60, "{}", "in_corso"
+                60, "{}", "in_corso", Difficolta.FACILE
         );
         dao.insertSessione(s);
         assertTrue(s.getId() > 0);
@@ -30,12 +33,13 @@ public class SessioneDAOSQLTest {
         assertEquals("pippo", sFound.getUsername());
         assertEquals(123, sFound.getPunteggioTotale());
         assertEquals("in_corso", sFound.getStato());
+        assertEquals(Difficolta.FACILE, sFound.getDifficolta());
     }
 
     @Test
     public void testElencaTutte() throws Exception {
-        Sessione s1 = new Sessione("pippo", "2025-06-05T13:00", null, 100, 1, 80, "{}", "in_corso");
-        Sessione s2 = new Sessione("pluto", "2025-06-05T14:00", null, 150, 2, 70, "{}", "finita");
+        Sessione s1 = new Sessione("pippo", "2025-06-05T13:00", null, 100, 80, "{}", "in_corso", Difficolta.FACILE);
+        Sessione s2 = new Sessione("pluto", "2025-06-05T14:00", null, 150, 70, "{}", "finita", Difficolta.MEDIO);
         dao.insertSessione(s1);
         dao.insertSessione(s2);
 
@@ -47,7 +51,7 @@ public class SessioneDAOSQLTest {
 
     @Test
     public void testCancellaTutte() throws Exception {
-        Sessione s = new Sessione("pippo", "2025-06-05T13:00", null, 100, 1, 80, "{}", "in_corso");
+        Sessione s = new Sessione("pippo", "2025-06-05T13:00", null, 100, 80, "{}", "in_corso", Difficolta.FACILE);
         dao.insertSessione(s);
         assertFalse(dao.elencaTutte().isEmpty());
 

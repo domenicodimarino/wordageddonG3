@@ -59,6 +59,8 @@ public class WordageddonController implements Initializable {
     private Hyperlink infoLink;
     
     private Utente utente;
+    @FXML
+    private Button playBtn;
 
     /**
      * Initializes the controller class.
@@ -66,6 +68,7 @@ public class WordageddonController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         logoutMenu.setOnAction(e -> logout());
+        playBtn.setOnAction(e -> startGame());
     }
     private void logout(){
         ButtonType yes = new ButtonType("Sì");
@@ -97,6 +100,18 @@ public class WordageddonController implements Initializable {
     public void setUtente(Utente utente) {
         this.utente = utente;
         // Aggiorna la GUI se serve!
+    }
+    private void startGame(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/ChooseDifficulty.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) playBtn.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 }

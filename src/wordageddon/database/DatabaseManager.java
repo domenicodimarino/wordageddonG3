@@ -31,10 +31,10 @@ public class DatabaseManager {
             "data_inizio TEXT," +
             "data_fine TEXT," +
             "punteggio_totale INTEGER," +
-            "livello_corrente INTEGER,"+
             "tempo_residuo INTEGER,"+
             "stato_gioco_json TEXT," +
             "stato TEXT," +
+            "difficolta TEXT," +
             "FOREIGN KEY(username) REFERENCES utente(username)" +
             ");";
         stmt.execute(createSessione);
