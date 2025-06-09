@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 import wordageddon.model.Utente;
 import wordageddon.service.SessionManager;
 import wordageddon.util.DialogUtils;
+import wordageddon.util.SceneUtils;
 
 /**
  * FXML Controller class
@@ -110,34 +111,10 @@ public class WordageddonController implements Initializable {
         // Aggiorna la GUI se serve!
     }
     private void startGame(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/ChooseDifficulty.fxml"));
-            Parent root = loader.load();
-
-            Scene scene = new Scene(root);
-       
-        scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
-        
-            Stage stage = (Stage) playBtn.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SceneUtils.switchScene(playBtn, "/wordageddon/Resources/fxml/ChooseDifficulty.fxml", "/wordageddon/Resources/css/style.css");
     }
     private void goToLeaderboard() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Classifica.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-       
-            scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
-            Stage stage = (Stage) leaderboardBtn.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SceneUtils.switchScene(leaderboardBtn, "/wordageddon/Resources/fxml/Classifica.fxml", "/wordageddon/Resources/css/style.css");
     }
     
 }
