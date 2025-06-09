@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import wordageddon.database.PunteggioDAOSQL;
 import wordageddon.model.Difficolta;
 import wordageddon.model.Punteggio;
+import wordageddon.util.SceneUtils;
 
 public class ClassificaController implements Initializable {
 
@@ -76,17 +77,6 @@ public class ClassificaController implements Initializable {
         menuBtn.setOnAction(e -> goToMenu());
     }
     private void goToMenu() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Wordageddon.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-       
-            scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
-            Stage stage = (Stage) menuBtn.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SceneUtils.switchScene(menuBtn, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
     }
 }

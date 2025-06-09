@@ -1,6 +1,5 @@
 package wordageddon;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -9,16 +8,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.TableCell;
-import javafx.stage.Stage;
 import wordageddon.model.RispostaUtente;
 import wordageddon.model.Sessione;
 import wordageddon.model.Punteggio;
+import wordageddon.util.SceneUtils;
 
 public class ResultsController implements Initializable {
 
@@ -82,31 +78,9 @@ public class ResultsController implements Initializable {
     }
 
     private void goToMenu() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Wordageddon.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-       
-            scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
-            Stage stage = (Stage) menuBtn.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SceneUtils.switchScene(menuBtn, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
     }
     private void goToLeaderboard() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Classifica.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-       
-            scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
-            Stage stage = (Stage) leaderboardBtn.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SceneUtils.switchScene(leaderboardBtn, "/wordageddon/Resources/fxml/Classifica.fxml", "/wordageddon/Resources/css/style.css");
     }
 }

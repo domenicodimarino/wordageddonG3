@@ -1,23 +1,19 @@
 package wordageddon;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
 import wordageddon.database.UtenteDAOSQL;
 import wordageddon.model.Utente;
 import wordageddon.service.SessionManager;
 import wordageddon.service.UtenteService;
 import wordageddon.util.DialogUtils;
+import wordageddon.util.SceneUtils;
 
 public class LoginController implements Initializable {
 
@@ -121,18 +117,6 @@ public class LoginController implements Initializable {
         }
     }
     private void goToMainScreen() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Wordageddon.fxml"));
-            Parent root = loader.load();
-
-            Scene scene = new Scene(root);
- 
-        scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
-            Stage stage = (Stage) submitButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SceneUtils.switchScene(submitButton, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
     }
 }
