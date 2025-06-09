@@ -72,6 +72,7 @@ public class WordageddonController implements Initializable {
         logoutMenu.setOnAction(e -> logout());
         playBtn.setOnAction(e -> startGame());
         leaderboardBtn.setOnAction(e -> goToLeaderboard());
+        storicoBtn.setOnAction(e -> apriStorico());
         
         Utente utente = SessionManager.getUtente();
     }
@@ -106,6 +107,9 @@ public class WordageddonController implements Initializable {
             e.printStackTrace();
         }
     }
+    private void apriStorico() {
+        SceneUtils.switchScene(storicoBtn, "/wordageddon/Resources/fxml/Storico.fxml", "/wordageddon/Resources/css/style.css");
+}
     public void setUtente(Utente utente) {
         this.utente = utente;
         // Aggiorna la GUI se serve!
