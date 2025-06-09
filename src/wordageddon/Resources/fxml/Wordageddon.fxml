@@ -2,11 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -16,7 +17,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/24" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wordageddon.WordageddonController">
    <children>
-      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="900.0" spacing="50.0">
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="900.0" spacing="10.0">
          <children>
             <ImageView fx:id="logoImage" fitHeight="55.0" fitWidth="109.0" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="appNameLabel" alignment="CENTER" contentDisplay="CENTER" text="Wordageddon" textAlignment="CENTER">
@@ -28,7 +29,16 @@
                </HBox.margin>
             </Label>
             <Button fx:id="storicoBtn" mnemonicParsing="false" text="Storico" />
-            <ComboBox fx:id="linguaCombo" promptText="Lingua quiz" />
+            <MenuButton mnemonicParsing="false" text="Lingua Quiz">
+               <items>
+                  <RadioMenuItem mnemonicParsing="false" selected="true" text="Italiano">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="quizLanguageGroup" />
+                     </toggleGroup>
+                  </RadioMenuItem>
+                  <RadioMenuItem mnemonicParsing="false" text="Inglese" toggleGroup="$quizLanguageGroup" />
+               </items>
+            </MenuButton>
             <Button fx:id="leaderboardBtn" mnemonicParsing="false" text="LeaderBoard" />
             <MenuButton fx:id="userMenu" mnemonicParsing="false" text="Menu" textAlignment="CENTER">
                <items>

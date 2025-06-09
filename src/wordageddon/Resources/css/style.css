@@ -15,8 +15,8 @@
    -fx-text-fill: #333333;
     -fx-font-size: 25px;
     -fx-font-weight: bold;  
-    
 }
+
 /* Buttons */
 .button {
     -fx-background-color: linear-gradient(to right, #4fc3f7, #29b6f6);
@@ -35,23 +35,6 @@
     -fx-effect: dropshadow(gaussian, #81d4fa, 10, 0.3, 0, 0);
 }
 
-/* ComboBox */
-.combo-box {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #81d4fa;
-    -fx-border-width: 1px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-padding: 4 8;
-    -fx-font-size: 14px;
-    -fx-text-fill: #333;
-}
-
-.combo-box:focused {
-    -fx-border-color: #4fc3f7;
-    -fx-effect: dropshadow(gaussian, #4fc3f7, 5, 0.3, 0, 0);
-}
-
 /* MenuButton */
 .menu-button {
     -fx-background-color: linear-gradient(to right, #4fc3f7, #29b6f6);
@@ -64,6 +47,25 @@
 
 .menu-button:hover {
     -fx-background-color: linear-gradient(to right, #29b6f6, #0288d1);
+}
+
+
+
+
+.context-menu {
+    -fx-effect: null !important;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0;
+   /* -fx-border-color: transparent;*/
+    /*-fx-border-width: 0;*/
+     -fx-background-color: transparent;
+}
+    
+.menu-item, .radio-menu-item {
+    -fx-effect: null !important;
+    -fx-alignment: CENTER_RIGHT;     /* allinea il testo a destra */
+   -fx-padding: 6 20 6 10;          /* top right bottom left (padding extra a destra) */
 }
 
 /* Hyperlink */
@@ -81,4 +83,3 @@
 .stack-pane {
     -fx-padding: 10;
 }
-

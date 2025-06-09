@@ -18,6 +18,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import wordageddon.model.RuoloUtente;
@@ -40,8 +41,6 @@ public class WordageddonController implements Initializable {
     @FXML
     private Button storicoBtn;
     @FXML
-    private ComboBox<?> linguaCombo;
-    @FXML
     private Button leaderboardBtn;
     @FXML
     private MenuButton userMenu;
@@ -59,6 +58,8 @@ public class WordageddonController implements Initializable {
     private Button playBtn;
     @FXML
     private MenuItem pannelloAdminMenu;
+    @FXML
+    private ToggleGroup quizLanguageGroup;
 
     /**
      * Initializes the controller class.
