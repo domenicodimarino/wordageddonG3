@@ -22,8 +22,6 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 import javafx.concurrent.Task;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -37,6 +35,7 @@ import wordageddon.model.Domanda;
 import wordageddon.service.GeneratoreDomande;
 import wordageddon.service.SessionManager;
 import wordageddon.util.DialogUtils;
+import wordageddon.util.SceneUtils;
 
 public class LetturaTestoController implements Initializable {
 
@@ -234,20 +233,9 @@ public class LetturaTestoController implements Initializable {
                 DialogUtils.showAlert(Alert.AlertType.ERROR, "Impossibile generare le domande.", " Riprova o scegli altri documenti.", null);
                 return;
             }
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Quiz.fxml"));
-                Parent root = loader.load();
-
-                QuizController quizController = loader.getController();
-                quizController.impostaSessione(sessione);
-                quizController.impostaDomande(domandeQuiz);
-
-                Stage stage = (Stage) nextBtn.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            QuizController quizController =  SceneUtils.switchScene(nextBtn, "/wordageddon/Resources/fxml/Quiz.fxml", "/wordageddon/Resources/css/style.css");
+            quizController.impostaSessione(sessione);
+            quizController.impostaDomande(domandeQuiz);
         });
 
         task.setOnFailed(ev -> {
@@ -271,27 +259,14 @@ public class LetturaTestoController implements Initializable {
         );
 
         if (result.isPresent() && result.get() == yes) {
+            SessioneDAOSQL sessioneDAO = new SessioneDAOSQL();
             try {
-                SessioneDAOSQL sessioneDAO = new SessioneDAOSQL();
-                try {
-                    sessioneDAO.deleteSessioneById(sessione.getId());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                SessionManager.setSessione(null);
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Wordageddon.fxml"));
-                Parent root = loader.load();
-
-                Scene scene = new Scene(root);
-                scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
-
-                Stage stage = (Stage) quitGameBtn.getScene().getWindow();
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+                sessioneDAO.deleteSessioneById(sessione.getId());
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
+            SessionManager.setSessione(null);
+            SceneUtils.switchScene(quitGameBtn, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
         }
     }
 

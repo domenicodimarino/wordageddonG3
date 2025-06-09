@@ -10,12 +10,8 @@ import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import wordageddon.database.PunteggioDAOSQL;
 import wordageddon.database.SessioneDAOSQL;
@@ -24,6 +20,7 @@ import wordageddon.model.RispostaUtente;
 import wordageddon.model.Sessione;
 import wordageddon.model.Punteggio;
 import wordageddon.util.DialogUtils;
+import wordageddon.util.SceneUtils;
 
 public class QuizController implements Initializable {
 
@@ -163,20 +160,22 @@ public class QuizController implements Initializable {
         }
         
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Results.fxml"));
-            Parent root = loader.load();
-            ResultsController resultsController = loader.getController();
-
-            resultsController.setResults(
-                risposteUtente,
-                sessione,
-                tempoQuizResiduo,
-                punteggioObj
+            // Cambia scena e ottieni il controller
+            ResultsController resultsController = SceneUtils.switchScene(
+                nextBtn,
+                "/wordageddon/Resources/fxml/Results.fxml",
+                "/wordageddon/Resources/css/style.css"
             );
 
-            Stage stage = (Stage) nextBtn.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            // Passa i dati al controller, se il caricamento è riuscito
+            if (resultsController != null) {
+                resultsController.setResults(
+                    risposteUtente,
+                    sessione,
+                    tempoQuizResiduo,
+                    punteggioObj
+                );
+            }    
         } catch (Exception e) {
             e.printStackTrace();
         }

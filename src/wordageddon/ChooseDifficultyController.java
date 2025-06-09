@@ -1,22 +1,14 @@
 package wordageddon;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 import wordageddon.database.SessioneDAOSQL;
 import wordageddon.model.Difficolta;
 import wordageddon.model.GameConfig;
@@ -24,7 +16,7 @@ import wordageddon.model.GameDifficultyConfig;
 import wordageddon.model.Sessione;
 import wordageddon.model.Utente;
 import wordageddon.service.SessionManager;
-import wordageddon.util.DialogUtils;
+import wordageddon.util.SceneUtils;
 
 public class ChooseDifficultyController implements Initializable {
 
@@ -85,34 +77,11 @@ public class ChooseDifficultyController implements Initializable {
     }
 
     private void vaiALetturaTesto(Difficolta diff, GameDifficultyConfig config, Sessione sessione) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/LetturaTesto.fxml"));
-            Parent root = loader.load();
-
-            // Passa la sessione e la difficoltà al controller LetturaTesto
-            LetturaTestoController controller = loader.getController();
-            controller.impostaSessione(sessione, config);
-
-            Stage stage = (Stage) easyBtn.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        LetturaTestoController controller = SceneUtils.switchScene(easyBtn, "/wordageddon/Resources/fxml/LetturaTesto.fxml", "/wordageddon/Resources/css/style.css");
+        controller.impostaSessione(sessione, config);
     }
 
     private void goToMenu() {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Wordageddon.fxml"));
-                Parent root = loader.load();
-                Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
-                
-                Stage stage = (Stage) menuBtn.getScene().getWindow();
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        SceneUtils.switchScene(menuBtn, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
     }
 }
