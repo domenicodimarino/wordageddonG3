@@ -20,6 +20,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import wordageddon.model.RuoloUtente;
 import wordageddon.model.Utente;
 import wordageddon.service.SessionManager;
 import wordageddon.util.DialogUtils;
@@ -45,8 +46,6 @@ public class WordageddonController implements Initializable {
     @FXML
     private MenuButton userMenu;
     @FXML
-    private MenuItem impostazioniMenu;
-    @FXML
     private MenuItem logoutMenu;
     @FXML
     private StackPane mainStackPane;
@@ -58,6 +57,8 @@ public class WordageddonController implements Initializable {
     private Utente utente;
     @FXML
     private Button playBtn;
+    @FXML
+    private MenuItem pannelloAdminMenu;
 
     /**
      * Initializes the controller class.
@@ -69,7 +70,17 @@ public class WordageddonController implements Initializable {
         leaderboardBtn.setOnAction(e -> goToLeaderboard());
         storicoBtn.setOnAction(e -> apriStorico());
         
-        Utente utente = SessionManager.getUtente();
+        utente = SessionManager.getUtente();
+       
+        if (utente.getRuolo().equals(RuoloUtente.ADMIN)) {
+            pannelloAdminMenu.setVisible(true);
+        } else {
+            pannelloAdminMenu.setVisible(false);
+        }
+        
+        pannelloAdminMenu.setOnAction(e -> goToAdminPanel());
+        
+        
     }
     private void logout(){
         ButtonType yes = new ButtonType("Sì");
@@ -93,15 +104,14 @@ public class WordageddonController implements Initializable {
     private void apriStorico() {
         SceneUtils.switchScene(storicoBtn, "/wordageddon/Resources/fxml/Storico.fxml", "/wordageddon/Resources/css/style.css");
 }
-    public void setUtente(Utente utente) {
-        this.utente = utente;
-        // Aggiorna la GUI se serve!
-    }
     private void startGame(){
         SceneUtils.switchScene(playBtn, "/wordageddon/Resources/fxml/ChooseDifficulty.fxml", "/wordageddon/Resources/css/style.css");
     }
     private void goToLeaderboard() {
         SceneUtils.switchScene(leaderboardBtn, "/wordageddon/Resources/fxml/Classifica.fxml", "/wordageddon/Resources/css/style.css");
+    }
+    private void goToAdminPanel(){
+        SceneUtils.switchScene(userMenu, "/wordageddon/Resources/fxml/AdminPanel.fxml", "/wordageddon/Resources/css/style.css");
     }
     
 }

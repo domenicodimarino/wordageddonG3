@@ -1,58 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="600.0" prefWidth="900.0"
-      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="wordageddon.WordageddonController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/24" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wordageddon.WordageddonController">
    <children>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="54.0" prefWidth="900.0" spacing="10.0">
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="900.0" spacing="50.0">
          <children>
             <ImageView fx:id="logoImage" fitHeight="55.0" fitWidth="109.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="appNameLabel" alignment="CENTER" contentDisplay="CENTER"
-                   prefHeight="54.0" prefWidth="540.0" text="Wordageddon" textAlignment="CENTER">
+            <Label fx:id="appNameLabel" alignment="CENTER" contentDisplay="CENTER" text="Wordageddon" textAlignment="CENTER">
                <font>
                   <Font size="30.0" />
                </font>
                <HBox.margin>
-                  <Insets top="5.0" />
+                  <Insets />
                </HBox.margin>
             </Label>
-            <Region prefHeight="54.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="storicoBtn" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="Storico">
-               <HBox.margin>
-                  <Insets top="10.0" />
-               </HBox.margin>
-            </Button>
-            <ComboBox fx:id="linguaCombo" prefHeight="27.0" prefWidth="140.0" promptText="Lingua">
-               <HBox.margin>
-                  <Insets top="10.0" />
-               </HBox.margin>
-            </ComboBox>
-            <Button fx:id="leaderboardBtn" mnemonicParsing="false" prefHeight="27.0" prefWidth="160.0" text="LeaderBoard">
-               <HBox.margin>
-                  <Insets top="10.0" />
-               </HBox.margin>
-            </Button>
-            <MenuButton fx:id="userMenu" mnemonicParsing="false" prefHeight="27.0" prefWidth="120.0" text="Menu" textAlignment="CENTER">
+            <Button fx:id="storicoBtn" mnemonicParsing="false" text="Storico" />
+            <ComboBox fx:id="linguaCombo" promptText="Lingua quiz" />
+            <Button fx:id="leaderboardBtn" mnemonicParsing="false" text="LeaderBoard" />
+            <MenuButton fx:id="userMenu" mnemonicParsing="false" text="Menu" textAlignment="CENTER">
                <items>
-                  <MenuItem fx:id="impostazioniMenu" mnemonicParsing="false" text="Impostazioni" />
+                  <MenuItem fx:id="pannelloAdminMenu" mnemonicParsing="false" text="Pannello Admin" />
                   <MenuItem fx:id="logoutMenu" mnemonicParsing="false" text="Logout" />
                </items>
-               <HBox.margin>
-                  <Insets right="10.0" top="10.0" />
-               </HBox.margin>
             </MenuButton>
          </children>
       </HBox>
-      <StackPane fx:id="mainStackPane" prefHeight="347.0" prefWidth="900.0">
+      <StackPane fx:id="mainStackPane" prefHeight="347.0" prefWidth="900.0" VBox.vgrow="ALWAYS">
          <children>
             <Button fx:id="playBtn" mnemonicParsing="false" prefHeight="71.0" prefWidth="200.0" text="Gioca">
                <font>
