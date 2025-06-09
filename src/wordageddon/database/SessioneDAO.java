@@ -9,4 +9,5 @@ public interface SessioneDAO {
     void cancellaTutte() throws Exception;
     Sessione getSessioneById(int id) throws Exception;
     public void deleteSessioneById(int id) throws Exception;
+    public void updateSessione(Sessione s) throws Exception;
 }

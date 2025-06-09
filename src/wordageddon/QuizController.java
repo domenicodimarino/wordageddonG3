@@ -1,9 +1,12 @@
 package wordageddon;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -14,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import wordageddon.database.PunteggioDAOSQL;
+import wordageddon.database.SessioneDAOSQL;
 import wordageddon.model.Domanda;
 import wordageddon.model.RispostaUtente;
 import wordageddon.model.Sessione;
@@ -140,6 +145,23 @@ public class QuizController implements Initializable {
 
         Punteggio punteggioObj = new Punteggio(username, risposteCorrette, tempoQuizResiduo, difficoltaInt);
 
+        try {
+            PunteggioDAOSQL punteggioDAO = new PunteggioDAOSQL();
+            punteggioDAO.inserisci(punteggioObj);
+            
+            sessione.setStato("finita");
+            sessione.setDataFine(java.time.LocalDateTime.now().toString());
+            sessione.setPunteggioTotale(punteggioObj.getValore());
+            sessione.setTempoResiduo(tempoQuizResiduo);
+
+            SessioneDAOSQL sessioneDAO = new SessioneDAOSQL();
+            sessioneDAO.updateSessione(sessione);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception ex) {
+            Logger.getLogger(QuizController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Results.fxml"));
             Parent root = loader.load();

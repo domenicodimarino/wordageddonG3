@@ -107,4 +107,19 @@ public class SessioneDAOSQL implements SessioneDAO {
             ps.executeUpdate();
         }
     }
+    @Override
+    public void updateSessione(Sessione s) throws Exception {
+        String sql = "UPDATE sessione SET data_fine=?, punteggio_totale=?, tempo_residuo=?, stato=? WHERE id=?";
+        try (
+            Connection c = DatabaseManager.getConnection();
+            PreparedStatement ps = c.prepareStatement(sql)
+        ) {
+            ps.setString(1, s.getDataFine());
+            ps.setInt(2, s.getPunteggioTotale());
+            ps.setInt(3, s.getTempoResiduo());
+            ps.setString(4, s.getStato());
+            ps.setInt(5, s.getId());
+            ps.executeUpdate();
+        }
+    }
 }

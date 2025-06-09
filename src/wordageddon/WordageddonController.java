@@ -70,6 +70,7 @@ public class WordageddonController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         logoutMenu.setOnAction(e -> logout());
         playBtn.setOnAction(e -> startGame());
+        leaderboardBtn.setOnAction(e -> goToLeaderboard());
         
         Utente utente = SessionManager.getUtente();
     }
@@ -118,6 +119,20 @@ public class WordageddonController implements Initializable {
         scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
         
             Stage stage = (Stage) playBtn.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void goToLeaderboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Classifica.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+       
+            scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
+            Stage stage = (Stage) leaderboardBtn.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

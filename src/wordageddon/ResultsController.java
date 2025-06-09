@@ -37,6 +37,7 @@ public class ResultsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         menuBtn.setOnAction(e -> goToMenu());
+        leaderboardBtn.setOnAction(e -> goToLeaderboard());
     }
 
     /**
@@ -86,8 +87,22 @@ public class ResultsController implements Initializable {
             Parent root = loader.load();
             Scene scene = new Scene(root);
        
-        scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
             Stage stage = (Stage) menuBtn.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void goToLeaderboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Classifica.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+       
+            scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/style.css").toExternalForm());
+            Stage stage = (Stage) leaderboardBtn.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

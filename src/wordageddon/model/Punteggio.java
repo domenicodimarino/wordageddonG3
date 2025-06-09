@@ -77,6 +77,14 @@ public class Punteggio {
     public void setData(LocalDateTime data) {
         this.data = data;
     }
+    public Difficolta getDifficoltaEnum() {
+        switch (difficolta) {
+            case 1: return Difficolta.FACILE;
+            case 2: return Difficolta.MEDIO;
+            case 3: return Difficolta.DIFFICILE;
+            default: return null;
+        }
+    }
 
     
 }
