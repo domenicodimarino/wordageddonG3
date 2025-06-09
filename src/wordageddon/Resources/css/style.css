@@ -11,6 +11,12 @@
     -fx-font-weight: bold;
 }
 
+#appNameLabel,#titolo,#labelSignInUp,#documentLabel,#questionLabel{
+   -fx-text-fill: #333333;
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;  
+    
+}
 /* Buttons */
 .button {
     -fx-background-color: linear-gradient(to right, #4fc3f7, #29b6f6);
