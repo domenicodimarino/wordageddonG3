@@ -10,8 +10,9 @@ public class Sessione {
     private String statoGiocoJson; // tutto il resto serializzato
     private String stato; // "in_corso" oppure "finita"
     private Difficolta difficolta;
+    private Lingua lingua; // "ita" o "eng"
 
-    public Sessione(int id, String username, String dataInizio, String dataFine, int punteggioTotale, int tempoResiduo, String statoGiocoJson, String stato, Difficolta difficolta) {
+    public Sessione(int id, String username, String dataInizio, String dataFine, int punteggioTotale, int tempoResiduo, String statoGiocoJson, String stato, Difficolta difficolta, Lingua lingua) {
         this.id = id;
         this.username = username;
         this.dataInizio = dataInizio;
@@ -21,11 +22,12 @@ public class Sessione {
         this.statoGiocoJson = statoGiocoJson;
         this.stato = stato;
         this.difficolta = difficolta;
+        this.lingua = lingua;
     }
 
     // Costruttore senza id (per inserimento)
-    public Sessione(String username, String dataInizio, String dataFine, int punteggioTotale, int tempoResiduo, String statoGiocoJson, String stato, Difficolta difficolta) {
-        this(-1, username, dataInizio, dataFine, punteggioTotale, tempoResiduo, statoGiocoJson, stato, difficolta);
+    public Sessione(String username, String dataInizio, String dataFine, int punteggioTotale, int tempoResiduo, String statoGiocoJson, String stato, Difficolta difficolta, Lingua lingua) {
+        this(-1, username, dataInizio, dataFine, punteggioTotale, tempoResiduo, statoGiocoJson, stato, difficolta, lingua);
     }
 
     public int getId() {
@@ -98,6 +100,14 @@ public class Sessione {
 
     public void setDifficolta(Difficolta difficolta) {
         this.difficolta = difficolta;
+    }
+
+    public Lingua getLingua() {
+        return lingua;
+    }
+
+    public void setLingua(Lingua lingua) {
+        this.lingua = lingua;
     }
     
 }

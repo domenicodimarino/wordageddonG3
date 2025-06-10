@@ -35,6 +35,7 @@ public class DatabaseManager {
             "stato_gioco_json TEXT," +
             "stato TEXT," +
             "difficolta TEXT," +
+            "lingua TEXT," +
             "FOREIGN KEY(username) REFERENCES utente(username)" +
             ");";
         stmt.execute(createSessione);

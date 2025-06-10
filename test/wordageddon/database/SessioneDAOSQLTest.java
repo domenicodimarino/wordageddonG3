@@ -4,10 +4,9 @@ import org.junit.*; // JUnit 4
 import static org.junit.Assert.*;
 import wordageddon.model.Sessione;
 import wordageddon.model.Difficolta;
+import wordageddon.model.Lingua;
 
 import java.util.List;
-import wordageddon.database.DatabaseManager;
-import wordageddon.database.SessioneDAOSQL;
 
 public class SessioneDAOSQLTest {
     private SessioneDAOSQL dao;
@@ -23,7 +22,7 @@ public class SessioneDAOSQLTest {
     public void testInsertSessioneAndGetById() throws Exception {
         Sessione s = new Sessione(
                 "pippo", "2025-06-05T13:00", null, 123,
-                60, "{}", "in_corso", Difficolta.FACILE
+                60, "{}", "in_corso", Difficolta.FACILE, Lingua.ITALIANO
         );
         dao.insertSessione(s);
         assertTrue(s.getId() > 0);
@@ -34,12 +33,13 @@ public class SessioneDAOSQLTest {
         assertEquals(123, sFound.getPunteggioTotale());
         assertEquals("in_corso", sFound.getStato());
         assertEquals(Difficolta.FACILE, sFound.getDifficolta());
+        assertEquals(Lingua.ITALIANO, sFound.getLingua());
     }
 
     @Test
     public void testElencaTutte() throws Exception {
-        Sessione s1 = new Sessione("pippo", "2025-06-05T13:00", null, 100, 80, "{}", "in_corso", Difficolta.FACILE);
-        Sessione s2 = new Sessione("pluto", "2025-06-05T14:00", null, 150, 70, "{}", "finita", Difficolta.MEDIO);
+        Sessione s1 = new Sessione("pippo", "2025-06-05T13:00", null, 100, 80, "{}", "in_corso", Difficolta.FACILE, Lingua.ITALIANO);
+        Sessione s2 = new Sessione("pluto", "2025-06-05T14:00", null, 150, 70, "{}", "finita", Difficolta.MEDIO, Lingua.INGLESE);
         dao.insertSessione(s1);
         dao.insertSessione(s2);
 
@@ -47,11 +47,13 @@ public class SessioneDAOSQLTest {
         assertEquals(2, tutte.size());
         assertEquals("pippo", tutte.get(0).getUsername());
         assertEquals("pluto", tutte.get(1).getUsername());
+        assertEquals(Lingua.ITALIANO, tutte.get(0).getLingua());
+        assertEquals(Lingua.INGLESE, tutte.get(1).getLingua());
     }
 
     @Test
     public void testCancellaTutte() throws Exception {
-        Sessione s = new Sessione("pippo", "2025-06-05T13:00", null, 100, 80, "{}", "in_corso", Difficolta.FACILE);
+        Sessione s = new Sessione("pippo", "2025-06-05T13:00", null, 100, 80, "{}", "in_corso", Difficolta.FACILE, Lingua.ITALIANO);
         dao.insertSessione(s);
         assertFalse(dao.elencaTutte().isEmpty());
 

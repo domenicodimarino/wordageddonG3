@@ -18,9 +18,11 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import wordageddon.model.Lingua;
 import wordageddon.model.RuoloUtente;
 import wordageddon.model.Utente;
 import wordageddon.service.SessionManager;
@@ -99,6 +101,10 @@ public class WordageddonController implements Initializable {
             goToLogin();
         }
     }
+    private Lingua getLinguaSelezionata() {
+        RadioMenuItem selected = (RadioMenuItem) quizLanguageGroup.getSelectedToggle();
+        return Lingua.fromString(selected.getText());
+    }
     private void goToLogin(){
         SceneUtils.switchScene(userMenu, "/wordageddon/Resources/fxml/login.fxml", "/wordageddon/Resources/css/login.css");
     }
@@ -106,6 +112,7 @@ public class WordageddonController implements Initializable {
         SceneUtils.switchScene(storicoBtn, "/wordageddon/Resources/fxml/Storico.fxml", "/wordageddon/Resources/css/style.css");
 }
     private void startGame(){
+        SessionManager.setLinguaScelta(getLinguaSelezionata());
         SceneUtils.switchScene(playBtn, "/wordageddon/Resources/fxml/ChooseDifficulty.fxml", "/wordageddon/Resources/css/style.css");
     }
     private void goToLeaderboard() {

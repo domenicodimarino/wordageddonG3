@@ -32,6 +32,7 @@ import wordageddon.config.AppConfig;
 import wordageddon.database.SessioneDAOSQL;
 import wordageddon.model.Difficolta;
 import wordageddon.model.Domanda;
+import wordageddon.model.Lingua;
 import wordageddon.service.GeneratoreDomande;
 import wordageddon.service.SessionManager;
 import wordageddon.util.DialogUtils;
@@ -74,7 +75,8 @@ public class LetturaTestoController implements Initializable {
 
     private List<Document> caricaDocumenti(GameDifficultyConfig config) {
         String cartellaBase = AppConfig.getDocumentiBasePath();
-        File folder = new File(cartellaBase);
+        Lingua lingua = sessione.getLingua();
+        File folder = new File(cartellaBase, lingua.getFolderName());
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".txt"));
         if (files == null) return Collections.emptyList();
 
@@ -87,7 +89,17 @@ public class LetturaTestoController implements Initializable {
             .limit(config.getNumDocumenti())
             .collect(Collectors.toList());
 
-        Set<String> stopwords = caricaStopwords(AppConfig.getStopwordsPath());
+        Set<String> stopwords;
+        switch (lingua) {
+            case ITALIANO:
+                stopwords = caricaStopwords(AppConfig.getStopwordsPathIT());
+                break;
+            case INGLESE:
+                stopwords = caricaStopwords(AppConfig.getStopwordsPathEN());
+                break;
+            default:
+                stopwords = Collections.emptySet();
+        }
         Set<String> vocabolarioGlobale = new HashSet<>();
         List<Document> result = new ArrayList<>();
 
