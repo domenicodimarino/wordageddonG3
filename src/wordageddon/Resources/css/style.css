@@ -47,27 +47,19 @@ HBox {
 
 /* --------- NAVBAR BUTTONS MODERNI --------- */
 /* Aggiungi la classe navbar-button a TUTTI i pulsanti della navbar! */
-.navbar-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #232323;
-    -fx-font-weight: 600;
-    -fx-font-size: 17px;
-    -fx-background-radius: 10px;
-    -fx-padding: 8 22;
+.navbar-menubutton {
+    -fx-background-color: #111;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
     -fx-cursor: hand;
-    -fx-border-color: #e0e0e0;
-    -fx-border-width: 1.2px;
-    -fx-effect: none;
-    -fx-alignment: center;
-    -fx-spacing: 8;
-    -fx-margin: 0 12px;
-    -fx-transition: background 0.2s;
+    -fx-font-size: 16px;
+    -fx-min-width: 100px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 3, 0, 0, 2);
 }
-
-.navbar-button:hover {
-    -fx-background-color: #e9e9e9;
-    -fx-text-fill: #111;
-    -fx-border-color: #bdbdbd;
+.navbar-menubutton:hover {
+    -fx-background-color: #222;
 }
 
 .navbar-button:focused {
@@ -107,43 +99,41 @@ MenuButton, .menu-button {
     -fx-min-width: 100px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 3, 0, 0, 2);
 }
-.menu-button .label {
-    -fx-text-fill: #fff;
-}
+
 MenuButton:hover {
     -fx-background-color: #111;
 }
 
 /* ComboBox, ecc... (come già avevi) */
 .combo-box, .combo-box .text {
-    -fx-text-fill: #fff;
+    -fx-text-fill: #000000;
     -fx-background-color: #222;
 }
 .combo-box .arrow {
-    -fx-background-color: #fff;
+    -fx-background-color: #000000;
 }
 .combo-box-popup .list-view {
-    -fx-background-color: #fff;
+    -fx-background-color: #000000;
     -fx-effect: null !important;
     -fx-border-color: #ccc !important;
     -fx-border-width: 1px !important;
 }
 .combo-box-popup .list-cell {
-    -fx-text-fill: #111 !important;
-    -fx-background-color: #fff !important;
+    -fx-text-fill: #000000 !important;
+    -fx-background-color: #000000 !important;
 }
 .combo-box-popup .list-cell:selected,
 .combo-box-popup .list-cell:filled:selected,
 .combo-box-popup .list-cell:filled:selected:focused,
 .combo-box-popup .list-cell:hover {
-    -fx-background-color: #e0e0e0 !important;
-    -fx-text-fill: #111 !important;
+    -fx-background-color: #000000 !important;
+    -fx-text-fill: #000000 !important;
 }
 .combo-box-popup .list-cell:checked,
 .combo-box-popup .list-cell:checked:selected,
 .combo-box-popup .list-cell:checked:focused {
     -fx-background-color: #009edb !important;
-    -fx-text-fill: #111 !important;
+    -fx-text-fill: #000000 !important;
 }
 Hyperlink {
     -fx-text-fill: #0071e3;
