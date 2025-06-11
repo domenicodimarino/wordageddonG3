@@ -16,6 +16,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.scene.control.cell.PropertyValueFactory;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javafx.stage.FileChooser;
 
 public class StoricoController implements Initializable {
 
@@ -39,6 +43,8 @@ public class StoricoController implements Initializable {
     private Label mediapunti;
     @FXML
     private Button menu;
+    @FXML
+    private Button espStorico;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -97,7 +103,61 @@ public class StoricoController implements Initializable {
 
         // Bottone menu
         menu.setOnAction(event -> {
-        SceneUtils.switchScene(menu, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
+            SceneUtils.switchScene(menu, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
         });
+
+        // Bottone esporta storico in CSV
+        espStorico.setOnAction(event -> exportToCSV());
+    }
+
+    // Metodo per esportare il CSV
+    private void exportToCSV() {
+        if (resultsTable.getItems().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Non ci sono dati da esportare.");
+            alert.setTitle("Esportazione Storico");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Salva storico come CSV");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        File file = fileChooser.showSaveDialog(espStorico.getScene().getWindow());
+
+        if (file != null) {
+            try (FileWriter writer = new FileWriter(file)) {
+                // Intestazione CSV
+                writer.append("Risposte Corrette,Tempo Residuo,Punteggio,Difficoltà,Data\n");
+                for (Punteggio p : resultsTable.getItems()) {
+                    writer.append(p.getRisposteCorrette() + ",");
+                    writer.append(p.getTempoResiduo() + ",");
+                    writer.append(p.getValore() + ",");
+                    // Difficoltà come stringa
+                    String diff;
+                    switch (p.getDifficolta()) {
+                        case 1: diff = "Facile"; break;
+                        case 2: diff = "Medio"; break;
+                        case 3: diff = "Difficile"; break;
+                        default: diff = "Sconosciuta";
+                    }
+                    writer.append(diff + ",");
+                    writer.append('"' + p.getData().toString() + '"');
+                    writer.append("\n");
+                }
+                writer.flush();
+                // Notifica successo
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Storico esportato con successo!");
+                alert.setTitle("Esportazione Storico");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Errore durante l'esportazione!");
+                alert.setTitle("Errore");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
+        }
     }
 }

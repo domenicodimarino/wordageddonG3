@@ -75,9 +75,17 @@
             <children>
                 <Button fx:id="menu" mnemonicParsing="false" text="TORNA AL MENU">
                     <font>
-                        <Font size="17.0" />
+                        <Font size="16.0" />
                     </font>
                 </Button>
+            <Button fx:id="espStorico" mnemonicParsing="false" text="ESPORTA STORICO">
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
             </children>
         </HBox>
     </children>
