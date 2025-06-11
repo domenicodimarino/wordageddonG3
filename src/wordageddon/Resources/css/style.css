@@ -1,7 +1,6 @@
-
-root {
-    -fx-background-color: linear-gradient(to bottom, #e0f7fa, #ffffff);
-    -fx-font-family: "Segoe UI", sans-serif;
+.root {
+    -fx-background-color: #f5f5f7;
+    -fx-font-family: "San Francisco", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     -fx-padding: 20;
 }
 
@@ -12,80 +11,78 @@ HBox {
 }
 
 #logoImage {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 5, 0, 0, 2);
 }
-
 
 /* Label */
 .label {
-    -fx-text-fill: #333;
+    -fx-text-fill: #111;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
 }
 
-#documentLabel,#questionLabel{
-   -fx-text-fill: #333333;
+#documentLabel, #questionLabel {
+    -fx-text-fill: #111;
     -fx-font-size: 25px;
-    -fx-font-weight: bold;  
+    -fx-font-weight: bold;
 }
 
-#appNameLabel,#titolo,#labelSignInUp,#Admin {
-    -fx-text-fill: linear-gradient(to bottom, #0288d1, #4fc3f7);
+#appNameLabel, #titolo, #labelSignInUp, #Admin {
+    -fx-text-fill: #111;
     -fx-font-weight: 700;
-    -fx-font-size: 25px;
-    -fx-effect: dropshadow(gaussian, rgba(4, 102, 145, 0.4), 3, 0, 0, 2);
+    -fx-font-size: 28px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 2, 0.1, 0, 2);
 }
 
-Button, .button,#menuBtn,#quitGameBtn {
-    -fx-background-color: linear-gradient(to right, #4fc3f7, #29b6f6);
+Button, .button, #menuBtn, #quitGameBtn {
+    -fx-background-color: #111;
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-background-radius: 22;
+    -fx-padding: 10 28;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+    -fx-min-width: 100px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.11), 4, 0, 0, 2);
+    -fx-border-width: 0;
+}
+
+Button:hover, .button:hover {
+    -fx-background-color: #2e2e2e;
+    -fx-effect: dropshadow(gaussian, #bbb, 10, 0.22, 0, 0);
+}
+
+MenuButton {
+    -fx-background-color: #222;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 20;
     -fx-padding: 8 20;
     -fx-cursor: hand;
-    -fx-font-size: 17px;
-    -fx-min-width: 100px;
-    -fx-effect: dropshadow(gaussian, rgba(47, 128, 237, 0.4), 4, 0, 0, 2);
-}
-
-Button:hover, .button:hover {
-    -fx-background-color: linear-gradient(to right, #29b6f6, #0288d1);
-    -fx-effect: dropshadow(gaussian, #81d4fa, 10, 0.3, 0, 0);
-}
-
-MenuButton {
-    -fx-background-color: linear-gradient(to right, #81d4fa, #4fc3f7);
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 20;
-    -fx-padding: 6 15;
-    -fx-cursor: hand;
     -fx-font-size: 16px;
     -fx-min-width: 100px;
-    -fx-effect: dropshadow(gaussian, rgba(30, 130, 230, 0.5), 3, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 3, 0, 0, 2);
 }
 
 MenuButton:hover {
-    -fx-background-color: linear-gradient(to right, #4fc3f7, #0288d1);
+    -fx-background-color: #111;
 }
 
-
-
 Hyperlink {
-    -fx-text-fill: #0077c2;
+    -fx-text-fill: #0071e3;
     -fx-font-size: 13px;
 }
 
 Hyperlink:hover {
-    -fx-text-fill: #0288d1;
+    -fx-text-fill: #0066cc;
     -fx-underline: true;
 }
 
 #mainStackPane {
-    -fx-background-color: #ffffffcc; /* leggermente trasparente */
-    -fx-background-radius: 15;
+    -fx-background-color: #fff;
+    -fx-background-radius: 18;
     -fx-padding: 40;
-    -fx-effect: dropshadow(gaussian, rgba(47, 128, 237, 0.2), 10, 0.3, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0.18, 0, 0);
     -fx-alignment: center;
 }
 
