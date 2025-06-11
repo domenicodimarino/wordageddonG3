@@ -9,12 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import wordageddon.model.Difficolta;
+import wordageddon.model.Lingua;
 
 public class SessioneDAOSQL implements SessioneDAO {
 
     @Override
     public void insertSessione(Sessione s) throws Exception {
-        String sql = "INSERT INTO sessione (username, data_inizio, data_fine, punteggio_totale, tempo_residuo, stato_gioco_json, stato, difficolta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO sessione (username, data_inizio, data_fine, punteggio_totale, tempo_residuo, stato_gioco_json, stato, difficolta, lingua) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (
             Connection c = DatabaseManager.getConnection();
             PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
@@ -27,6 +28,7 @@ public class SessioneDAOSQL implements SessioneDAO {
             ps.setString(6, s.getStatoGiocoJson());
             ps.setString(7, s.getStato());
             ps.setString(8, s.getDifficolta().toString());
+            ps.setString(9, s.getLingua().name());
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) s.setId(rs.getInt(1));
@@ -53,7 +55,8 @@ public class SessioneDAOSQL implements SessioneDAO {
                     rs.getInt("tempo_residuo"),
                     rs.getString("stato_gioco_json"),
                     rs.getString("stato"),
-                    Difficolta.valueOf(rs.getString("difficolta"))
+                    Difficolta.valueOf(rs.getString("difficolta")),
+                    Lingua.valueOf(rs.getString("lingua"))
                 ));
             }
         }
@@ -89,7 +92,8 @@ public class SessioneDAOSQL implements SessioneDAO {
                     rs.getInt("tempo_residuo"),
                     rs.getString("stato_gioco_json"),
                     rs.getString("stato"),
-                    Difficolta.valueOf(rs.getString("difficolta"))
+                    Difficolta.valueOf(rs.getString("difficolta")),
+                    Lingua.valueOf(rs.getString("lingua"))
                     );
                 }
             }

@@ -5,11 +5,11 @@ import java.util.Properties;
 
 public class AppConfig {
     private static String documentiBasePath = "DocumentFolder";
-    private static String stopwordsPath = "stopwords-it.txt";
+    private static String stopwordsPathIT = "stopwords-it.txt";
+    private static String stopwordsPathEN = "stopwords-en.txt";
     private static final String CONFIG_FILE = "config.properties";
 
     static {
-        // Carica al primo utilizzo
         loadConfig();
     }
 
@@ -18,9 +18,14 @@ public class AppConfig {
         documentiBasePath = path; 
         saveConfig();
     }
-    public static String getStopwordsPath() { return stopwordsPath; }
-    public static void setStopwordsPath(String path) { 
-        stopwordsPath = path; 
+    public static String getStopwordsPathIT() { return stopwordsPathIT; }
+    public static void setStopwordsPathIT(String path) {
+        stopwordsPathIT = path;
+        saveConfig();
+    }
+    public static String getStopwordsPathEN() { return stopwordsPathEN; }
+    public static void setStopwordsPathEN(String path) {
+        stopwordsPathEN = path;
         saveConfig();
     }
 
@@ -29,7 +34,8 @@ public class AppConfig {
         try (InputStream in = new FileInputStream(CONFIG_FILE)) {
             p.load(in);
             documentiBasePath = p.getProperty("documentiBasePath", documentiBasePath);
-            stopwordsPath = p.getProperty("stopwordsPath", stopwordsPath);
+            stopwordsPathIT = p.getProperty("stopwordsPathIT", stopwordsPathIT);
+            stopwordsPathEN = p.getProperty("stopwordsPathEN", stopwordsPathEN);
         } catch (IOException e) {
             // Primo avvio o file mancante: usa i default
         }
@@ -38,7 +44,8 @@ public class AppConfig {
     private static void saveConfig() {
         Properties p = new Properties();
         p.setProperty("documentiBasePath", documentiBasePath);
-        p.setProperty("stopwordsPath", stopwordsPath);
+        p.setProperty("stopwordsPathIT", stopwordsPathIT);
+        p.setProperty("stopwordsPathEN", stopwordsPathEN);
         try (OutputStream out = new FileOutputStream(CONFIG_FILE)) {
             p.store(out, "Configurazione Wordageddon");
         } catch (IOException e) {

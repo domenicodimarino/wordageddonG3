@@ -24,11 +24,13 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import wordageddon.database.SessioneDAOSQL;
+import wordageddon.model.Lingua;
 import wordageddon.model.RuoloUtente;
 import wordageddon.model.Sessione;
 import wordageddon.model.StatoGioco;
@@ -110,6 +112,10 @@ public class WordageddonController implements Initializable {
             goToLogin();
         }
     }
+    private Lingua getLinguaSelezionata() {
+        RadioMenuItem selected = (RadioMenuItem) quizLanguageGroup.getSelectedToggle();
+        return Lingua.fromString(selected.getText());
+    }
     private void goToLogin(){
         SceneUtils.switchScene(userMenu, "/wordageddon/Resources/fxml/login.fxml", "/wordageddon/Resources/css/login.css");
     }
@@ -138,6 +144,8 @@ public class WordageddonController implements Initializable {
 
                     if (scelta.isPresent() && scelta.get() == riprendi) {
                         // Carica quiz.fxml e ripristina stato
+                        
+                        
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Quiz.fxml"));
                         Parent root = loader.load();
                         QuizController quiz = loader.getController();
@@ -160,7 +168,7 @@ public class WordageddonController implements Initializable {
                     break;
                 }
             }
-  
+            SessionManager.setLinguaScelta(getLinguaSelezionata());
             SceneUtils.switchScene(leaderboardBtn, "/wordageddon/Resources/fxml/ChooseDifficulty.fxml", "/wordageddon/Resources/css/style.css");
 
 
@@ -168,6 +176,7 @@ public class WordageddonController implements Initializable {
             e.printStackTrace();
         }
     }
+    
     private void goToLeaderboard() {
         SceneUtils.switchScene(leaderboardBtn, "/wordageddon/Resources/fxml/Classifica.fxml", "/wordageddon/Resources/css/style.css");
     }

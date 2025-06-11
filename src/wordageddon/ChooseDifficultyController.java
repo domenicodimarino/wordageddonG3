@@ -18,6 +18,7 @@ import wordageddon.database.SessioneDAOSQL;
 import wordageddon.model.Difficolta;
 import wordageddon.model.GameConfig;
 import wordageddon.model.GameDifficultyConfig;
+import wordageddon.model.Lingua;
 import wordageddon.model.Sessione;
 import wordageddon.model.Utente;
 import wordageddon.service.SessionManager;
@@ -55,6 +56,8 @@ public class ChooseDifficultyController implements Initializable {
 
     private void scegliDifficolta(Difficolta diff) {
         GameDifficultyConfig config = GameConfig.getConfig(diff);
+        
+        Lingua lingua = SessionManager.getLinguaScelta();
 
         // Crea una nuova sessione
         String dataInizio = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -66,7 +69,8 @@ public class ChooseDifficultyController implements Initializable {
             config.getTempoLettura(), // tempoResiduo (o altro valore iniziale)
             null, // statoGiocoJson (puoi serializzare lo stato più avanti)
             "in_corso",
-            diff
+            diff,
+            lingua
         );
 
         try {
