@@ -5,13 +5,19 @@
  */
 package wordageddon;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
@@ -21,10 +27,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import wordageddon.database.SessioneDAOSQL;
 import wordageddon.model.RuoloUtente;
+import wordageddon.model.Sessione;
+import wordageddon.model.StatoGioco;
 import wordageddon.model.Utente;
 import wordageddon.service.SessionManager;
 import wordageddon.util.DialogUtils;
+import wordageddon.util.JsonParserManuale;
 import wordageddon.util.SceneUtils;
 
 /**
@@ -105,8 +116,57 @@ public class WordageddonController implements Initializable {
     private void apriStorico() {
         SceneUtils.switchScene(storicoBtn, "/wordageddon/Resources/fxml/Storico.fxml", "/wordageddon/Resources/css/style.css");
 }
-    private void startGame(){
-        SceneUtils.switchScene(playBtn, "/wordageddon/Resources/fxml/ChooseDifficulty.fxml", "/wordageddon/Resources/css/style.css");
+    private void startGame() {
+        try {
+            SessioneDAOSQL dao = new SessioneDAOSQL();
+            List<Sessione> sessioni = dao.elencaTutte();
+
+            for (Sessione s : sessioni) {
+                if (s.getUsername().equals(utente.getUsername()) && 
+                    "in_corso".equals(s.getStato()) &&
+                    s.getStatoGiocoJson() != null && !s.getStatoGiocoJson().isEmpty()) {
+
+                    ButtonType riprendi = new ButtonType("Riprendi");
+                    ButtonType nuova = new ButtonType("Nuova partita", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    Optional<ButtonType> scelta = DialogUtils.showCustomAlert(
+                        Alert.AlertType.CONFIRMATION,
+                        "Sessione interrotta trovata",
+                        "Vuoi riprendere la sessione precedente?",
+                        "Hai interrotto una partita. Vuoi riprendere da dove eri rimasto?",
+                        riprendi, nuova
+                    );
+
+                    if (scelta.isPresent() && scelta.get() == riprendi) {
+                        // Carica quiz.fxml e ripristina stato
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Quiz.fxml"));
+                        Parent root = loader.load();
+                        QuizController quiz = loader.getController();
+
+                        StatoGioco stato = JsonParserManuale.parseStatoGioco(s.getStatoGiocoJson());
+                        quiz.setDomandaCorrente(stato.getDomandaCorrente());
+                        quiz.setRisposteUtente(stato.getRisposteUtente());
+                        quiz.impostaDomande(stato.getDomande());
+                        quiz.mostraDomandaCorrente(); // ✅ CHIAMA ORA!
+                        quiz.impostaSessione(s);
+                        quiz.setTempoResiduo(s.getTempoResiduo());
+
+                        Stage stage = (Stage) playBtn.getScene().getWindow();
+                        quiz.setWindowCloseHandler(stage);
+                        stage.setScene(new Scene(root));
+                        stage.show();
+                        return; // Fermati qui
+                    }
+
+                    break;
+                }
+            }
+  
+            SceneUtils.switchScene(leaderboardBtn, "/wordageddon/Resources/fxml/ChooseDifficulty.fxml", "/wordageddon/Resources/css/style.css");
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void goToLeaderboard() {
         SceneUtils.switchScene(leaderboardBtn, "/wordageddon/Resources/fxml/Classifica.fxml", "/wordageddon/Resources/css/style.css");
@@ -114,5 +174,6 @@ public class WordageddonController implements Initializable {
     private void goToAdminPanel(){
         SceneUtils.switchScene(userMenu, "/wordageddon/Resources/fxml/AdminPanel.fxml", "/wordageddon/Resources/css/style.css");
     }
+    
     
 }

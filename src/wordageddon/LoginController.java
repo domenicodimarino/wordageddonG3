@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import wordageddon.database.UtenteDAOSQL;
+import wordageddon.model.StatoGioco;
 import wordageddon.model.Utente;
 import wordageddon.service.SessionManager;
 import wordageddon.service.UtenteService;
@@ -118,5 +119,14 @@ public class LoginController implements Initializable {
     }
     private void goToMainScreen() {
         SceneUtils.switchScene(submitButton, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
+    }
+    
+    private String escape(String s) {
+        if (s == null) return "";
+        return s.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
+    }
+    
+    private StatoGioco parseStatoGioco(String statoGiocoJson) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

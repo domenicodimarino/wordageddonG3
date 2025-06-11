@@ -13,7 +13,6 @@ import wordageddon.model.GameDifficultyConfig;
 import wordageddon.model.Sessione;
 import wordageddon.model.Document;
 import wordageddon.util.WordStats;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -229,13 +228,34 @@ public class LetturaTestoController implements Initializable {
         task.setOnSucceeded(ev -> {
             progressStage.close();
             List<Domanda> domandeQuiz = task.getValue();
+            StringBuilder json = new StringBuilder();
+            json.append("{\"domande\":[");
+            for (int i = 0; i < domandeQuiz.size(); i++) {
+                Domanda d = domandeQuiz.get(i);
+                json.append("{");
+                json.append("\"testo\":\"").append(escape(d.getTesto())).append("\",");
+                json.append("\"rispostaCorretta\":\"").append(escape(d.getRispostaCorretta())).append("\",");
+                json.append("\"tipo\":\"").append(escape(d.getTipo())).append("\",");
+                json.append("\"opzioni\":[");
+                List<String> ops = d.getOpzioni();
+                for (int j = 0; j < ops.size(); j++) {
+                    json.append("\"").append(escape(ops.get(j))).append("\"");
+                    if (j < ops.size() - 1) json.append(",");
+                }
+                json.append("]");
+                json.append("}");
+                if (i < domandeQuiz.size() - 1) json.append(",");
+            }
+            json.append("],\"risposteUtente\":[],\"domandaCorrente\":0}");
             if (domandeQuiz == null || domandeQuiz.isEmpty()) {
                 DialogUtils.showAlert(Alert.AlertType.ERROR, "Impossibile generare le domande.", " Riprova o scegli altri documenti.", null);
                 return;
             }
+            
             QuizController quizController =  SceneUtils.switchScene(nextBtn, "/wordageddon/Resources/fxml/Quiz.fxml", "/wordageddon/Resources/css/style.css");
             quizController.impostaSessione(sessione);
             quizController.impostaDomande(domandeQuiz);
+            quizController.mostraDomandaCorrente(); // mostri la prima domanda
         });
 
         task.setOnFailed(ev -> {
@@ -281,5 +301,16 @@ public class LetturaTestoController implements Initializable {
             ex.printStackTrace();
         }
         return stopwords;
+    }
+    
+    public void setWindowCloseHandler(Stage stage) {
+        stage.setOnCloseRequest(e -> {
+            // E quando andrai al QuizController, dovrai passarlo anche lì
+            System.out.println("CHIUSURA DURANTE LETTURA TESTO");
+        });
+    }
+    private String escape(String s) {
+        if (s == null) return "";
+        return s.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
     }
 }

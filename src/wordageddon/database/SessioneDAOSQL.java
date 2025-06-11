@@ -109,7 +109,7 @@ public class SessioneDAOSQL implements SessioneDAO {
     }
     @Override
     public void updateSessione(Sessione s) throws Exception {
-        String sql = "UPDATE sessione SET data_fine=?, punteggio_totale=?, tempo_residuo=?, stato=? WHERE id=?";
+        String sql = "UPDATE sessione SET data_fine=?, punteggio_totale=?, tempo_residuo=?, stato=?, stato_gioco_json=? WHERE id=?";
         try (
             Connection c = DatabaseManager.getConnection();
             PreparedStatement ps = c.prepareStatement(sql)
@@ -118,7 +118,8 @@ public class SessioneDAOSQL implements SessioneDAO {
             ps.setInt(2, s.getPunteggioTotale());
             ps.setInt(3, s.getTempoResiduo());
             ps.setString(4, s.getStato());
-            ps.setInt(5, s.getId());
+            ps.setString(5, s.getStatoGiocoJson());
+            ps.setInt(6, s.getId());
             ps.executeUpdate();
         }
     }

@@ -7,22 +7,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="600.0" prefWidth="900.0"
-      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="wordageddon.QuizController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wordageddon.QuizController">
     <children>
       <VBox alignment="TOP_CENTER" prefHeight="570.0" prefWidth="880.0">
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>
          <children>
-            <Label fx:id="questionNumberLabel" text="Domanda 1 di N" prefWidth="880.0">
+            <Label fx:id="questionNumberLabel" prefWidth="880.0" text="Domanda 1 di N">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <Label fx:id="questionLabel" text="Testo della domanda" prefWidth="880.0">
+            <Label fx:id="questionLabel" prefWidth="880.0" text="Testo della domanda">
                <font>
                   <Font size="24.0" />
                </font>
@@ -65,12 +62,17 @@
                         <Font size="21.0" />
                      </font>
                   </Label>
-                  <Label fx:id="timer" text="00:00" textFill="RED" prefWidth="90.0">
+                  <Label fx:id="timer" prefWidth="90.0" text="00:00" textFill="RED">
                      <font>
                         <Font size="27.0" />
                      </font>
                   </Label>
-                  <Button fx:id="nextBtn" alignment="CENTER_RIGHT" mnemonicParsing="false" text="Prossima domanda" prefWidth="250.0">
+                  <Button fx:id="interrompiBtn" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onInterrompiClicked" prefHeight="55.0" prefWidth="187.0" text="Interrompi">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="nextBtn" alignment="CENTER_RIGHT" layoutX="575.0" layoutY="23.0" mnemonicParsing="false" prefWidth="250.0" text="Prossima domanda">
                      <font>
                         <Font size="28.0" />
                      </font>

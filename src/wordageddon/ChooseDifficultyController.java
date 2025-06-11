@@ -1,14 +1,19 @@
 package wordageddon;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import wordageddon.database.SessioneDAOSQL;
 import wordageddon.model.Difficolta;
 import wordageddon.model.GameConfig;
@@ -77,8 +82,25 @@ public class ChooseDifficultyController implements Initializable {
     }
 
     private void vaiALetturaTesto(Difficolta diff, GameDifficultyConfig config, Sessione sessione) {
-        LetturaTestoController controller = SceneUtils.switchScene(easyBtn, "/wordageddon/Resources/fxml/LetturaTesto.fxml", "/wordageddon/Resources/css/style.css");
-        controller.impostaSessione(sessione, config);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/LetturaTesto.fxml"));
+            Parent root = loader.load();
+
+            LetturaTestoController controller = loader.getController();
+            controller.impostaSessione(sessione, config);
+
+            // Ottieni lo stage corrente
+            Stage stage = (Stage) easyBtn.getScene().getWindow();
+
+            // Passa lo stage per impostare il gestore di chiusura finestra
+            controller.setWindowCloseHandler(stage);
+
+            // Cambia scena
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void goToMenu() {

@@ -9,9 +9,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import wordageddon.database.PunteggioDAOSQL;
 import wordageddon.database.SessioneDAOSQL;
@@ -33,23 +35,17 @@ public class QuizController implements Initializable {
     @FXML private RadioButton option3Btn;
     @FXML private RadioButton option4Btn;
     @FXML private Label questionLabel;
+    @FXML private Button interrompiBtn;
 
     private List<Domanda> domande;
     private int domandaCorrente = 0;
     private int punteggio = 0;
 
-    // TIMER
-    private int tempoTotale = 60; // 1 minuto in secondi (puoi parametrizzarlo)
     private Timeline timeline;
+    private int tempoQuizResiduo = 60;
 
     private List<RispostaUtente> risposteUtente = new ArrayList<>();
     private Sessione sessione;
-    private int tempoQuizResiduo = 0;
-
-    // Metodo per ricevere la sessione dal controller precedente
-    public void impostaSessione(Sessione sessione) {
-        this.sessione = sessione;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,8 +53,10 @@ public class QuizController implements Initializable {
         optionsGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
             nextBtn.setDisable(newToggle == null);
         });
+
         nextBtn.setOnAction(e -> {
             controllaRisposta();
+            optionsGroup.selectToggle(null);
             domandaCorrente++;
             if (domandaCorrente < domande.size()) {
                 mostraDomandaCorrente();
@@ -69,14 +67,49 @@ public class QuizController implements Initializable {
         });
     }
 
+    public void impostaSessione(Sessione sessione) {
+        this.sessione = sessione;
+    }
+
     public void impostaDomande(List<Domanda> domande) {
         this.domande = domande;
-        this.domandaCorrente = 0;
-        mostraDomandaCorrente();
         startTimerGlobale();
     }
 
-    private void mostraDomandaCorrente() {
+    public void setDomandaCorrente(int index) {
+        this.domandaCorrente = index;
+    }
+
+    public int getDomandaCorrente() {
+        return domandaCorrente;
+    }
+
+    public void setRisposteUtente(List<RispostaUtente> risposte) {
+        for (RispostaUtente nuova : risposte) {
+            boolean giàEsiste = this.risposteUtente.stream()
+                .anyMatch(r -> r.getDomandaIndex() == nuova.getDomandaIndex());
+            if (!giàEsiste) {
+                this.risposteUtente.add(nuova);
+                if (nuova.isEsatto()) {
+                    punteggio++;
+                }
+            }
+        }       
+    }
+
+    public List<RispostaUtente> getRisposteUtente() {
+        return risposteUtente;
+    }
+
+    public void setTempoResiduo(int secondi) {
+        this.tempoQuizResiduo = secondi;
+    }
+
+    public void setWindowCloseHandler(Stage stage) {
+        stage.setOnCloseRequest(e -> salvaSessioneInterrotta());
+    }
+
+    void mostraDomandaCorrente() {
         if (domande == null || domande.isEmpty() || domandaCorrente >= domande.size()) return;
         Domanda d = domande.get(domandaCorrente);
         questionNumberLabel.setText("Domanda " + (domandaCorrente + 1) + " di " + domande.size());
@@ -96,12 +129,16 @@ public class QuizController implements Initializable {
 
     private void controllaRisposta() {
         RadioButton selected = (RadioButton) optionsGroup.getSelectedToggle();
-        String rispostaUtente = selected != null ? selected.getText() : "";
+        if (selected == null) return;
+
+        String rispostaUtente = selected.getText();
         Domanda domanda = domande.get(domandaCorrente);
         String rispostaCorretta = domanda.getRispostaCorretta();
         boolean esatta = rispostaUtente.equals(rispostaCorretta);
         if (esatta) punteggio++;
+
         risposteUtente.add(new RispostaUtente(
+            domandaCorrente,
             domanda.getTesto(),
             rispostaUtente,
             rispostaCorretta,
@@ -110,64 +147,57 @@ public class QuizController implements Initializable {
     }
 
     private void startTimerGlobale() {
+        if (timeline != null) {
+            timeline.stop();
+            timeline = null;
+        }
         aggiornaTimerLabel();
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            tempoTotale--;
+            tempoQuizResiduo--;
             aggiornaTimerLabel();
-            if (tempoTotale <= 0) {
+            if (tempoQuizResiduo <= 0) {
                 timeline.stop();
-                mostraRisultato(); // tempo scaduto, mostra subito risultato!
+                mostraRisultato();
             }
         }));
-        timeline.setCycleCount(tempoTotale);
+        timeline.setCycleCount(tempoQuizResiduo);
         timeline.play();
     }
 
     private void aggiornaTimerLabel() {
-        int min = tempoTotale / 60;
-        int sec = tempoTotale % 60;
+        int min = tempoQuizResiduo / 60;
+        int sec = tempoQuizResiduo % 60;
         timer.setText(String.format("%02d:%02d", min, sec));
     }
 
     private void mostraRisultato() {
         nextBtn.setDisable(true);
-        DialogUtils.showAlert(Alert.AlertType.INFORMATION, "Quiz completato!", null, "Hai totalizzato " + punteggio + " punti su " + domande.size());
 
-        tempoQuizResiduo = tempoTotale; // Salva il tempo rimasto correttamente
+        sessione.setStato("finita");
+        sessione.setDataFine(java.time.LocalDateTime.now().toString());
+        sessione.setTempoResiduo(tempoQuizResiduo);
 
-        // Calcolo punteggio usando la classe Punteggio!
         int risposteCorrette = (int) risposteUtente.stream().filter(RispostaUtente::isEsatto).count();
         int difficoltaInt = getDifficoltaAsInt(sessione.getDifficolta().toString());
-        String username = sessione.getUsername();
-
-        Punteggio punteggioObj = new Punteggio(username, risposteCorrette, tempoQuizResiduo, difficoltaInt);
+        Punteggio punteggioObj = new Punteggio(sessione.getUsername(), risposteCorrette, tempoQuizResiduo, difficoltaInt);
+        sessione.setPunteggioTotale(punteggioObj.getValore());
 
         try {
-            PunteggioDAOSQL punteggioDAO = new PunteggioDAOSQL();
-            punteggioDAO.inserisci(punteggioObj);
-            
-            sessione.setStato("finita");
-            sessione.setDataFine(java.time.LocalDateTime.now().toString());
-            sessione.setPunteggioTotale(punteggioObj.getValore());
-            sessione.setTempoResiduo(tempoQuizResiduo);
-
-            SessioneDAOSQL sessioneDAO = new SessioneDAOSQL();
-            sessioneDAO.updateSessione(sessione);
-        } catch (SQLException e) {
+            new PunteggioDAOSQL().inserisci(punteggioObj);
+            new SessioneDAOSQL().updateSessione(sessione);
+        } catch (SQLException | RuntimeException e) {
             e.printStackTrace();
         } catch (Exception ex) {
             Logger.getLogger(QuizController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         try {
-            // Cambia scena e ottieni il controller
             ResultsController resultsController = SceneUtils.switchScene(
                 nextBtn,
                 "/wordageddon/Resources/fxml/Results.fxml",
                 "/wordageddon/Resources/css/style.css"
             );
 
-            // Passa i dati al controller, se il caricamento è riuscito
             if (resultsController != null) {
                 resultsController.setResults(
                     risposteUtente,
@@ -175,19 +205,85 @@ public class QuizController implements Initializable {
                     tempoQuizResiduo,
                     punteggioObj
                 );
-            }    
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // Utility per convertire la difficoltà in intero (adatta alla tua enum)
     private int getDifficoltaAsInt(String difficolta) {
-        switch (difficolta.toUpperCase()) {
-            case "FACILE": return 1;
-            case "MEDIO": return 2;
-            case "DIFFICILE": return 3;
-            default: return 1;
+        if (difficolta == null) return 1;
+            switch (difficolta.toUpperCase()) {
+                case "FACILE":
+                    return 1;
+                case "MEDIO":
+                    return 2;
+                case "DIFFICILE":
+                    return 3;
+                default:
+                    return 1;
         }
+    }
+
+    private void salvaSessioneInterrotta() {
+        try {
+            StringBuilder json = new StringBuilder();
+            json.append("{");
+
+            json.append("\"domande\":[");
+            for (int i = 0; i < domande.size(); i++) {
+                Domanda d = domande.get(i);
+                json.append("{");
+                json.append("\"testo\":\"").append(escape(d.getTesto())).append("\",");
+                json.append("\"rispostaCorretta\":\"").append(escape(d.getRispostaCorretta())).append("\",");
+                json.append("\"tipo\":\"").append(escape(d.getTipo())).append("\",");
+                json.append("\"opzioni\":[");
+                List<String> ops = d.getOpzioni();
+                for (int j = 0; j < ops.size(); j++) {
+                    json.append("\"").append(escape(ops.get(j))).append("\"");
+                    if (j < ops.size() - 1) json.append(",");
+                }
+                json.append("]");
+                json.append("}");
+                if (i < domande.size() - 1) json.append(",");
+            }
+            json.append("],");
+
+            json.append("\"risposteUtente\":[");
+            for (int i = 0; i < risposteUtente.size(); i++) {
+                RispostaUtente ru = risposteUtente.get(i);
+                json.append("{");
+                json.append("\"domandaIndex\":").append(ru.getDomandaIndex()).append(",");
+                json.append("\"sceltaUtente\":\"").append(escape(ru.getSceltaUtente())).append("\",");
+                json.append("\"testoDomanda\":\"").append(escape(ru.getTestoDomanda())).append("\",");
+                json.append("\"rispostaCorretta\":\"").append(escape(ru.getRispostaCorretta())).append("\",");
+                json.append("\"esatto\":").append(ru.isEsatto());
+                json.append("}");
+                if (i < risposteUtente.size() - 1) json.append(",");
+            }
+            json.append("],");
+
+            json.append("\"domandaCorrente\":").append(domandaCorrente);
+            json.append("}");
+
+            sessione.setStato("in_corso");
+            sessione.setTempoResiduo(tempoQuizResiduo);
+            sessione.setStatoGiocoJson(json.toString());
+
+            new SessioneDAOSQL().updateSessione(sessione);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String escape(String s) {
+        if (s == null) return "";
+        return s.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
+    }    
+
+    @FXML
+    private void onInterrompiClicked(ActionEvent event) {
+        salvaSessioneInterrotta();
+        SceneUtils.switchScene(interrompiBtn, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
     }
 }
