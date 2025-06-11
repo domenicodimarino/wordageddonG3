@@ -7,22 +7,25 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="600.0" prefWidth="900.0"
-      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="wordageddon.LoginController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wordageddon.LoginController">
     <children>
       <VBox alignment="TOP_CENTER" prefHeight="470.0" prefWidth="900.0">
          <children>
-            <Label fx:id="Titolo" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="900.0" text="Wordageddon" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="30.0" />
-               </font>
-            </Label>
+            <ImageView fitHeight="138.0" fitWidth="336.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../WordageddonG3.jpeg" />
+               </image>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </ImageView>
             <Label fx:id="labelSignInUp" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="900.0" text="PAGINA DI LOGIN">
                <font>
                   <Font size="26.0" />
                </font>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
             </Label>
             <Label alignment="CENTER" prefHeight="24.0" prefWidth="900.0" text="Username" textAlignment="CENTER">
                <VBox.margin>
@@ -50,7 +53,7 @@
                   <Insets top="15.0" />
                </VBox.margin>
             </Label>
-            <PasswordField fx:id="confirmPasswordField" managed="false" visible="false" prefWidth="600.0">
+            <PasswordField fx:id="confirmPasswordField" managed="false" prefWidth="600.0" visible="false">
                <VBox.margin>
                   <Insets left="150.0" right="150.0" top="5.0" />
                </VBox.margin>
@@ -60,10 +63,13 @@
                   <Insets top="25.0" />
                </VBox.margin>
             </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="900.0" text="Non sei ancora registrato?" textAlignment="CENTER" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="900.0" text="Non sei ancora registrato?" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin></Label>
             <Button fx:id="changeSignButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="250.0" text="Vai alla schermata di registrazione">
                <VBox.margin>
-                  <Insets />
+                  <Insets top="5.0" />
                </VBox.margin>
             </Button>
          </children>
@@ -75,26 +81,47 @@
          <children>
             <Label contentDisplay="CENTER" text="©2025 Wordageddon">
                <HBox.margin>
-                  <Insets left="10.0" />
+                  <Insets left="10.0" top="50.0" />
                </HBox.margin>
             </Label>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
             <Hyperlink fx:id="privacyLink" text="Privacy">
                <HBox.margin>
-                  <Insets left="10.0" right="5.0" />
+                  <Insets left="10.0" right="5.0" top="50.0" />
                </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
             </Hyperlink>
-            <Label text="|" />
+            <Label text="|">
+               <HBox.margin>
+                  <Insets top="50.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             <Hyperlink fx:id="infoLink" text="Info">
                <HBox.margin>
-                  <Insets left="5.0" right="5.0" />
+                  <Insets left="5.0" right="5.0" top="50.0" />
                </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
             </Hyperlink>
-            <Label text="|" />
+            <Label text="|">
+               <HBox.margin>
+                  <Insets top="50.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
             <Label text="v1.0">
                <HBox.margin>
-                  <Insets left="5.0" right="10.0" />
+                  <Insets left="5.0" right="10.0" top="50.0" />
                </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
             </Label>
          </children>
       </HBox>

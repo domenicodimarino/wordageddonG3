@@ -53,7 +53,7 @@
 
 .hyperlink {
     -fx-text-fill: #0071e3;
-    -fx-font-size: 12px;
+    -fx-font-size: 16px;
 }
 
 .hyperlink:hover {
