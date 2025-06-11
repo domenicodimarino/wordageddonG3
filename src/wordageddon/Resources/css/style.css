@@ -4,6 +4,7 @@
     -fx-padding: 20;
 }
 
+/* Layout */
 HBox {
     -fx-padding: 10 20;
     -fx-spacing: 10;
@@ -14,24 +15,34 @@ HBox {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 5, 0, 0, 2);
 }
 
-/* Label */
+/* Label di default: NERA */
 .label {
     -fx-text-fill: #111;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
 }
 
-#documentLabel, #questionLabel {
-    -fx-text-fill: #111;
-    -fx-font-size: 25px;
-    -fx-font-weight: bold;
-}
-
-#appNameLabel, #titolo, #labelSignInUp, #Admin {
-    -fx-text-fill: #111;
+/* Label bianche SOLO dove serve */
+.navbar-label,
+#appNameLabel,
+#labelSignInUp,
+#Admin {
+    -fx-text-fill: #fff;
     -fx-font-weight: 700;
     -fx-font-size: 28px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 2, 0.1, 0, 2);
+}
+
+/* Titolo nero, con priorità massima */
+#titolo {
+    -fx-text-fill: #111 !important;
+    -fx-font-weight: 700;
+    -fx-font-size: 28px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 2, 0.1, 0, 2);
+}
+
+#footer .label {
+    -fx-text-fill: #111;
 }
 
 Button, .button, #menuBtn, #quitGameBtn {
@@ -46,15 +57,14 @@ Button, .button, #menuBtn, #quitGameBtn {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.11), 4, 0, 0, 2);
     -fx-border-width: 0;
 }
-
 Button:hover, .button:hover {
     -fx-background-color: #2e2e2e;
     -fx-effect: dropshadow(gaussian, #bbb, 10, 0.22, 0, 0);
 }
 
-MenuButton {
+MenuButton, .menu-button {
     -fx-background-color: #222;
-    -fx-text-fill: white;
+    -fx-text-fill: #fff;
     -fx-font-weight: bold;
     -fx-background-radius: 20;
     -fx-padding: 8 20;
@@ -63,16 +73,54 @@ MenuButton {
     -fx-min-width: 100px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 3, 0, 0, 2);
 }
-
+.menu-button .label {
+    -fx-text-fill: #fff;
+}
 MenuButton:hover {
     -fx-background-color: #111;
 }
 
+.combo-box, .combo-box .text {
+    -fx-text-fill: #fff;
+    -fx-background-color: #222;
+}
+.combo-box .arrow {
+    -fx-background-color: #fff;
+}
+
+/* ComboBox: popup lista */
+.combo-box-popup .list-view {
+    -fx-background-color: #fff;
+    -fx-effect: null !important; /* rimuovi ombra */
+    -fx-border-color: #ccc !important;
+    -fx-border-width: 1px !important;
+}
+
+.combo-box-popup .list-cell {
+    -fx-text-fill: #111 !important;
+    -fx-background-color: #fff !important;
+}
+.combo-box-popup .list-cell:selected,
+.combo-box-popup .list-cell:filled:selected,
+.combo-box-popup .list-cell:filled:selected:focused,
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #e0e0e0 !important;
+    -fx-text-fill: #111 !important;
+}
+
+/* Forza il testo nero anche se la cella è "checked" (spunta) */
+.combo-box-popup .list-cell:checked,
+.combo-box-popup .list-cell:checked:selected,
+.combo-box-popup .list-cell:checked:focused {
+    -fx-background-color: #009edb !important; /* oppure quello che preferisci */
+    -fx-text-fill: #111 !important;
+}
+
+/* Hyperlink */
 Hyperlink {
     -fx-text-fill: #0071e3;
     -fx-font-size: 13px;
 }
-
 Hyperlink:hover {
     -fx-text-fill: #0066cc;
     -fx-underline: true;
@@ -85,7 +133,6 @@ Hyperlink:hover {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0.18, 0, 0);
     -fx-alignment: center;
 }
-
 HBox#footer {
     -fx-padding: 15 20;
     -fx-background-color: transparent;

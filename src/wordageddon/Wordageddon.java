@@ -27,7 +27,7 @@ public class Wordageddon extends Application {
         scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/login.css").toExternalForm());
         stage.setTitle("Wordageddon");
         
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("Resources/icon.png")));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("Resources/WordageddonG3.jpeg")));
         stage.setScene(scene);
         stage.show();
     }
