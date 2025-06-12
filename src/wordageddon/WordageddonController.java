@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -79,6 +81,14 @@ public class WordageddonController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            new SessioneDAOSQL().correzioneStatoFinito();
+        } catch (Exception ex) {
+            Logger.getLogger(WordageddonController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+        
         logoutMenu.setOnAction(e -> logout());
         playBtn.setOnAction(e -> startGame());
         leaderboardBtn.setOnAction(e -> goToLeaderboard());

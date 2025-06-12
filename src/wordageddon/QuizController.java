@@ -226,6 +226,9 @@ public class QuizController implements Initializable {
     }
 
     private void salvaSessioneInterrotta() {
+        if (timeline != null) {
+            timeline.stop();
+        }
         try {
             StringBuilder json = new StringBuilder();
             json.append("{");
@@ -283,6 +286,7 @@ public class QuizController implements Initializable {
 
     @FXML
     private void onInterrompiClicked(ActionEvent event) {
+        if (timeline != null) timeline.stop();
         salvaSessioneInterrotta();
         SceneUtils.switchScene(interrompiBtn, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
     }

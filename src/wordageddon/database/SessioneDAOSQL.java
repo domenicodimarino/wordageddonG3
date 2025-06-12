@@ -127,4 +127,14 @@ public class SessioneDAOSQL implements SessioneDAO {
             ps.executeUpdate();
         }
     }
+    @Override
+    public void correzioneStatoFinito() throws Exception {
+        String sql = "UPDATE sessione SET stato = 'finita' WHERE data_fine IS NOT NULL AND stato <> 'finita'";
+        try (
+            Connection c = DatabaseManager.getConnection();
+            Statement st = c.createStatement()
+        ) {
+            st.executeUpdate(sql);
+        }
+    }
 }

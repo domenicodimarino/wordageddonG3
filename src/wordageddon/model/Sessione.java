@@ -87,6 +87,9 @@ public class Sessione {
     } 
 
     public String getStato() {
+        if (dataFine != null && !dataFine.isEmpty()) {
+            return "finita";
+        }
         return stato;
     }
 
