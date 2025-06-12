@@ -153,26 +153,27 @@ public class WordageddonController implements Initializable {
                     );
 
                     if (scelta.isPresent() && scelta.get() == riprendi) {
-                        // Carica quiz.fxml e ripristina stato
-                        
                         
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/Quiz.fxml"));
                         Parent root = loader.load();
                         QuizController quiz = loader.getController();
-
+                        Scene scene = new Scene(root);
+                        scene.getStylesheets().add("/wordageddon/Resources/css/style.css");
+                        
+                       
                         StatoGioco stato = JsonParserManuale.parseStatoGioco(s.getStatoGiocoJson());
                         quiz.setDomandaCorrente(stato.getDomandaCorrente());
                         quiz.setRisposteUtente(stato.getRisposteUtente());
                         quiz.impostaDomande(stato.getDomande());
-                        quiz.mostraDomandaCorrente(); // ✅ CHIAMA ORA!
+                        quiz.mostraDomandaCorrente();
                         quiz.impostaSessione(s);
                         quiz.setTempoResiduo(s.getTempoResiduo());
 
                         Stage stage = (Stage) playBtn.getScene().getWindow();
                         quiz.setWindowCloseHandler(stage);
-                        stage.setScene(new Scene(root));
+                        stage.setScene(scene);
                         stage.show();
-                        return; // Fermati qui
+                        return;
                     }
 
                     break;

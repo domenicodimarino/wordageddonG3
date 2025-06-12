@@ -89,6 +89,8 @@ public class ChooseDifficultyController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/wordageddon/Resources/fxml/LetturaTesto.fxml"));
             Parent root = loader.load();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add("/wordageddon/Resources/css/style.css");
 
             LetturaTestoController controller = loader.getController();
             controller.impostaSessione(sessione, config);
@@ -100,7 +102,7 @@ public class ChooseDifficultyController implements Initializable {
             controller.setWindowCloseHandler(stage);
 
             // Cambia scena
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

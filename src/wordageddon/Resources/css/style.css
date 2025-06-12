@@ -1,10 +1,9 @@
-.root {
-    -fx-background-color: #f5f5f7;
-    -fx-font-family: "San Francisco", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+root {
+    -fx-background-color: linear-gradient(to bottom, #e0e0e0, #ffffff);
+    -fx-font-family: "Segoe UI", sans-serif;
     -fx-padding: 20;
 }
 
-/* Layout */
 HBox {
     -fx-padding: 10 20;
     -fx-spacing: 10;
@@ -12,128 +11,95 @@ HBox {
 }
 
 #logoImage {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 5, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
 }
 
-/* Label di default: NERA */
+
+/* Label */
 .label {
-    -fx-text-fill: #111;
+    -fx-text-fill: #222;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
 }
 
-/* Label bianche SOLO dove serve */
-.navbar-label,
-#appNameLabel,
-#labelSignInUp,
-#Admin {
-    -fx-text-fill: #000000;
+#documentLabel,#questionLabel{
+    -fx-text-fill: #222222;
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;  
+}
+
+#appNameLabel,#titolo,#labelSignInUp,#Admin {
+    -fx-text-fill: linear-gradient(to bottom, #111111, #555555);
     -fx-font-weight: 700;
-    -fx-font-size: 28px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 2, 0.1, 0, 2);
+    -fx-font-size: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(34, 34, 34, 0.4), 3, 0, 0, 2);
 }
 
-/* Titolo nero, con priorità massima */
-#titolo {
-    -fx-text-fill: #111 !important;
-    -fx-font-weight: 700;
-    -fx-font-size: 28px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 2, 0.1, 0, 2);
-}
-
-#footer .label {
-    -fx-text-fill: #111;
-}
-
-/* --------- NAVBAR BUTTONS MODERNI --------- */
-/* Aggiungi la classe navbar-button a TUTTI i pulsanti della navbar! */
-.navbar-menubutton {
-    -fx-background-color: #111;
-    -fx-text-fill: #000000;
+Button, .button,#menuBtn,#quitGameBtn {
+    -fx-background-color: linear-gradient(to right, #444444, #222222);
+    -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 20;
-    -fx-padding: 8 20;
+    -fx-padding: 8;
     -fx-cursor: hand;
-    -fx-font-size: 16px;
+    -fx-font-size: 17px;
     -fx-min-width: 100px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 3, 0, 0, 2);
-}
-.navbar-menubutton:hover {
-    -fx-background-color: #222;
+    -fx-effect: dropshadow(gaussian, rgba(34, 34, 34, 0.4), 4, 0, 0, 2);
 }
 
-.navbar-button:focused {
-    -fx-background-color: #ececec;
-    -fx-border-color: #757575;
-}
-
-/* ------- FINE NAVBAR BUTTONS ------- */
-
-/* Button principali (fuori dalla navbar) */
-Button, .button, #menuBtn, #quitGameBtn {
-    -fx-background-color: #111;
-    -fx-text-fill: #fff;
-    -fx-font-weight: bold;
-    -fx-background-radius: 22;
-    -fx-padding: 10 28;
-    -fx-cursor: hand;
-    -fx-font-size: 18px;
-    -fx-min-width: 100px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.11), 4, 0, 0, 2);
-    -fx-border-width: 0;
-}
 Button:hover, .button:hover {
-    -fx-background-color: #2e2e2e;
-    -fx-effect: dropshadow(gaussian, #bbb, 10, 0.22, 0, 0);
+    -fx-background-color: linear-gradient(to right, #222222, #111111);
+    -fx-effect: dropshadow(gaussian, #555555, 10, 0.3, 0, 0);
 }
 
-/* MenuButton generici (fuori dalla navbar) */
-MenuButton, .menu-button {
-    -fx-background-color: #222;
-    -fx-text-fill: #fff;
+MenuButton {
+    -fx-background-color: linear-gradient(to right, #444444, #222222);
+    -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 20;
-    -fx-padding: 8 20;
+    -fx-padding: 4;
     -fx-cursor: hand;
     -fx-font-size: 16px;
     -fx-min-width: 100px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 3, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(34, 34, 34, 0.5), 3, 0, 0, 2);
+}
+MenuButton > .label{
+    -fx-text-fill: white;
 }
 
 MenuButton:hover {
-    -fx-background-color: #111;
+    -fx-background-color: linear-gradient(to right, #222222, #111111);
+    -fx-effect: dropshadow(gaussian, #555555, 10, 0.3, 0, 0);
+}
+MenuButton:hover > .label{
+    -fx-text-fill: white;
+}
+MenuButton RadioMenuItem .label{
+    -fx-text-fill: black;
 }
 
-/* ComboBox, ecc... (come già avevi) */
-.combo-box, .combo-box .text {
+Hyperlink {
+    -fx-text-fill: #111111;
+    -fx-font-size: 13px;
+}
+
+Hyperlink:hover {
     -fx-text-fill: #000000;
-    -fx-background-color: #222;
+    -fx-underline: true;
 }
-.combo-box .arrow {
-    -fx-background-color: #000000;
+
+#mainStackPane {
+    -fx-background-color: #ffffffcc; /* leggermente trasparente */
+    -fx-background-radius: 15;
+    -fx-padding: 40;
+    -fx-effect: dropshadow(gaussian, rgba(34, 34, 34, 0.2), 10, 0.3, 0, 0);
+    -fx-alignment: center;
 }
-.combo-box-popup .list-view {
-    -fx-background-color: #000000;
-    -fx-effect: null !important;
-    -fx-border-color: #ccc !important;
-    -fx-border-width: 1px !important;
-}
-.combo-box-popup .list-cell {
-    -fx-text-fill: #000000 !important;
-    -fx-background-color: #000000 !important;
-}
-.combo-box-popup .list-cell:selected,
-.combo-box-popup .list-cell:filled:selected,
-.combo-box-popup .list-cell:filled:selected:focused,
-.combo-box-popup .list-cell:hover {
-    -fx-background-color: #000000 !important;
-    -fx-text-fill: #000000 !important;
-}
-.combo-box-popup .list-cell:checked,
-.combo-box-popup .list-cell:checked:selected,
-.combo-box-popup .list-cell:checked:focused {
-    -fx-background-color: #009edb !important;
-    -fx-text-fill: #000000 !important;
+
+HBox#footer {
+    -fx-padding: 15 20;
+    -fx-background-color: transparent;
+    -fx-alignment: center-left;
 }
 Hyperlink {
     -fx-text-fill: #0071e3;
@@ -142,16 +108,4 @@ Hyperlink {
 Hyperlink:hover {
     -fx-text-fill: #0066cc;
     -fx-underline: true;
-}
-#mainStackPane {
-    -fx-background-color: #fff;
-    -fx-background-radius: 18;
-    -fx-padding: 40;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0.18, 0, 0);
-    -fx-alignment: center;
-}
-HBox#footer {
-    -fx-padding: 15 20;
-    -fx-background-color: transparent;
-    -fx-alignment: center-left;
 }
