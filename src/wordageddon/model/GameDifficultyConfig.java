@@ -3,7 +3,7 @@ package wordageddon.model;
 public class GameDifficultyConfig {
     private int numDocumenti;
     private int lunghezzaTesto;
-    private int tempoLettura; // in secondi
+    private int tempoLettura; 
 
     public GameDifficultyConfig(int numDocumenti, int lunghezzaTesto, int tempoLettura) {
         this.numDocumenti = numDocumenti;

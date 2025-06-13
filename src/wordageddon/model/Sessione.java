@@ -6,11 +6,11 @@ public class Sessione {
     private String dataInizio;
     private String dataFine;
     private int punteggioTotale;
-    private int tempoResiduo; // secondi
-    private String statoGiocoJson; // tutto il resto serializzato
-    private String stato; // "in_corso" oppure "finita"
+    private int tempoResiduo; 
+    private String statoGiocoJson; 
+    private String stato; 
     private Difficolta difficolta;
-    private Lingua lingua; // "ita" o "eng"
+    private Lingua lingua; 
 
     public Sessione(int id, String username, String dataInizio, String dataFine, int punteggioTotale, int tempoResiduo, String statoGiocoJson, String stato, Difficolta difficolta, Lingua lingua) {
         this.id = id;
@@ -25,7 +25,7 @@ public class Sessione {
         this.lingua = lingua;
     }
 
-    // Costruttore senza id (per inserimento)
+    
     public Sessione(String username, String dataInizio, String dataFine, int punteggioTotale, int tempoResiduo, String statoGiocoJson, String stato, Difficolta difficolta, Lingua lingua) {
         this(-1, username, dataInizio, dataFine, punteggioTotale, tempoResiduo, statoGiocoJson, stato, difficolta, lingua);
     }

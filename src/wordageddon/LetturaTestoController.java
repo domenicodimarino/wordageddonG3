@@ -51,7 +51,7 @@ public class LetturaTestoController implements Initializable {
 
     private Sessione sessione;
     private GameDifficultyConfig config;
-    private List<Document> documenti; // Lista dei documenti da visualizzare
+    private List<Document> documenti; 
     private int indiceCorrente = 0;
     private int tempoResiduo;
     private Timeline timeline;
@@ -287,7 +287,7 @@ public class LetturaTestoController implements Initializable {
             QuizController quizController =  SceneUtils.switchScene(nextBtn, "/wordageddon/Resources/fxml/Quiz.fxml", "/wordageddon/Resources/css/style.css");
             quizController.impostaSessione(sessione);
             quizController.impostaDomande(domandeQuiz);
-            quizController.mostraDomandaCorrente(); // mostri la prima domanda
+            quizController.mostraDomandaCorrente(); 
         });
 
         task.setOnFailed(ev -> {
@@ -337,7 +337,7 @@ public class LetturaTestoController implements Initializable {
     
     public void setWindowCloseHandler(Stage stage) {
         stage.setOnCloseRequest(e -> {
-            // E quando andrai al QuizController, dovrai passarlo anche lì
+           
             System.out.println("CHIUSURA DURANTE LETTURA TESTO");
         });
     }

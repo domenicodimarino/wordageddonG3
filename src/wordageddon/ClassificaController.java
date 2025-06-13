@@ -46,14 +46,14 @@ public class ClassificaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Collega le colonne con i nomi dei getter di LeaderboardRow
+      
         placeColumn.setCellValueFactory(new PropertyValueFactory<>("posizione"));
         userColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         correctColumn.setCellValueFactory(new PropertyValueFactory<>("risposteCorrette"));
         difficultyColumn.setCellValueFactory(new PropertyValueFactory<>("difficolta"));
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("punteggio"));
 
-        // Carica i dati dal DB
+      
         ObservableList<LeaderboardRow> data = FXCollections.observableArrayList();
         try {
             PunteggioDAOSQL dao = new PunteggioDAOSQL();

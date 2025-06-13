@@ -24,7 +24,7 @@ public enum Lingua {
     }
 
     public static Lingua fromString(String s) {
-        if (s == null) return ITALIANO; // default
+        if (s == null) return ITALIANO; 
         if (s.equalsIgnoreCase("Italiano") || s.equalsIgnoreCase("ita")) return ITALIANO;
         if (s.equalsIgnoreCase("Inglese") || s.equalsIgnoreCase("eng")) return INGLESE;
         throw new IllegalArgumentException("Lingua non riconosciuta: " + s);

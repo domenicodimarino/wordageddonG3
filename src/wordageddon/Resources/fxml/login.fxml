@@ -9,7 +9,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wordageddon.LoginController">
     <children>
-        <!-- Parte superiore -->
+        
         <VBox alignment="TOP_CENTER" prefHeight="470.0" prefWidth="900.0">
             <children>
                 <ImageView fitHeight="100.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
@@ -52,7 +52,7 @@
                     </VBox.margin>
                 </PasswordField>
 
-                <!-- Campo di conferma password -->
+                
                 <Label fx:id="confirmPasswordLabel" alignment="CENTER" managed="false" prefHeight="24.0" prefWidth="900.0" text="Conferma password" textAlignment="CENTER" visible="false">
                     <VBox.margin>
                         <Insets top="10.0" />
@@ -84,7 +84,7 @@
             </children>
         </VBox>
 
-        <!-- Footer -->
+        
         <HBox alignment="CENTER_LEFT" prefHeight="130.0" prefWidth="900.0">
             <children>
                 <Label contentDisplay="CENTER" text="©2025 Wordageddon">

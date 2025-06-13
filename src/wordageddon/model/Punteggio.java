@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 public class Punteggio {
     private String username;
-    private int valore; // Punteggio totale calcolato
+    private int valore; 
     private int risposteCorrette;
-    private int tempoResiduo; // in secondi
-    private int difficolta;   // es: 1=facile, 2=media, 3=difficile
-    private LocalDateTime data; // data e ora della partita
+    private int tempoResiduo; 
+    private int difficolta;   
+    private LocalDateTime data; 
 
-    // Costruttore completo, usato quando leggi dal DB
+    
     public Punteggio(String username, int risposteCorrette, int tempoResiduo, int difficolta, LocalDateTime data) {
         this.username = username;
         this.risposteCorrette = risposteCorrette;
@@ -20,12 +20,12 @@ public class Punteggio {
         this.valore = calcolaPunteggio();
     }
 
-    // Costruttore per nuovo punteggio (data = ora attuale)
+    
     public Punteggio(String username, int risposteCorrette, int tempoResiduo, int difficolta) {
         this(username, risposteCorrette, tempoResiduo, difficolta, LocalDateTime.now());
     }
 
-    // Calcola il punteggio secondo la tua logica
+   
     private int calcolaPunteggio() {
         return (risposteCorrette * 30) * difficolta + (risposteCorrette > 0 ? tempoResiduo : 0);
     }

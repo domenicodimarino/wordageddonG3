@@ -38,7 +38,7 @@ public class AppConfig {
             stopwordsPathIT = p.getProperty("stopwordsPathIT", stopwordsPathIT);
             stopwordsPathEN = p.getProperty("stopwordsPathEN", stopwordsPathEN);
         } catch (IOException e) {
-            // Primo avvio o file mancante: usa i default
+            
         }
     }
 

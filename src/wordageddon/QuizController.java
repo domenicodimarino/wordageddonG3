@@ -159,7 +159,7 @@ public class QuizController implements Initializable {
         tempoQuizResiduo--;
         aggiornaTimerLabel();
 
-        // 👇 Lampeggio sotto i 10 secondi (una sola volta)
+      
         if (tempoQuizResiduo <= 10 && !staLampeggiando) {
             staLampeggiando = true;
             Timeline blink = new Timeline(
@@ -184,7 +184,7 @@ public class QuizController implements Initializable {
     int sec = tempoQuizResiduo % 60;
     timer.setText(String.format("%02d:%02d", min, sec));
 
-    // Solo se non sta lampeggiando (così non sovrascrivi lo stile impostato dal blink)
+    
     if (!staLampeggiando) {
         if (tempoQuizResiduo <= 10) {
             timer.setStyle("-fx-text-fill: red;");

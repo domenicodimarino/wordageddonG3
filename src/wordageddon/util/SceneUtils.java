@@ -11,13 +11,7 @@ import java.net.URL;
 
 public class SceneUtils {
 
-    /**
-     * Cambia la scena corrente.
-     * @param eventSource il Node di partenza (ad esempio il bottone che scatena l'azione)
-     * @param fxmlPath path all'FXML (es: "/wordageddon/Resources/fxml/Wordageddon.fxml")
-     * @param cssPath path al CSS (può essere null se non vuoi caricare un CSS aggiuntivo)
-     * @return il Controller caricato, se serve
-     */
+   
     public static <T> T switchScene(Node eventSource, String fxmlPath, String cssPath) {
         try {
             FXMLLoader loader = new FXMLLoader(SceneUtils.class.getResource(fxmlPath));

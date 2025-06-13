@@ -10,22 +10,13 @@ import java.util.stream.Stream;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
-/**
- * VocabularyService represents the Service
- * that creates the Set of the words of all the files in the folder.
- * @author Gruppo 3
- */
+
 public class VocabularyService extends Service<Set<String>> {
 
     private final String directoryPath;
     private final Set<String> stopWords;
 
-    /**
-     * Constructor of VocabularyService.
-     * @param directoryPath the path of the directory chosen by the user
-     * @param stopWords the set of the words that
-     * don't have to be added in the vocabulary by the Task
-     */
+    
     public VocabularyService(String directoryPath, Set<String> stopWords) {
         this.directoryPath = directoryPath;
         this.stopWords = stopWords;
@@ -35,10 +26,7 @@ public class VocabularyService extends Service<Set<String>> {
     protected Task<Set<String>> createTask() {
 
         return new Task<Set<String>>() {
-            /**
-             * 
-             * @return the vocabulary of the words of all the files
-             */
+            
             @Override
             protected Set<String> call() {
 

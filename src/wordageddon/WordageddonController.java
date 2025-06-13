@@ -41,7 +41,7 @@ import wordageddon.util.JsonParserManuale;
 import wordageddon.util.SceneUtils;
 
 /**
- * FXML Controller class
+ * 
  *
  * @author Gruppo 3
  */
@@ -74,9 +74,7 @@ public class WordageddonController implements Initializable {
     @FXML
     private ToggleGroup quizLanguageGroup;
 
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {

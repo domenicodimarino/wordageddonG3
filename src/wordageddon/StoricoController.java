@@ -48,7 +48,7 @@ public class StoricoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Setup colonne
+      
         correctanswers.setCellValueFactory(new PropertyValueFactory<>("risposteCorrette"));
         temporesiduo.setCellValueFactory(new PropertyValueFactory<>("tempoResiduo"));
         Totpunteggio.setCellValueFactory(new PropertyValueFactory<>("valore"));
@@ -71,7 +71,7 @@ public class StoricoController implements Initializable {
             )
         );
 
-        // --- SOLO punteggi dell'utente loggato ---
+        //
         ObservableList<Punteggio> punteggiList = FXCollections.observableArrayList();
         try {
             Utente utenteLoggato = SessionManager.getUtente();
@@ -79,7 +79,7 @@ public class StoricoController implements Initializable {
                 String username = utenteLoggato.getUsername();
                 PunteggioDAOSQL dao = new PunteggioDAOSQL();
                 List<Punteggio> tuttiPunteggi = dao.elencaTutti();
-                // Filtro per utente corrente
+               
                 List<Punteggio> punteggiUtente = tuttiPunteggi.stream()
                         .filter(p -> p.getUsername().equals(username))
                         .collect(Collectors.toList());
@@ -90,7 +90,7 @@ public class StoricoController implements Initializable {
         }
         resultsTable.setItems(punteggiList);
 
-        // Migliore e media
+       
         if (!punteggiList.isEmpty()) {
             int max = punteggiList.stream().mapToInt(Punteggio::getValore).max().orElse(0);
             double media = punteggiList.stream().mapToInt(Punteggio::getValore).average().orElse(0.0);
@@ -101,16 +101,16 @@ public class StoricoController implements Initializable {
             mediapunti.setText("—");
         }
 
-        // Bottone menu
+       
         menu.setOnAction(event -> {
             SceneUtils.switchScene(menu, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
         });
 
-        // Bottone esporta storico in CSV
+        
         espStorico.setOnAction(event -> exportToCSV());
     }
 
-    // Metodo per esportare il CSV
+    
     private void exportToCSV() {
         if (resultsTable.getItems().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Non ci sono dati da esportare.");
@@ -127,13 +127,13 @@ public class StoricoController implements Initializable {
 
         if (file != null) {
             try (FileWriter writer = new FileWriter(file)) {
-                // Intestazione CSV
+               
                 writer.append("Risposte Corrette;Tempo Residuo;Punteggio;Difficoltà;Data\n");
                 for (Punteggio p : resultsTable.getItems()) {
                     writer.append(p.getRisposteCorrette() + ";");
                     writer.append(p.getTempoResiduo() + ";");
                     writer.append(p.getValore() + ";");
-                    // Difficoltà come stringa
+                  
                     String diff;
                     switch (p.getDifficolta()) {
                         case 1: diff = "Facile"; break;
@@ -146,7 +146,7 @@ public class StoricoController implements Initializable {
                     writer.append("\n");
                 }
                 writer.flush();
-                // Notifica successo
+                
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Storico esportato con successo!");
                 alert.setTitle("Esportazione Storico");
                 alert.setHeaderText(null);

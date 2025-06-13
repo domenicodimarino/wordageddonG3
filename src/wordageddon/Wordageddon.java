@@ -26,7 +26,7 @@ public class Wordageddon extends Application {
         stage.setTitle("Wordageddon");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("Resources/wordageddon_icon.png")));
         stage.setScene(scene);
-        stage.setResizable(false); // <-- FINESTRA NON RIDIMENSIONABILE
+        stage.setResizable(false); 
         stage.show();
     }
 
@@ -43,7 +43,7 @@ public class Wordageddon extends Application {
         launch(args);
     }
 
-    // Da chiamare una sola volta all'avvio, al login o all'apertura dell'app principale
+   
     public static void ensureAdminUserExists() throws Exception {
         UtenteDAO dao = new UtenteDAOSQL();
         UtenteService utenteservice = new UtenteService(dao);

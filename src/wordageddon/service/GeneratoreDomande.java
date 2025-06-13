@@ -4,10 +4,7 @@ import wordageddon.model.Domanda;
 import wordageddon.model.Document;
 import java.util.*;
 
-/**
- * GeneratoreDomande si occupa di generare domande a risposta multipla
- * per la sessione di gioco, sulla base dei dati dei documenti letti.
- */
+
 public class GeneratoreDomande {
 
     private final List<Document> documenti;
@@ -21,10 +18,10 @@ public class GeneratoreDomande {
 
     public Domanda generaDomandaRandom() {
         List<Integer> tipiValidi = new ArrayList<>();
-        if (vocabolario.size() >= 1) tipiValidi.add(0); // frequenza
-        if (vocabolario.size() >= 2) tipiValidi.add(1); // confronto solo se almeno 2 parole
-        if (documenti.size() > 1 && vocabolario.size() >= 1) tipiValidi.add(2); // esclusione solo se >1 documento e almeno una parola
-        // SOLO SE hai più di UN documento ha senso la domanda "parola-documento"
+        if (vocabolario.size() >= 1) tipiValidi.add(0); 
+        if (vocabolario.size() >= 2) tipiValidi.add(1); 
+        if (documenti.size() > 1 && vocabolario.size() >= 1) tipiValidi.add(2); 
+        
         if (documenti.size() > 1 && vocabolario.size() >= 1) tipiValidi.add(3);
         if (tipiValidi.isEmpty()) return null;
         int tipo = tipiValidi.get(random.nextInt(tipiValidi.size()));
@@ -92,7 +89,7 @@ public class GeneratoreDomande {
 
     // Tipologia 4: Domanda di associazione parola-documento
     private Domanda generaDomandaParolaDocumento() {
-        if (documenti.size() <= 1) return null; // sicurezza extra
+        if (documenti.size() <= 1) return null; 
         Document doc = scegliDocumentoRandom();
         String parola = scegliParolaPresenteIn(doc);
         if (parola == null) return null;
@@ -112,7 +109,7 @@ public class GeneratoreDomande {
         );
     }
 
-    // --- Utilità interne ---
+    
     private String scegliParolaRandom() {
         List<String> parole = new ArrayList<>(vocabolario);
         return parole.get(random.nextInt(parole.size()));

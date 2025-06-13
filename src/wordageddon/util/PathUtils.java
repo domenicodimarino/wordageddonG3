@@ -14,10 +14,7 @@ public class PathUtils {
         }
     }
 
-    /**
-     * Cerca prima nella cartella dove si trova il JAR (usato per la consegna).
-     * Se non trova, prova nella working directory (caso esecuzione da NetBeans/IDE).
-     */
+    
     public static String getDataFilePath(String fileName) {
         File jarDir = getJarDir();
         File primary = new File(jarDir, fileName);

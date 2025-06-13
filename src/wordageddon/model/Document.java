@@ -10,7 +10,7 @@ public class Document {
 
     private final String path;
     private final String title;
-    private final Map<String, Integer> wordsMap; // parola -> frequenza
+    private final Map<String, Integer> wordsMap; 
     private final int wordsCount;
 
     public Document(String path, String title, Map<String, Integer> wordsMap) {

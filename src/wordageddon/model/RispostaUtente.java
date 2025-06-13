@@ -1,11 +1,11 @@
 package wordageddon.model;
 
 public class RispostaUtente {
-    private final int domandaIndex;           // Posizione della domanda nel quiz
-    private final String testoDomanda;        // Testo completo della domanda
-    private final String rispostaData;        // Risposta scelta dall'utente
-    private final String rispostaCorretta;    // Risposta corretta
-    private final boolean esatto;             // true = risposta corretta
+    private final int domandaIndex;          
+    private final String testoDomanda;       
+    private final String rispostaData;        
+    private final String rispostaCorretta;   
+    private final boolean esatto;            
 
     public RispostaUtente(int domandaIndex, String testoDomanda, String rispostaData, String rispostaCorretta, boolean esatto) {
         this.domandaIndex = domandaIndex;
@@ -35,8 +35,7 @@ public class RispostaUtente {
         return esatto;
     }
 
-    // Puoi usare questo alias se "scelta utente" ti serve altrove con quel nome
-    public String getSceltaUtente() {
+        public String getSceltaUtente() {
         return rispostaData;
     }
 }

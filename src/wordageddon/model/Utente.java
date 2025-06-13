@@ -1,7 +1,7 @@
 package wordageddon.model;
 
 
-//utente dell'applicazione
+
 public class Utente {
     private String username;
     private String passwordHash;

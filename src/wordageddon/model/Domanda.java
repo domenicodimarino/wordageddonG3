@@ -10,7 +10,7 @@ public class Domanda {
     private final String testo;
     private final List<String> opzioni;
     private final String rispostaCorretta;
-    private final String tipo; // es: "frequenza", "confronto", ecc
+    private final String tipo; 
 
     public Domanda(String testo, List<String> opzioni, String rispostaCorretta, String tipo) {
         this.testo = testo;

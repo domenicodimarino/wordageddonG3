@@ -59,29 +59,28 @@ public class ChooseDifficultyController implements Initializable {
         
         Lingua lingua = SessionManager.getLinguaScelta();
 
-        // Crea una nuova sessione
+       
         String dataInizio = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Sessione nuovaSessione = new Sessione(
             utente.getUsername(),
             dataInizio,
-            null, // dataFine
-            0,    // punteggioTotale
-            config.getTempoLettura(), // tempoResiduo (o altro valore iniziale)
-            null, // statoGiocoJson (puoi serializzare lo stato più avanti)
+            null, 
+            0,   
+            config.getTempoLettura(), 
+            null, 
             "in_corso",
             diff,
             lingua
         );
 
         try {
-            sessioneDAO.insertSessione(nuovaSessione); // Dopo questa chiamata, l'ID viene impostato
-            // (Opzionale) Salva la sessione corrente in SessionManager se vuoi accedervi globalmente
+            sessioneDAO.insertSessione(nuovaSessione); 
             SessionManager.setSessione(nuovaSessione);
 
             vaiALetturaTesto(diff, config, nuovaSessione);
         } catch (Exception ex) {
             ex.printStackTrace();
-            // Mostra errore all'utente se vuoi
+            
         }
     }
 
@@ -95,13 +94,13 @@ public class ChooseDifficultyController implements Initializable {
             LetturaTestoController controller = loader.getController();
             controller.impostaSessione(sessione, config);
 
-            // Ottieni lo stage corrente
+            
             Stage stage = (Stage) easyBtn.getScene().getWindow();
 
-            // Passa lo stage per impostare il gestore di chiusura finestra
+            
             controller.setWindowCloseHandler(stage);
 
-            // Cambia scena
+            
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

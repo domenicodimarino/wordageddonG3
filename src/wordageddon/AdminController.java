@@ -39,7 +39,7 @@ public class AdminController implements Initializable {
     @FXML
     private Hyperlink infoLink;
 
-    // Rappresenta le righe della tabella
+   
     public static class DocumentRow {
         private final String nome;
         private final String lingua;
@@ -61,14 +61,14 @@ public class AdminController implements Initializable {
         stopENButton.setOnAction(e -> chooseStopwordsEN());
         menuBtn.setOnAction(e -> goToMenu());
 
-        // Set cell value factories per la tabella
+        
         docNameColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getNome()));
         docLangColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getLingua()));
         documentTable.setItems(documentRows);
 
         uploadDocButton.setOnAction(e -> uploadDocument());
 
-        // Carica documenti già presenti, se vuoi
+        
         refreshDocumentTable();
     }
 
@@ -80,7 +80,7 @@ public class AdminController implements Initializable {
         if (file != null) {
             selectedStopwordsIT = file;
             stopITButton.setText("IT: " + file.getName());
-            // Salva path se vuoi renderlo persistente
+            
         }
     }
 
@@ -92,12 +92,12 @@ public class AdminController implements Initializable {
         if (file != null) {
             selectedStopwordsEN = file;
             stopENButton.setText("EN: " + file.getName());
-            // Salva path se vuoi renderlo persistente
+            
         }
     }
 
     private void uploadDocument() {
-        // Controlla che una lingua sia selezionata
+        
         Toggle selectedToggle = docLanguage.getSelectedToggle();
         if (selectedToggle == null) {
             showAlert("Seleziona una lingua (Italiano/Inglese) prima di caricare un documento.");
@@ -106,7 +106,7 @@ public class AdminController implements Initializable {
         String lang = ((RadioButton) selectedToggle).getText();
         String langFolder = lang.equalsIgnoreCase("Italiano") ? "ita" : "eng";
 
-        // Scegli il file da caricare
+       
         FileChooser fc = new FileChooser();
         fc.setTitle("Scegli documento di testo");
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
@@ -162,7 +162,7 @@ public class AdminController implements Initializable {
     }
 
     private Stage getStage() {
-        // Usa uno qualsiasi dei bottoni per risalire allo stage
+        
         return (Stage) menuBtn.getScene().getWindow();
     }
     private void goToMenu() {
