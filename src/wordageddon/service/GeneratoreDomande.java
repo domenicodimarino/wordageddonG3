@@ -4,25 +4,49 @@ import wordageddon.model.Domanda;
 import wordageddon.model.Document;
 import java.util.*;
 
-
+/**
+ * Classe responsabile della generazione di domande casuali a partire da una lista di documenti e un vocabolario.
+ * Le domande possono essere di diverse tipologie: frequenza di una parola, confronto tra parole, esclusione e associazione parola-documento.
+ */
 public class GeneratoreDomande {
 
+    /**
+     * Lista dei documenti su cui generare le domande.
+     */
     private final List<Document> documenti;
+
+    /**
+     * Vocabolario delle parole disponibili per le domande.
+     */
     private final Set<String> vocabolario;
+
+    /**
+     * Generatore di numeri casuali.
+     */
     private final Random random = new Random();
 
+    /**
+     * Costruttore della classe GeneratoreDomande.
+     *
+     * @param documenti   lista dei documenti
+     * @param vocabolario set di parole disponibili
+     */
     public GeneratoreDomande(List<Document> documenti, Set<String> vocabolario) {
         this.documenti = documenti;
         this.vocabolario = vocabolario;
     }
 
+    /**
+     * Genera una domanda casuale, scegliendo tra le tipologie disponibili in base al vocabolario e ai documenti.
+     *
+     * @return una domanda generata casualmente, o null se non è possibile generare una domanda valida
+     */
     public Domanda generaDomandaRandom() {
         List<Integer> tipiValidi = new ArrayList<>();
         if (vocabolario.size() >= 1) tipiValidi.add(0); 
         if (vocabolario.size() >= 2) tipiValidi.add(1); 
         if (documenti.size() > 1 && vocabolario.size() >= 1) tipiValidi.add(2); 
-        
-        if (documenti.size() > 1 && vocabolario.size() >= 1) tipiValidi.add(3);
+        if (documenti.size() > 1 && vocabolario.size() >= 1) tipiValidi.add(3); 
         if (tipiValidi.isEmpty()) return null;
         int tipo = tipiValidi.get(random.nextInt(tipiValidi.size()));
         switch (tipo) {
@@ -34,7 +58,11 @@ public class GeneratoreDomande {
         }
     }
 
-    // Tipologia 1: Domanda sulla frequenza di una parola.
+    /**
+     * Genera una domanda sulla frequenza di una parola nei documenti.
+     *
+     * @return domanda sulla frequenza di una parola
+     */
     private Domanda generaDomandaFrequenza() {
         String parola = scegliParolaRandom();
         int occorrenze = contaOccorrenzeGlobale(parola);
@@ -48,7 +76,11 @@ public class GeneratoreDomande {
         );
     }
 
-    // Tipologia 2: Domanda di confronto tra parole
+    /**
+     * Genera una domanda di confronto tra due parole.
+     *
+     * @return domanda di confronto tra parole
+     */
     private Domanda generaDomandaConfronto() {
         if (vocabolario.size() < 2) return null;
         String parola1 = scegliParolaRandom();
@@ -72,7 +104,11 @@ public class GeneratoreDomande {
         );
     }
 
-    // Tipologia 3: Domanda di esclusione
+    /**
+     * Genera una domanda di esclusione, in cui si chiede in quale documento una parola non appare.
+     *
+     * @return domanda di esclusione
+     */
     private Domanda generaDomandaEsclusione() {
         String parola = scegliParolaMaiPresente();
         if (parola == null) return null;
@@ -87,9 +123,13 @@ public class GeneratoreDomande {
         );
     }
 
-    // Tipologia 4: Domanda di associazione parola-documento
+    /**
+     * Genera una domanda di associazione tra parola e documento.
+     *
+     * @return domanda di associazione parola-documento
+     */
     private Domanda generaDomandaParolaDocumento() {
-        if (documenti.size() <= 1) return null; 
+        if (documenti.size() <= 1) return null;
         Document doc = scegliDocumentoRandom();
         String parola = scegliParolaPresenteIn(doc);
         if (parola == null) return null;
@@ -109,12 +149,22 @@ public class GeneratoreDomande {
         );
     }
 
-    
+    /**
+     * Sceglie una parola casuale dal vocabolario.
+     *
+     * @return parola casuale
+     */
     private String scegliParolaRandom() {
         List<String> parole = new ArrayList<>(vocabolario);
         return parole.get(random.nextInt(parole.size()));
     }
 
+    /**
+     * Sceglie una parola casuale dal vocabolario, escludendo alcune parole specificate.
+     *
+     * @param exclude parole da escludere
+     * @return parola casuale diversa da quelle escluse
+     */
     private String scegliParolaRandomDiversa(String... exclude) {
         Set<String> excl = new HashSet<>(Arrays.asList(exclude));
         List<String> parole = new ArrayList<>(vocabolario);
@@ -123,6 +173,12 @@ public class GeneratoreDomande {
         return parole.get(random.nextInt(parole.size()));
     }
 
+    /**
+     * Conta il numero totale di occorrenze di una parola in tutti i documenti.
+     *
+     * @param parola parola da contare
+     * @return numero di occorrenze totali
+     */
     private int contaOccorrenzeGlobale(String parola) {
         int tot = 0;
         for (Document doc : documenti) {
@@ -132,6 +188,12 @@ public class GeneratoreDomande {
         return tot;
     }
 
+    /**
+     * Genera una lista di opzioni numeriche per una domanda a partire dalla risposta corretta.
+     *
+     * @param corretta valore corretto
+     * @return lista di opzioni numeriche come stringhe
+     */
     private List<String> generaOpzioniNumeriche(int corretta) {
         Set<Integer> opzioni = new HashSet<>();
         opzioni.add(corretta);
@@ -144,6 +206,11 @@ public class GeneratoreDomande {
         return strOpzioni;
     }
 
+    /**
+     * Sceglie una parola dal vocabolario che non è presente almeno in un documento.
+     *
+     * @return parola mai presente in almeno un documento, o null se non esiste
+     */
     private String scegliParolaMaiPresente() {
         for (String parola : vocabolario) {
             for (Document doc : documenti) {
@@ -156,6 +223,12 @@ public class GeneratoreDomande {
         return null;
     }
 
+    /**
+     * Trova il titolo del documento in cui una parola non appare.
+     *
+     * @param parola parola da cercare
+     * @return titolo del documento dove la parola non appare, o "Nessuno" se appare ovunque
+     */
     private String trovaDocumentoDoveNonAppare(String parola) {
         for (Document doc : documenti) {
             Integer c = doc.getWordsMap().get(parola);
@@ -164,10 +237,21 @@ public class GeneratoreDomande {
         return "Nessuno";
     }
 
+    /**
+     * Sceglie un documento casuale dalla lista dei documenti.
+     *
+     * @return documento casuale
+     */
     private Document scegliDocumentoRandom() {
         return documenti.get(random.nextInt(documenti.size()));
     }
 
+    /**
+     * Sceglie una parola presente nel documento specificato.
+     *
+     * @param doc documento in cui cercare la parola
+     * @return parola presente nel documento, o null se nessuna parola è presente
+     */
     private String scegliParolaPresenteIn(Document doc) {
         List<String> parolePresenti = new ArrayList<>();
         for (Map.Entry<String, Integer> e : doc.getWordsMap().entrySet()) {
