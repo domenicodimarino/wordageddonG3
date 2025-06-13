@@ -140,7 +140,7 @@ public class ChooseDifficultyController implements Initializable {
      */
     private void apriPdf(String relativePath) {
         try {
-            // Path assoluto relativo alla working directory
+           
             File file = new File(relativePath);
             if (!file.exists()) {
                 DialogUtils.showAlert(Alert.AlertType.ERROR, "ERRORE", null, "File non trovato: " + file.getAbsolutePath());

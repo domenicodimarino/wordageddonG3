@@ -213,7 +213,7 @@ public class QuizController implements Initializable {
             tempoQuizResiduo--;
             aggiornaTimerLabel();
 
-            // Lampeggio rosso negli ultimi 10 secondi
+           
             if (tempoQuizResiduo <= 10 && !staLampeggiando) {
                 staLampeggiando = true;
                 Timeline blink = new Timeline(
