@@ -21,6 +21,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import javafx.stage.FileChooser;
 
+/**
+ * Controller della schermata dello storico delle partite dell'applicazione Wordageddon.
+ * Visualizza i punteggi delle partite passate dell'utente loggato, calcola statistiche e permette l'esportazione dei dati in formato CSV.
+ */
 public class StoricoController implements Initializable {
 
     @FXML
@@ -46,9 +50,17 @@ public class StoricoController implements Initializable {
     @FXML
     private Button espStorico;
 
+    /**
+     * Inizializza la schermata storico.
+     * Popola la tabella dei punteggi dell'utente loggato, calcola il miglior punteggio e la media,
+     * e imposta i listener sui pulsanti per navigazione e esportazione.
+     *
+     * @param url URL location utilizzata per risolvere i percorsi relativi all'oggetto root (può essere null).
+     * @param rb  ResourceBundle utilizzato per localizzare l'interfaccia utente (può essere null).
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      
+
         correctanswers.setCellValueFactory(new PropertyValueFactory<>("risposteCorrette"));
         temporesiduo.setCellValueFactory(new PropertyValueFactory<>("tempoResiduo"));
         Totpunteggio.setCellValueFactory(new PropertyValueFactory<>("valore"));
@@ -71,7 +83,6 @@ public class StoricoController implements Initializable {
             )
         );
 
-        //
         ObservableList<Punteggio> punteggiList = FXCollections.observableArrayList();
         try {
             Utente utenteLoggato = SessionManager.getUtente();
@@ -79,7 +90,7 @@ public class StoricoController implements Initializable {
                 String username = utenteLoggato.getUsername();
                 PunteggioDAOSQL dao = new PunteggioDAOSQL();
                 List<Punteggio> tuttiPunteggi = dao.elencaTutti();
-               
+
                 List<Punteggio> punteggiUtente = tuttiPunteggi.stream()
                         .filter(p -> p.getUsername().equals(username))
                         .collect(Collectors.toList());
@@ -90,7 +101,6 @@ public class StoricoController implements Initializable {
         }
         resultsTable.setItems(punteggiList);
 
-       
         if (!punteggiList.isEmpty()) {
             int max = punteggiList.stream().mapToInt(Punteggio::getValore).max().orElse(0);
             double media = punteggiList.stream().mapToInt(Punteggio::getValore).average().orElse(0.0);
@@ -101,16 +111,18 @@ public class StoricoController implements Initializable {
             mediapunti.setText("—");
         }
 
-       
         menu.setOnAction(event -> {
             SceneUtils.switchScene(menu, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
         });
 
-        
         espStorico.setOnAction(event -> exportToCSV());
     }
 
-    
+    /**
+     * Esporta i dati visualizzati nella tabella storico in un file CSV scelto dall'utente.
+     * Se la tabella è vuota, mostra un avviso e interrompe l'operazione.
+     * In caso di successo o errore, mostra un messaggio all'utente.
+     */
     private void exportToCSV() {
         if (resultsTable.getItems().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Non ci sono dati da esportare.");
@@ -127,13 +139,13 @@ public class StoricoController implements Initializable {
 
         if (file != null) {
             try (FileWriter writer = new FileWriter(file)) {
-               
+
                 writer.append("Risposte Corrette;Tempo Residuo;Punteggio;Difficoltà;Data\n");
                 for (Punteggio p : resultsTable.getItems()) {
                     writer.append(p.getRisposteCorrette() + ";");
                     writer.append(p.getTempoResiduo() + ";");
                     writer.append(p.getValore() + ";");
-                  
+
                     String diff;
                     switch (p.getDifficolta()) {
                         case 1: diff = "Facile"; break;
@@ -146,7 +158,7 @@ public class StoricoController implements Initializable {
                     writer.append("\n");
                 }
                 writer.flush();
-                
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Storico esportato con successo!");
                 alert.setTitle("Esportazione Storico");
                 alert.setHeaderText(null);

@@ -16,8 +16,20 @@ import wordageddon.model.RuoloUtente;
 import wordageddon.model.Utente;
 import wordageddon.service.UtenteService;
 
+/**
+ * Classe principale dell'applicazione Wordageddon.
+ * Si occupa dell'inizializzazione del database, della verifica dell'utente admin
+ * e dell'avvio della GUI tramite JavaFX.
+ */
 public class Wordageddon extends Application {
 
+    /**
+     * Metodo di avvio dell'applicazione JavaFX.
+     * Carica la schermata di login tramite FXML, imposta la scena e configura la finestra principale.
+     *
+     * @param stage Lo stage principale fornito da JavaFX.
+     * @throws Exception Se si verifica un errore durante il caricamento delle risorse o della scena.
+     */
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Resources/fxml/login.fxml"));
@@ -30,6 +42,12 @@ public class Wordageddon extends Application {
         stage.show();
     }
 
+    /**
+     * Metodo main dell'applicazione.
+     * Inizializza il driver JDBC, il database e verifica l'esistenza dell'utente admin prima di avviare l'applicazione JavaFX.
+     *
+     * @param args Argomenti passati da linea di comando.
+     */
     public static void main(String[] args) {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -43,7 +61,12 @@ public class Wordageddon extends Application {
         launch(args);
     }
 
-   
+    /**
+     * Verifica che l'utente admin esista nel database.
+     * Se non esiste, crea un nuovo utente admin con username e password predefiniti ("admin", "admin").
+     *
+     * @throws Exception Se si verifica un errore durante l'accesso al database o nella creazione dell'utente.
+     */
     public static void ensureAdminUserExists() throws Exception {
         UtenteDAO dao = new UtenteDAOSQL();
         UtenteService utenteservice = new UtenteService(dao);

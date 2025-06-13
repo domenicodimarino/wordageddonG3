@@ -24,6 +24,11 @@ import wordageddon.model.Punteggio;
 import wordageddon.util.DialogUtils;
 import wordageddon.util.SceneUtils;
 
+/**
+ * Controller del quiz per l'applicazione Wordageddon.
+ * Gestisce la logica della somministrazione delle domande, la gestione del timer,
+ * il salvataggio delle risposte, la gestione della sessione e la visualizzazione dei risultati.
+ */
 public class QuizController implements Initializable {
 
     @FXML private Label questionNumberLabel;
@@ -38,18 +43,22 @@ public class QuizController implements Initializable {
     @FXML private Button interrompiBtn;
     @FXML private Label tempoRimastoLabel;
 
-
     private List<Domanda> domande;
     private int domandaCorrente = 0;
     private int punteggio = 0;
-
     private Timeline timeline;
     private int tempoQuizResiduo = 60;
-
     private List<RispostaUtente> risposteUtente = new ArrayList<>();
     private Sessione sessione;
     private boolean staLampeggiando = false;
-    
+
+    /**
+     * Inizializza il controller, imposta i listener sui bottoni e sul gruppo di opzioni.
+     * Disabilita il bottone "Avanti" finché non viene selezionata una risposta.
+     *
+     * @param url URL location utilizzata per risolvere i percorsi relativi all'oggetto root (può essere null).
+     * @param rb  ResourceBundle utilizzato per localizzare l'interfaccia utente (può essere null).
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         nextBtn.setDisable(true);
@@ -70,23 +79,44 @@ public class QuizController implements Initializable {
         });
     }
 
+    /**
+     * Imposta la sessione corrente.
+     * @param sessione la sessione del quiz.
+     */
     public void impostaSessione(Sessione sessione) {
         this.sessione = sessione;
     }
 
+    /**
+     * Imposta la lista delle domande e avvia il timer globale.
+     * @param domande lista delle domande del quiz.
+     */
     public void impostaDomande(List<Domanda> domande) {
         this.domande = domande;
         startTimerGlobale();
     }
 
+    /**
+     * Imposta l'indice della domanda corrente.
+     * @param index indice della domanda corrente.
+     */
     public void setDomandaCorrente(int index) {
         this.domandaCorrente = index;
     }
 
+    /**
+     * Restituisce l'indice della domanda corrente.
+     * @return indice della domanda corrente.
+     */
     public int getDomandaCorrente() {
         return domandaCorrente;
     }
 
+    /**
+     * Imposta la lista delle risposte utente recuperate da una sessione interrotta.
+     * Aggiunge solo le nuove risposte mancanti.
+     * @param risposte lista delle risposte da impostare.
+     */
     public void setRisposteUtente(List<RispostaUtente> risposte) {
         for (RispostaUtente nuova : risposte) {
             boolean giàEsiste = this.risposteUtente.stream()
@@ -97,21 +127,37 @@ public class QuizController implements Initializable {
                     punteggio++;
                 }
             }
-        }       
+        }
     }
 
+    /**
+     * Restituisce la lista delle risposte date dall'utente.
+     * @return lista delle risposte utente.
+     */
     public List<RispostaUtente> getRisposteUtente() {
         return risposteUtente;
     }
 
+    /**
+     * Imposta il tempo residuo del quiz in secondi.
+     * @param secondi tempo residuo in secondi.
+     */
     public void setTempoResiduo(int secondi) {
         this.tempoQuizResiduo = secondi;
     }
 
+    /**
+     * Imposta il comportamento alla chiusura della finestra per salvare la sessione interrotta.
+     * @param stage lo stage della finestra corrente.
+     */
     public void setWindowCloseHandler(Stage stage) {
         stage.setOnCloseRequest(e -> salvaSessioneInterrotta());
     }
 
+    /**
+     * Mostra la domanda corrente e aggiorna le opzioni disponibili.
+     * Aggiorna i testi e abilita/disabilita le opzioni a seconda della domanda.
+     */
     void mostraDomandaCorrente() {
         if (domande == null || domande.isEmpty() || domandaCorrente >= domande.size()) return;
         Domanda d = domande.get(domandaCorrente);
@@ -130,6 +176,10 @@ public class QuizController implements Initializable {
         nextBtn.setDisable(true);
     }
 
+    /**
+     * Controlla se la risposta selezionata dall'utente è corretta e aggiorna il punteggio.
+     * Salva la risposta nella lista delle risposte utente.
+     */
     private void controllaRisposta() {
         RadioButton selected = (RadioButton) optionsGroup.getSelectedToggle();
         if (selected == null) return;
@@ -149,54 +199,62 @@ public class QuizController implements Initializable {
         ));
     }
 
+    /**
+     * Avvia il timer globale del quiz e aggiorna la visualizzazione del tempo.
+     * Cambia il colore del timer in base al tempo rimanente e gestisce la fine del tempo.
+     */
     private void startTimerGlobale() {
-    if (timeline != null) {
-        timeline.stop();
-        timeline = null;
-    }
-    aggiornaTimerLabel();
-    timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-        tempoQuizResiduo--;
-        aggiornaTimerLabel();
-
-      
-        if (tempoQuizResiduo <= 10 && !staLampeggiando) {
-            staLampeggiando = true;
-            Timeline blink = new Timeline(
-                new KeyFrame(Duration.seconds(0), evt -> timer.setStyle("-fx-text-fill: red;")),
-                new KeyFrame(Duration.seconds(0.5), evt -> timer.setStyle("-fx-text-fill: darkred;"))
-            );
-            blink.setCycleCount(Timeline.INDEFINITE);
-            blink.play();
-        }
-
-        if (tempoQuizResiduo <= 0) {
+        if (timeline != null) {
             timeline.stop();
-            mostraRisultato();
+            timeline = null;
         }
-    }));
-    timeline.setCycleCount(tempoQuizResiduo);
-    timeline.play();
+        aggiornaTimerLabel();
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            tempoQuizResiduo--;
+            aggiornaTimerLabel();
+
+            // Lampeggio rosso negli ultimi 10 secondi
+            if (tempoQuizResiduo <= 10 && !staLampeggiando) {
+                staLampeggiando = true;
+                Timeline blink = new Timeline(
+                    new KeyFrame(Duration.seconds(0), evt -> timer.setStyle("-fx-text-fill: red;")),
+                    new KeyFrame(Duration.seconds(0.5), evt -> timer.setStyle("-fx-text-fill: darkred;"))
+                );
+                blink.setCycleCount(Timeline.INDEFINITE);
+                blink.play();
+            }
+
+            if (tempoQuizResiduo <= 0) {
+                timeline.stop();
+                mostraRisultato();
+            }
+        }));
+        timeline.setCycleCount(tempoQuizResiduo);
+        timeline.play();
     }
-    
+
+    /**
+     * Aggiorna il testo del timer e il colore in base al tempo residuo.
+     */
     private void aggiornaTimerLabel() {
-    int min = tempoQuizResiduo / 60;
-    int sec = tempoQuizResiduo % 60;
-    timer.setText(String.format("%02d:%02d", min, sec));
+        int min = tempoQuizResiduo / 60;
+        int sec = tempoQuizResiduo % 60;
+        timer.setText(String.format("%02d:%02d", min, sec));
 
-    
-    if (!staLampeggiando) {
-        if (tempoQuizResiduo <= 10) {
-            timer.setStyle("-fx-text-fill: red;");
-        } else if (tempoQuizResiduo <= 30) {
-            timer.setStyle("-fx-text-fill: orange;");
-        } else {
-            timer.setStyle("-fx-text-fill: green;");
+        if (!staLampeggiando) {
+            if (tempoQuizResiduo <= 10) {
+                timer.setStyle("-fx-text-fill: red;");
+            } else if (tempoQuizResiduo <= 30) {
+                timer.setStyle("-fx-text-fill: orange;");
+            } else {
+                timer.setStyle("-fx-text-fill: green;");
+            }
         }
     }
-}
 
-
+    /**
+     * Mostra il risultato finale del quiz, salva punteggio e sessione, e passa i dati al controller dei risultati.
+     */
     private void mostraRisultato() {
         nextBtn.setDisable(true);
 
@@ -238,20 +296,29 @@ public class QuizController implements Initializable {
         }
     }
 
+    /**
+     * Ritorna la difficoltà come valore intero.
+     * @param difficolta stringa della difficoltà ("FACILE", "MEDIO", "DIFFICILE").
+     * @return valore intero della difficoltà (1=Facile, 2=Medio, 3=Difficile).
+     */
     private int getDifficoltaAsInt(String difficolta) {
         if (difficolta == null) return 1;
-            switch (difficolta.toUpperCase()) {
-                case "FACILE":
-                    return 1;
-                case "MEDIO":
-                    return 2;
-                case "DIFFICILE":
-                    return 3;
-                default:
-                    return 1;
+        switch (difficolta.toUpperCase()) {
+            case "FACILE":
+                return 1;
+            case "MEDIO":
+                return 2;
+            case "DIFFICILE":
+                return 3;
+            default:
+                return 1;
         }
     }
 
+    /**
+     * Salva lo stato attuale della sessione in formato JSON per permettere la ripresa successiva.
+     * Si attiva in caso di interruzione del quiz.
+     */
     private void salvaSessioneInterrotta() {
         if (timeline != null) {
             timeline.stop();
@@ -306,11 +373,22 @@ public class QuizController implements Initializable {
         }
     }
 
+    /**
+     * Effettua l'escape di caratteri speciali per la serializzazione JSON.
+     * @param s stringa da convertire.
+     * @return stringa "escapata" per JSON.
+     */
     private String escape(String s) {
         if (s == null) return "";
         return s.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
-    }    
+    }
 
+    /**
+     * Gestisce il click sul pulsante "Interrompi".
+     * Salva la sessione corrente e torna al menu principale.
+     *
+     * @param event l'evento di click del pulsante.
+     */
     @FXML
     private void onInterrompiClicked(ActionEvent event) {
         if (timeline != null) timeline.stop();

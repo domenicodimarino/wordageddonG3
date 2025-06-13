@@ -18,6 +18,11 @@ import wordageddon.config.AppConfig;
 import wordageddon.util.DialogUtils;
 import wordageddon.util.SceneUtils;
 
+/**
+ * Controller per la gestione delle funzioni amministrative dell'applicazione Wordageddon.
+ * Permette la gestione di stopwords, documenti in italiano/inglese, visualizzazione e caricamento di nuovi documenti,
+ * e l'accesso ai link informativi e privacy.
+ */
 public class AdminController implements Initializable {
 
     @FXML
@@ -41,15 +46,31 @@ public class AdminController implements Initializable {
     @FXML
     private Hyperlink infoLink;
 
-   
+    /**
+     * Classe interna che rappresenta una riga nella tabella dei documenti caricati.
+     */
     public static class DocumentRow {
         private final String nome;
         private final String lingua;
+
+        /**
+         * Costruisce una riga documento.
+         * @param nome nome del documento
+         * @param lingua lingua del documento ("Italiano" o "Inglese")
+         */
         public DocumentRow(String nome, String lingua) {
             this.nome = nome;
             this.lingua = lingua;
         }
+        /**
+         * Restituisce il nome del documento.
+         * @return nome del documento
+         */
         public String getNome() { return nome; }
+        /**
+         * Restituisce la lingua del documento.
+         * @return lingua del documento
+         */
         public String getLingua() { return lingua; }
     }
 
@@ -57,13 +78,18 @@ public class AdminController implements Initializable {
     private File selectedStopwordsEN;
     private ObservableList<DocumentRow> documentRows = FXCollections.observableArrayList();
 
+    /**
+     * Inizializza il controller, imposta i listener sui pulsanti, popola la tabella dei documenti e aggiorna la vista.
+     *
+     * @param url URL location utilizzata per risolvere i percorsi relativi all'oggetto root (può essere null).
+     * @param rb  ResourceBundle utilizzato per localizzare l'interfaccia utente (può essere null).
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         stopITButton.setOnAction(e -> chooseStopwordsIT());
         stopENButton.setOnAction(e -> chooseStopwordsEN());
         menuBtn.setOnAction(e -> goToMenu());
 
-        
         docNameColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getNome()));
         docLangColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getLingua()));
         documentTable.setItems(documentRows);
@@ -72,10 +98,13 @@ public class AdminController implements Initializable {
         privacyLink.setOnAction(e -> apriPdf("privacy_info/PrivacyG3.pdf"));
         infoLink.setOnAction(e -> apriPdf("privacy_info/InfoG3.pdf"));
 
-        
         refreshDocumentTable();
     }
 
+    /**
+     * Permette di selezionare il file delle stopwords per l'italiano.
+     * Aggiorna l'etichetta del pulsante con il nome del file selezionato.
+     */
     private void chooseStopwordsIT() {
         FileChooser fc = new FileChooser();
         fc.setTitle("Scegli file stopwords italiano");
@@ -84,10 +113,13 @@ public class AdminController implements Initializable {
         if (file != null) {
             selectedStopwordsIT = file;
             stopITButton.setText("IT: " + file.getName());
-            
         }
     }
 
+    /**
+     * Permette di selezionare il file delle stopwords per l'inglese.
+     * Aggiorna l'etichetta del pulsante con il nome del file selezionato.
+     */
     private void chooseStopwordsEN() {
         FileChooser fc = new FileChooser();
         fc.setTitle("Scegli file stopwords inglese");
@@ -96,12 +128,15 @@ public class AdminController implements Initializable {
         if (file != null) {
             selectedStopwordsEN = file;
             stopENButton.setText("EN: " + file.getName());
-            
         }
     }
 
+    /**
+     * Permette il caricamento di un nuovo documento di testo in italiano o inglese.
+     * Richiede la selezione della lingua e copia il file nella cartella appropriata.
+     * Aggiorna la tabella dei documenti dopo il caricamento.
+     */
     private void uploadDocument() {
-        
         Toggle selectedToggle = docLanguage.getSelectedToggle();
         if (selectedToggle == null) {
             showAlert("Seleziona una lingua (Italiano/Inglese) prima di caricare un documento.");
@@ -110,7 +145,6 @@ public class AdminController implements Initializable {
         String lang = ((RadioButton) selectedToggle).getText();
         String langFolder = lang.equalsIgnoreCase("Italiano") ? "ita" : "eng";
 
-       
         FileChooser fc = new FileChooser();
         fc.setTitle("Scegli documento di testo");
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
@@ -141,6 +175,10 @@ public class AdminController implements Initializable {
         }
     }
 
+    /**
+     * Aggiorna la tabella dei documenti leggendo i file presenti nelle cartelle
+     * di italiano e inglese della directory dei documenti.
+     */
     private void refreshDocumentTable() {
         documentRows.clear();
         String basePath = AppConfig.getDocumentiBasePath();
@@ -160,18 +198,35 @@ public class AdminController implements Initializable {
         }
     }
 
+    /**
+     * Mostra una finestra di dialogo informativa con il messaggio passato.
+     * @param msg messaggio da visualizzare
+     */
     private void showAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
         alert.showAndWait();
     }
 
+    /**
+     * Restituisce lo stage corrente dell'applicazione.
+     * @return stage corrente
+     */
     private Stage getStage() {
-        
         return (Stage) menuBtn.getScene().getWindow();
     }
+
+    /**
+     * Torna al menu principale dell'applicazione.
+     */
     private void goToMenu() {
         SceneUtils.switchScene(menuBtn, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
     }
+
+    /**
+     * Apre un file PDF informativo (privacy o info) tramite il visualizzatore PDF del sistema.
+     *
+     * @param relativePath percorso relativo del PDF da aprire.
+     */
     private void apriPdf(String relativePath) {
         try {
             // Path assoluto relativo alla working directory

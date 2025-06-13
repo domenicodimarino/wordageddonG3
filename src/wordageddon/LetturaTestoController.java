@@ -38,6 +38,11 @@ import wordageddon.service.SessionManager;
 import wordageddon.util.DialogUtils;
 import wordageddon.util.SceneUtils;
 
+/**
+ * Controller della schermata di lettura testo di Wordageddon.
+ * Gestisce la visualizzazione dei documenti, la gestione del timer di lettura,
+ * la generazione del quiz e la navigazione tra i documenti.
+ */
 public class LetturaTestoController implements Initializable {
 
     @FXML private Label documentLabel;
@@ -47,7 +52,6 @@ public class LetturaTestoController implements Initializable {
     @FXML private TextArea documentTextArea;
     @FXML private ScrollPane scrollDocument;
     @FXML private Label tempoRimastoLabel;
-    
 
     private Sessione sessione;
     private GameDifficultyConfig config;
@@ -56,9 +60,13 @@ public class LetturaTestoController implements Initializable {
     private int tempoResiduo;
     private Timeline timeline;
     private Set<String> vocabolarioGlobale;
-    
-    
 
+    /**
+     * Inizializza il controller e imposta i listener sui pulsanti.
+     *
+     * @param url URL location usata per risolvere i percorsi relativi all'oggetto root (può essere null).
+     * @param rb  ResourceBundle usato per localizzare l'interfaccia utente (può essere null).
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         quitGameBtn.setOnAction(e -> goToMenu());
@@ -68,6 +76,13 @@ public class LetturaTestoController implements Initializable {
         });
     }
 
+    /**
+     * Imposta la sessione e la configurazione di difficoltà.
+     * Carica i documenti, mostra il primo documento e avvia il timer.
+     *
+     * @param sessione la sessione corrente
+     * @param config configurazione di difficoltà del gioco
+     */
     public void impostaSessione(Sessione sessione, GameDifficultyConfig config) {
         this.sessione = sessione;
         this.config = config;
@@ -78,6 +93,12 @@ public class LetturaTestoController implements Initializable {
         startTimer();
     }
 
+    /**
+     * Carica i documenti disponibili secondo la configurazione specificata.
+     *
+     * @param config configurazione di difficoltà del gioco
+     * @return lista di documenti caricati e filtrati
+     */
     private List<Document> caricaDocumenti(GameDifficultyConfig config) {
         String cartellaBase = AppConfig.getDocumentiBasePath();
         Lingua lingua = sessione.getLingua();
@@ -118,6 +139,12 @@ public class LetturaTestoController implements Initializable {
         return result;
     }
 
+    /**
+     * Conta il numero di parole in un file.
+     *
+     * @param file file di testo da analizzare
+     * @return numero di parole, oppure Integer.MAX_VALUE in caso di errore
+     */
     private int contaParole(File file) {
         try {
             String contenuto = new String(Files.readAllBytes(file.toPath()), java.nio.charset.StandardCharsets.UTF_8);
@@ -129,6 +156,14 @@ public class LetturaTestoController implements Initializable {
         }
     }
 
+    /**
+     * Processa un file di testo, estraendo le parole e le loro frequenze,
+     * escludendo le stopwords specificate.
+     *
+     * @param file file di testo da processare
+     * @param stopwords set di stopwords da escludere
+     * @return oggetto WordStats con parole e frequenze
+     */
     private WordStats processaFile(File file, Set<String> stopwords) {
         WordStats stats = new WordStats();
         try (Scanner s = new Scanner(new BufferedReader(new FileReader(file)))) {
@@ -143,6 +178,11 @@ public class LetturaTestoController implements Initializable {
         return stats;
     }
 
+    /**
+     * Mostra il documento corrente nella view e aggiorna il titolo e il testo.
+     *
+     * @param indice indice del documento da mostrare
+     */
     private void mostraDocumento(int indice) {
         Document doc = documenti.get(indice);
         String title = doc.getTitle();
@@ -160,7 +200,12 @@ public class LetturaTestoController implements Initializable {
         }
     }
 
-
+    /**
+     * Legge il testo da un file dato il suo percorso.
+     *
+     * @param path percorso del file di testo
+     * @return il testo contenuto nel file
+     */
     private String leggiTestoDaFile(String path) {
         try {
             return new String(Files.readAllBytes(new File(path).toPath()));
@@ -169,6 +214,10 @@ public class LetturaTestoController implements Initializable {
         }
     }
 
+    /**
+     * Avvia il timer per la lettura del documento corrente.
+     * Allo scadere del tempo passa automaticamente al prossimo documento o al quiz.
+     */
     private void startTimer() {
         aggiornaTimerLabel();
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
@@ -183,21 +232,26 @@ public class LetturaTestoController implements Initializable {
         timeline.play();
     }
 
+    /**
+     * Aggiorna la label del timer e il suo colore in base al tempo residuo.
+     */
     private void aggiornaTimerLabel() {
-    int min = tempoResiduo / 60;
-    int sec = tempoResiduo % 60;
-    timer.setText(String.format("%02d:%02d", min, sec));
+        int min = tempoResiduo / 60;
+        int sec = tempoResiduo % 60;
+        timer.setText(String.format("%02d:%02d", min, sec));
 
-    if (tempoResiduo <= 10) {
-        timer.setStyle("-fx-text-fill: red;");
-    } else if (tempoResiduo <= 30) {
-        timer.setStyle("-fx-text-fill: orange;");
-    } else {
-        timer.setStyle("-fx-text-fill: green;");
+        if (tempoResiduo <= 10) {
+            timer.setStyle("-fx-text-fill: red;");
+        } else if (tempoResiduo <= 30) {
+            timer.setStyle("-fx-text-fill: orange;");
+        } else {
+            timer.setStyle("-fx-text-fill: green;");
+        }
     }
-}
 
-
+    /**
+     * Passa al prossimo documento oppure avvia il quiz se sono finiti i documenti.
+     */
     private void vaiAvanti() {
         if (indiceCorrente < documenti.size() - 1) {
             indiceCorrente++;
@@ -208,6 +262,10 @@ public class LetturaTestoController implements Initializable {
         }
     }
 
+    /**
+     * Avvia la preparazione e la generazione delle domande del quiz a partire dai documenti letti.
+     * Mostra una finestra di caricamento/progresso durante l'operazione.
+     */
     private void vaiAlQuiz() {
         ProgressBar progressBar = new ProgressBar(0);
         Label progressLabel = new Label("Sto preparando le domande del quiz...");
@@ -299,6 +357,10 @@ public class LetturaTestoController implements Initializable {
         new Thread(task).start();
     }
 
+    /**
+     * Chiede conferma all'utente e termina la partita tornando al menu principale,
+     * eliminando la sessione corrente.
+     */
     private void goToMenu() {
         ButtonType yes = new ButtonType("Sì");
         ButtonType no = new ButtonType("No");
@@ -322,6 +384,12 @@ public class LetturaTestoController implements Initializable {
         }
     }
 
+    /**
+     * Carica le stopwords da un file su disco.
+     *
+     * @param stopwordsPath percorso al file delle stopwords
+     * @return insieme delle stopwords caricate
+     */
     private Set<String> caricaStopwords(String stopwordsPath) {
         Set<String> stopwords = new HashSet<>();
         try (BufferedReader br = new BufferedReader(new FileReader(stopwordsPath))) {
@@ -335,12 +403,21 @@ public class LetturaTestoController implements Initializable {
         return stopwords;
     }
     
+    /**
+     * Imposta il comportamento alla chiusura della finestra durante la lettura.
+     * @param stage stage della finestra corrente
+     */
     public void setWindowCloseHandler(Stage stage) {
         stage.setOnCloseRequest(e -> {
-           
             System.out.println("CHIUSURA DURANTE LETTURA TESTO");
         });
     }
+
+    /**
+     * Effettua l'escape di caratteri speciali per la serializzazione JSON.
+     * @param s stringa da convertire
+     * @return stringa "escapata" per JSON
+     */
     private String escape(String s) {
         if (s == null) return "";
         return s.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
