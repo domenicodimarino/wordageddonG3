@@ -83,7 +83,7 @@ public class ResultsController implements Initializable {
                 if (empty || correct == null) {
                     setText(null);
                 } else {
-                    setText(correct ? "✔️" : "❌");
+                    setText(correct ? "CORRETTA" : "ERRATA");
                     setStyle("-fx-alignment: CENTER;");
                 }
             }
