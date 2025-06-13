@@ -9,121 +9,131 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wordageddon.LoginController">
     <children>
-      <VBox alignment="TOP_CENTER" prefHeight="470.0" prefWidth="900.0">
-         <children>
-            <ImageView fitHeight="138.0" fitWidth="336.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../WordageddonG3.jpeg" />
-               </image>
-               <VBox.margin>
-                  <Insets top="30.0" />
-               </VBox.margin>
-            </ImageView>
-            <Label fx:id="labelSignInUp" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="900.0" text="PAGINA DI LOGIN">
-               <font>
-                  <Font size="26.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Label>
-            <Label alignment="CENTER" prefHeight="24.0" prefWidth="900.0" text="Username" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Label>
-            <TextField fx:id="userField" prefWidth="600.0">
-               <VBox.margin>
-                  <Insets left="150.0" right="150.0" top="5.0" />
-               </VBox.margin>
-            </TextField>
-            <Label alignment="CENTER" prefHeight="24.0" prefWidth="900.0" text="Password" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Label>
-            <PasswordField fx:id="passwordField" prefWidth="600.0">
-               <VBox.margin>
-                  <Insets left="150.0" right="150.0" top="5.0" />
-               </VBox.margin>
-            </PasswordField>
-            <!-- Conferma password: nascosto di default -->
-            <Label fx:id="confirmPasswordLabel" alignment="CENTER" managed="false" prefHeight="24.0" prefWidth="900.0" text="Conferma password" textAlignment="CENTER" visible="false">
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </Label>
-            <PasswordField fx:id="confirmPasswordField" managed="false" prefWidth="600.0" visible="false">
-               <VBox.margin>
-                  <Insets left="150.0" right="150.0" top="5.0" />
-               </VBox.margin>
-            </PasswordField>
-            <Button fx:id="submitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="150.0" text="Login" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets top="25.0" />
-               </VBox.margin>
-            </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="900.0" text="Non sei ancora registrato?" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin></Label>
-            <Button fx:id="changeSignButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="250.0" text="Vai alla schermata di registrazione">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </Button>
-         </children>
-         <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </VBox.margin>
-      </VBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="130.0" prefWidth="900.0">
-         <children>
-            <Label contentDisplay="CENTER" text="©2025 Wordageddon">
-               <HBox.margin>
-                  <Insets left="10.0" top="50.0" />
-               </HBox.margin>
-            </Label>
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Hyperlink fx:id="privacyLink" text="Privacy">
-               <HBox.margin>
-                  <Insets left="10.0" right="5.0" top="50.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Hyperlink>
-            <Label text="|">
-               <HBox.margin>
-                  <Insets top="50.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font></Label>
-            <Hyperlink fx:id="infoLink" text="Info">
-               <HBox.margin>
-                  <Insets left="5.0" right="5.0" top="50.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Hyperlink>
-            <Label text="|">
-               <HBox.margin>
-                  <Insets top="50.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font></Label>
-            <Label text="v1.0">
-               <HBox.margin>
-                  <Insets left="5.0" right="10.0" top="50.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-   </children>
+        <!-- Parte superiore -->
+        <VBox alignment="TOP_CENTER" prefHeight="470.0" prefWidth="900.0">
+            <children>
+                <ImageView fitHeight="100.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../WordageddonG3.jpeg" />
+                    </image>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </ImageView>
+
+                <Label fx:id="labelSignInUp" alignment="CENTER" prefHeight="30.0" prefWidth="900.0" text="PAGINA DI LOGIN">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Label>
+
+                <Label alignment="CENTER" prefHeight="24.0" prefWidth="900.0" text="Username" textAlignment="CENTER">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Label>
+                <TextField fx:id="userField" prefWidth="600.0">
+                    <VBox.margin>
+                        <Insets left="150.0" right="150.0" top="5.0" />
+                    </VBox.margin>
+                </TextField>
+
+                <Label alignment="CENTER" prefHeight="24.0" prefWidth="900.0" text="Password" textAlignment="CENTER">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Label>
+                <PasswordField fx:id="passwordField" prefWidth="600.0">
+                    <VBox.margin>
+                        <Insets left="150.0" right="150.0" top="5.0" />
+                    </VBox.margin>
+                </PasswordField>
+
+                <!-- Campo di conferma password -->
+                <Label fx:id="confirmPasswordLabel" alignment="CENTER" managed="false" prefHeight="24.0" prefWidth="900.0" text="Conferma password" textAlignment="CENTER" visible="false">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Label>
+                <PasswordField fx:id="confirmPasswordField" managed="false" prefWidth="600.0" visible="false">
+                    <VBox.margin>
+                        <Insets left="150.0" right="150.0" top="5.0" />
+                    </VBox.margin>
+                </PasswordField>
+
+                <Button fx:id="submitButton" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="Login">
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </Button>
+
+                <Label alignment="CENTER" prefHeight="24.0" prefWidth="900.0" text="Non sei ancora registrato?" textAlignment="CENTER">
+                    <VBox.margin>
+                        <Insets top="15.0" />
+                    </VBox.margin>
+                </Label>
+
+                <Button fx:id="changeSignButton" prefHeight="30.0" prefWidth="250.0" text="Vai alla schermata di registrazione">
+                    <VBox.margin>
+                        <Insets top="5.0" />
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+
+        <!-- Footer -->
+        <HBox alignment="CENTER_LEFT" prefHeight="130.0" prefWidth="900.0">
+            <children>
+                <Label contentDisplay="CENTER" text="©2025 Wordageddon">
+                    <HBox.margin>
+                        <Insets left="10.0" top="50.0" />
+                    </HBox.margin>
+                </Label>
+                <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                <Hyperlink fx:id="privacyLink" text="Privacy">
+                    <HBox.margin>
+                        <Insets left="10.0" right="5.0" top="50.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Hyperlink>
+                <Label text="|">
+                    <HBox.margin>
+                        <Insets top="50.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Hyperlink fx:id="infoLink" text="Info">
+                    <HBox.margin>
+                        <Insets left="5.0" right="5.0" top="50.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Hyperlink>
+                <Label text="|">
+                    <HBox.margin>
+                        <Insets top="50.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label text="v1.0">
+                    <HBox.margin>
+                        <Insets left="5.0" right="10.0" top="50.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+    </children>
 </VBox>
