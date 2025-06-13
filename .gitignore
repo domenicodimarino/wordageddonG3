@@ -1,7 +1,0 @@
-/nbproject/private/
-/build/
-/dist/
-# Ignora i file di database
-*.sqlite
-*.db
-config.properties

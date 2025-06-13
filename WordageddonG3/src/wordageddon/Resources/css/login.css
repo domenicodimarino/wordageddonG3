@@ -1,0 +1,62 @@
+.root {
+    -fx-background-color: #f5f5f7;
+    -fx-font-family: "San Francisco", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-padding: 20;
+}
+
+.label {
+    -fx-text-fill: #111;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+#labelSignInUp, #Titolo {
+    -fx-font-size: 28px; 
+    -fx-font-weight: 700; 
+    -fx-text-fill: #111;    
+    -fx-font-family: "San Francisco", "Segoe UI Semibold", "Segoe UI", sans-serif;
+}
+
+.text-field, .password-field {
+    -fx-background-color: #fff;
+    -fx-text-fill: #111;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #bbb;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8 12;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #bdbdbd;
+    -fx-effect: dropshadow(gaussian, #bbb, 4, 0.1, 0, 1);
+}
+
+.button {
+    -fx-background-color: #111;
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-font-size: 20px;
+    -fx-min-width: 400px;
+    -fx-border-width: 0;
+}
+
+.button:hover {
+    -fx-background-color: #222;
+    -fx-effect: dropshadow(gaussian, #ccc, 8, 0.1, 0, 0);
+}
+
+.hyperlink {
+    -fx-text-fill: #0071e3;
+    -fx-font-size: 16px;
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #0066cc;
+    -fx-underline: true;
+}
