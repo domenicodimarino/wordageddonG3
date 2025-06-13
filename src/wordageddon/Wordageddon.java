@@ -24,7 +24,7 @@ public class Wordageddon extends Application {
         Scene scene = new Scene(root, 900, 600);
         scene.getStylesheets().add(getClass().getResource("/wordageddon/Resources/css/login.css").toExternalForm());
         stage.setTitle("Wordageddon");
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("Resources/WordageddonG3.jpeg")));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("Resources/wordageddon_icon.png")));
         stage.setScene(scene);
         stage.setResizable(false); // <-- FINESTRA NON RIDIMENSIONABILE
         stage.show();
@@ -32,6 +32,7 @@ public class Wordageddon extends Application {
 
     public static void main(String[] args) {
         try {
+            Class.forName("org.sqlite.JDBC");
             DatabaseManager.initializeDatabase();
             ensureAdminUserExists();
         } catch (SQLException ex) {

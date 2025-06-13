@@ -14,12 +14,13 @@ public class PathUtils {
         }
     }
 
-    // Cerca PRIMA nella cartella superiore rispetto al jar (caso jar in dist/)
-    // Se non trova, cerca nella working dir (caso esecuzione da IDE/root progetto)
+    /**
+     * Cerca prima nella cartella dove si trova il JAR (usato per la consegna).
+     * Se non trova, prova nella working directory (caso esecuzione da NetBeans/IDE).
+     */
     public static String getDataFilePath(String fileName) {
         File jarDir = getJarDir();
-        File parent = jarDir.getParentFile();
-        File primary = new File(parent, fileName);
+        File primary = new File(jarDir, fileName);
         if (primary.exists()) {
             return primary.getAbsolutePath();
         }
@@ -27,11 +28,9 @@ public class PathUtils {
         return fallback.getAbsolutePath();
     }
 
-    // Per cartelle (es. DocumentFolder)
     public static File getDataFolder(String folderName) {
         File jarDir = getJarDir();
-        File parent = jarDir.getParentFile();
-        File primary = new File(parent, folderName);
+        File primary = new File(jarDir, folderName);
         if (primary.exists()) {
             return primary;
         }

@@ -5,7 +5,6 @@
  */
 package wordageddon;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +20,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -174,6 +172,8 @@ public class WordageddonController implements Initializable {
                         stage.setScene(scene);
                         stage.show();
                         return;
+                    }else if(scelta.isPresent() && scelta.get() == nuova){
+                        dao.deleteSessioneById(s.getId());
                     }
 
                     break;

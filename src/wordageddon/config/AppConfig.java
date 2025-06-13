@@ -15,8 +15,8 @@ public class AppConfig {
     }
 
     public static String getDocumentiBasePath() { return documentiBasePath; }
-    public static void setDocumentiBasePath(String path) { 
-        documentiBasePath = path; 
+    public static void setDocumentiBasePath(String path) {
+        documentiBasePath = path;
         saveConfig();
     }
     public static String getStopwordsPathIT() { return stopwordsPathIT; }
