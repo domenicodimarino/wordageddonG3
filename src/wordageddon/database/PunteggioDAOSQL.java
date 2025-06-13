@@ -7,14 +7,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementazione SQL dell'interfaccia {@link PunteggioDAO} per la gestione dei punteggi nel database.
+ * Fornisce metodi per inserire, elencare e cancellare i punteggi nella tabella 'punteggio'.
+ */
 public class PunteggioDAOSQL implements PunteggioDAO {
+   
     private Connection conn;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
+    /**
+     * Costruttore che apre una connessione al database tramite {@link DatabaseManager}.
+     *
+     * @throws SQLException se si verifica un errore di connessione al database
+     */
     public PunteggioDAOSQL() throws SQLException {
         conn = DatabaseManager.getConnection();
     }
 
+    /**
+     * Inserisce un nuovo punteggio nella tabella 'punteggio'.
+     *
+     * @param p l'oggetto {@link Punteggio} da inserire
+     * @throws SQLException se si verifica un errore durante l'inserimento
+     */
     @Override
     public void inserisci(Punteggio p) throws SQLException {
         String sql = "INSERT INTO punteggio (username, valore, risposteCorrette, tempoResiduo, difficolta, data) VALUES (?, ?, ?, ?, ?, ?)";
@@ -29,6 +45,13 @@ public class PunteggioDAOSQL implements PunteggioDAO {
         }
     }
 
+    /**
+     * Restituisce una lista di tutti i punteggi presenti nel database,
+     * ordinati per valore decrescente.
+     *
+     * @return lista di {@link Punteggio}
+     * @throws SQLException se si verifica un errore durante la lettura dei dati
+     */
     @Override
     public List<Punteggio> elencaTutti() throws SQLException {
         List<Punteggio> lista = new ArrayList<>();
@@ -49,6 +72,11 @@ public class PunteggioDAOSQL implements PunteggioDAO {
         return lista;
     }
 
+    /**
+     * Cancella tutti i record dalla tabella 'punteggio'.
+     *
+     * @throws SQLException se si verifica un errore durante la cancellazione
+     */
     @Override
     public void cancellaTutti() throws SQLException {
         String sql = "DELETE FROM punteggio";

@@ -10,8 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 import wordageddon.model.RuoloUtente;
 
+/**
+ * Implementazione dell'interfaccia {@link UtenteDAO} che gestisce le operazioni CRUD
+ * sugli utenti nel database tramite SQL.
+ */
 public class UtenteDAOSQL implements UtenteDAO {
 
+    /**
+     * Inserisce un nuovo utente nel database.
+     *
+     * @param u l'utente da inserire
+     * @throws Exception se si verifica un errore durante l'inserimento
+     */
     @Override
     public void inserisci(Utente u) throws Exception {
         String sql = "INSERT INTO utente (username, password, ruolo) VALUES (?, ?, ?)";
@@ -26,6 +36,13 @@ public class UtenteDAOSQL implements UtenteDAO {
         }
     }
 
+    /**
+     * Cerca e restituisce un utente dal database in base allo username.
+     *
+     * @param username lo username da cercare
+     * @return l'utente corrispondente allo username, o null se non trovato
+     * @throws Exception se si verifica un errore durante la ricerca
+     */
     @Override
     public Utente cercaPerUsername(String username) throws Exception {
         String sql = "SELECT * FROM utente WHERE username = ?";
@@ -47,6 +64,12 @@ public class UtenteDAOSQL implements UtenteDAO {
         return null;
     }
 
+    /**
+     * Restituisce una lista di tutti gli utenti presenti nel database, ordinati per username crescente.
+     *
+     * @return lista di utenti
+     * @throws Exception se si verifica un errore durante il recupero dei dati
+     */
     @Override
     public List<Utente> elencaTutti() throws Exception {
         List<Utente> lista = new ArrayList<>();
@@ -67,6 +90,11 @@ public class UtenteDAOSQL implements UtenteDAO {
         return lista;
     }
 
+    /**
+     * Cancella tutti gli utenti dal database.
+     *
+     * @throws Exception se si verifica un errore durante la cancellazione
+     */
     @Override
     public void cancellaTutti() throws Exception {
         try (
