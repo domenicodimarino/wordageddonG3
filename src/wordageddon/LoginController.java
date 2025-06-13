@@ -1,5 +1,8 @@
 package wordageddon;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -45,6 +48,8 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         changeSignButton.setOnAction(e -> toggleMode());
         submitButton.setOnAction(e -> handleSubmit());
+        privacyLink.setOnAction(e -> apriPdf("privacy_info/PrivacyG3.pdf"));
+        infoLink.setOnAction(e -> apriPdf("privacy_info/InfoG3.pdf"));
         utenteService = new UtenteService(new UtenteDAOSQL());
     }
 
@@ -121,12 +126,21 @@ public class LoginController implements Initializable {
         SceneUtils.switchScene(submitButton, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
     }
     
-    private String escape(String s) {
-        if (s == null) return "";
-        return s.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
-    }
-    
-    private StatoGioco parseStatoGioco(String statoGiocoJson) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private void apriPdf(String relativePath) {
+        try {
+            // Path assoluto relativo alla working directory
+            File file = new File(relativePath);
+            if (!file.exists()) {
+                DialogUtils.showAlert(AlertType.ERROR, "ERRORE", null, "File non trovato: " + file.getAbsolutePath());
+                return;
+            }
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                DialogUtils.showAlert(AlertType.ERROR, "ERRORE", null, "Il sistema non supporta l'apertura automatica dei PDF.");
+            }
+        } catch (IOException ex) {
+            DialogUtils.showAlert(AlertType.ERROR, "ERRORE", null, "Errore nell'apertura del PDF: " + ex.getMessage());
+        }
     }
 }

@@ -1,5 +1,7 @@
 package wordageddon;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -12,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TableColumn;
@@ -21,6 +24,7 @@ import javafx.stage.Stage;
 import wordageddon.database.PunteggioDAOSQL;
 import wordageddon.model.Difficolta;
 import wordageddon.model.Punteggio;
+import wordageddon.util.DialogUtils;
 import wordageddon.util.SceneUtils;
 
 public class ClassificaController implements Initializable {
@@ -75,8 +79,27 @@ public class ClassificaController implements Initializable {
         leaderboardTable.setItems(data);
         
         menuBtn.setOnAction(e -> goToMenu());
+        privacyLink.setOnAction(e -> apriPdf("privacy_info/PrivacyG3.pdf"));
+        infoLink.setOnAction(e -> apriPdf("privacy_info/InfoG3.pdf"));
     }
     private void goToMenu() {
         SceneUtils.switchScene(menuBtn, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
+    }
+    private void apriPdf(String relativePath) {
+        try {
+            // Path assoluto relativo alla working directory
+            File file = new File(relativePath);
+            if (!file.exists()) {
+                DialogUtils.showAlert(Alert.AlertType.ERROR, "ERRORE", null, "File non trovato: " + file.getAbsolutePath());
+                return;
+            }
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                DialogUtils.showAlert(Alert.AlertType.ERROR, "ERRORE", null, "Il sistema non supporta l'apertura automatica dei PDF.");
+            }
+        } catch (IOException ex) {
+            DialogUtils.showAlert(Alert.AlertType.ERROR, "ERRORE", null, "Errore nell'apertura del PDF: " + ex.getMessage());
+        }
     }
 }

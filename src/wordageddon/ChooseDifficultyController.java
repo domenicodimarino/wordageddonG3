@@ -1,5 +1,7 @@
 package wordageddon;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -22,6 +25,7 @@ import wordageddon.model.Lingua;
 import wordageddon.model.Sessione;
 import wordageddon.model.Utente;
 import wordageddon.service.SessionManager;
+import wordageddon.util.DialogUtils;
 import wordageddon.util.SceneUtils;
 
 public class ChooseDifficultyController implements Initializable {
@@ -48,6 +52,8 @@ public class ChooseDifficultyController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         menuBtn.setOnAction(e -> goToMenu());
+        privacyLink.setOnAction(e -> apriPdf("privacy_info/PrivacyG3.pdf"));
+        infoLink.setOnAction(e -> apriPdf("privacy_info/InfoG3.pdf"));
         easyBtn.setOnAction(e -> scegliDifficolta(Difficolta.FACILE));
         mediumBtn.setOnAction(e -> scegliDifficolta(Difficolta.MEDIO));
         hardBtn.setOnAction(e -> scegliDifficolta(Difficolta.DIFFICILE));
@@ -110,5 +116,22 @@ public class ChooseDifficultyController implements Initializable {
 
     private void goToMenu() {
         SceneUtils.switchScene(menuBtn, "/wordageddon/Resources/fxml/Wordageddon.fxml", "/wordageddon/Resources/css/style.css");
+    }
+    private void apriPdf(String relativePath) {
+        try {
+            // Path assoluto relativo alla working directory
+            File file = new File(relativePath);
+            if (!file.exists()) {
+                DialogUtils.showAlert(Alert.AlertType.ERROR, "ERRORE", null, "File non trovato: " + file.getAbsolutePath());
+                return;
+            }
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                DialogUtils.showAlert(Alert.AlertType.ERROR, "ERRORE", null, "Il sistema non supporta l'apertura automatica dei PDF.");
+            }
+        } catch (IOException ex) {
+            DialogUtils.showAlert(Alert.AlertType.ERROR, "ERRORE", null, "Errore nell'apertura del PDF: " + ex.getMessage());
+        }
     }
 }
