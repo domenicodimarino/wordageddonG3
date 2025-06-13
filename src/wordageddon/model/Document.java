@@ -35,6 +35,13 @@ public class Document {
     public Map<String, Integer> getWordsMap() {
         return wordsMap;
     }
+    
+    public String getTitleWithoutExtension() {
+        if (title != null && title.endsWith(".txt")) {
+            return title.substring(0, title.length() - 4);
+        }
+        return title;
+    }
 
     @Override
     public String toString() {

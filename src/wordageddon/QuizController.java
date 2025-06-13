@@ -36,6 +36,8 @@ public class QuizController implements Initializable {
     @FXML private RadioButton option4Btn;
     @FXML private Label questionLabel;
     @FXML private Button interrompiBtn;
+    @FXML private Label tempoRimastoLabel;
+
 
     private List<Domanda> domande;
     private int domandaCorrente = 0;
@@ -46,7 +48,8 @@ public class QuizController implements Initializable {
 
     private List<RispostaUtente> risposteUtente = new ArrayList<>();
     private Sessione sessione;
-
+    private boolean staLampeggiando = false;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         nextBtn.setDisable(true);
@@ -147,28 +150,52 @@ public class QuizController implements Initializable {
     }
 
     private void startTimerGlobale() {
-        if (timeline != null) {
-            timeline.stop();
-            timeline = null;
-        }
+    if (timeline != null) {
+        timeline.stop();
+        timeline = null;
+    }
+    aggiornaTimerLabel();
+    timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+        tempoQuizResiduo--;
         aggiornaTimerLabel();
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            tempoQuizResiduo--;
-            aggiornaTimerLabel();
-            if (tempoQuizResiduo <= 0) {
-                timeline.stop();
-                mostraRisultato();
-            }
-        }));
-        timeline.setCycleCount(tempoQuizResiduo);
-        timeline.play();
-    }
 
-    private void aggiornaTimerLabel() {
-        int min = tempoQuizResiduo / 60;
-        int sec = tempoQuizResiduo % 60;
-        timer.setText(String.format("%02d:%02d", min, sec));
+        // 👇 Lampeggio sotto i 10 secondi (una sola volta)
+        if (tempoQuizResiduo <= 10 && !staLampeggiando) {
+            staLampeggiando = true;
+            Timeline blink = new Timeline(
+                new KeyFrame(Duration.seconds(0), evt -> timer.setStyle("-fx-text-fill: red;")),
+                new KeyFrame(Duration.seconds(0.5), evt -> timer.setStyle("-fx-text-fill: darkred;"))
+            );
+            blink.setCycleCount(Timeline.INDEFINITE);
+            blink.play();
+        }
+
+        if (tempoQuizResiduo <= 0) {
+            timeline.stop();
+            mostraRisultato();
+        }
+    }));
+    timeline.setCycleCount(tempoQuizResiduo);
+    timeline.play();
     }
+    
+    private void aggiornaTimerLabel() {
+    int min = tempoQuizResiduo / 60;
+    int sec = tempoQuizResiduo % 60;
+    timer.setText(String.format("%02d:%02d", min, sec));
+
+    // Solo se non sta lampeggiando (così non sovrascrivi lo stile impostato dal blink)
+    if (!staLampeggiando) {
+        if (tempoQuizResiduo <= 10) {
+            timer.setStyle("-fx-text-fill: red;");
+        } else if (tempoQuizResiduo <= 30) {
+            timer.setStyle("-fx-text-fill: orange;");
+        } else {
+            timer.setStyle("-fx-text-fill: green;");
+        }
+    }
+}
+
 
     private void mostraRisultato() {
         nextBtn.setDisable(true);

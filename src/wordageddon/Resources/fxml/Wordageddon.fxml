@@ -28,8 +28,14 @@
             <ImageView fx:id="logoImage" fitHeight="187.0" fitWidth="245.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../WordageddonG3.jpeg" />
-               </image></ImageView>
-            <Button fx:id="storicoBtn" mnemonicParsing="false" text="Storico" />
+               </image>
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin></ImageView>
+            <Button fx:id="storicoBtn" mnemonicParsing="false" text="Storico">
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin></Button>
             <MenuButton mnemonicParsing="false" text="Lingua Quiz">
                <items>
                   <RadioMenuItem mnemonicParsing="false" selected="true" text="Italiano">
@@ -39,13 +45,22 @@
                   </RadioMenuItem>
                   <RadioMenuItem mnemonicParsing="false" text="Inglese" toggleGroup="$quizLanguageGroup" />
                </items>
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin>
             </MenuButton>
-            <Button fx:id="leaderboardBtn" mnemonicParsing="false" text="LeaderBoard" />
+            <Button fx:id="leaderboardBtn" mnemonicParsing="false" text="LeaderBoard">
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin></Button>
             <MenuButton fx:id="userMenu" mnemonicParsing="false" text="Menu" textAlignment="CENTER">
                <items>
                   <MenuItem fx:id="pannelloAdminMenu" mnemonicParsing="false" text="Pannello Admin" />
                   <MenuItem fx:id="logoutMenu" mnemonicParsing="false" text="Logout" />
                </items>
+               <HBox.margin>
+                  <Insets top="15.0" />
+               </HBox.margin>
             </MenuButton>
          </children>
       </HBox>

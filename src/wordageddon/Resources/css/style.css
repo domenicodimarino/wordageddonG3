@@ -109,3 +109,39 @@ Hyperlink:hover {
     -fx-text-fill: #0066cc;
     -fx-underline: true;
 }
+
+#nextBtn, #interrompiBtn{
+    -fx-background-color: linear-gradient(to right, #444444, #222222);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 8;
+    -fx-cursor: hand;
+    -fx-font-size: 17px;
+    -fx-min-width: 100px;
+    -fx-effect: dropshadow(gaussian, rgba(34, 34, 34, 0.4), 4, 0, 0, 2);
+}
+#nextBtn, #interrompiBtn:hover {
+    -fx-background-color: linear-gradient(to right, #222222, #111111);
+    -fx-effect: dropshadow(gaussian, #555555, 10, 0.3, 0, 0);
+}
+
+#questionNumberLabel{
+    -fx-font-size: 26px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: 800;
+    -fx-underline: true;
+    -fx-padding: 10 0 10 0;
+}
+
+#timer {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 10;
+}
+
+#tempoRimastoLabel {
+    -fx-font-size: 20px;
+    -fx-text-fill: #333333;
+    -fx-font-weight: normal;
+}

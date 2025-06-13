@@ -57,7 +57,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="80.0" prefWidth="880.0" spacing="90.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="230.0" text="Tempo rimasto:">
+                  <Label fx:id="tempoRimastoLabel" text="Tempo rimasto:">
                      <font>
                         <Font size="21.0" />
                      </font>
@@ -67,12 +67,12 @@
                         <Font size="27.0" />
                      </font>
                   </Label>
-                  <Button fx:id="interrompiBtn" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onInterrompiClicked" prefHeight="55.0" prefWidth="187.0" text="Interrompi">
+                  <Button fx:id="interrompiBtn" mnemonicParsing="false" onAction="#onInterrompiClicked" text="Interrompi">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Button>
-                  <Button fx:id="nextBtn" alignment="CENTER_RIGHT" layoutX="575.0" layoutY="23.0" mnemonicParsing="false" prefWidth="250.0" text="Prossima domanda">
+                  <Button fx:id="nextBtn" text="Prossima domanda">
                      <font>
                         <Font size="28.0" />
                      </font>
