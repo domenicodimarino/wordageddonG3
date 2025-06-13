@@ -7,8 +7,18 @@ import wordageddon.model.StatoGioco;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility per il parsing manuale di stringhe JSON relative allo stato del gioco.
+ * Fornisce metodi per estrarre e convertire dati JSON (senza librerie esterne) in oggetti di modello.
+ */
 public class JsonParserManuale {
 
+    /**
+     * Effettua il parsing di una stringa JSON rappresentante lo stato del gioco e restituisce un oggetto {@link StatoGioco}.
+     *
+     * @param json la stringa JSON da parsare
+     * @return un oggetto StatoGioco ricostruito dal JSON
+     */
     public static StatoGioco parseStatoGioco(String json) {
         List<Domanda> domande = new ArrayList<>();
         List<RispostaUtente> risposteUtente = new ArrayList<>();
@@ -47,6 +57,13 @@ public class JsonParserManuale {
         return new StatoGioco(domande, risposteUtente, domandaCorrente);
     }
 
+    /**
+     * Estrae il valore associato a una chiave da una stringa JSON semplificata.
+     *
+     * @param source la stringa sorgente JSON
+     * @param chiave il nome della chiave da cercare
+     * @return il valore associato alla chiave, oppure stringa vuota se non trovato
+     */
     private static String estraiValore(String source, String chiave) {
         int i = source.indexOf("\"" + chiave + "\"");
         if (i == -1) return "";
@@ -59,6 +76,13 @@ public class JsonParserManuale {
         return ripulisci(val);
     }
 
+    /**
+     * Estrae un array JSON (come sottostringa) associato a una chiave dalla sorgente.
+     *
+     * @param source la stringa sorgente JSON
+     * @param chiave la chiave dell'array da estrarre
+     * @return la sottostringa dell'array (senza le parentesi quadre), oppure stringa vuota se non trovato
+     */
     private static String estraiArray(String source, String chiave) {
         int start = source.indexOf("\"" + chiave + "\":[");
         if (start == -1) return "";
@@ -75,6 +99,12 @@ public class JsonParserManuale {
         return source.substring(start, end - 1);
     }
 
+    /**
+     * Divide una stringa rappresentante un array JSON di oggetti in singoli oggetti JSON.
+     *
+     * @param array la stringa dell'array JSON
+     * @return un array di stringhe, ognuna contenente un oggetto JSON
+     */
     private static String[] separaOggetti(String array) {
         List<String> oggetti = new ArrayList<>();
         int braces = 0;
@@ -91,6 +121,12 @@ public class JsonParserManuale {
         return oggetti.toArray(new String[0]);
     }
 
+    /**
+     * Divide una stringa rappresentante un array JSON semplice in singoli elementi.
+     *
+     * @param rawArray la stringa dell'array JSON
+     * @return una lista di stringhe, ognuna contenente un elemento dell'array
+     */
     private static List<String> separaArrayElementi(String rawArray) {
         List<String> elementi = new ArrayList<>();
         StringBuilder corrente = new StringBuilder();
@@ -113,6 +149,12 @@ public class JsonParserManuale {
         return elementi;
     }
 
+    /**
+     * Ripulisce una stringa rimuovendo virgolette di inizio/fine e caratteri di escape comuni.
+     *
+     * @param s la stringa da ripulire
+     * @return la stringa ripulita
+     */
     private static String ripulisci(String s) {
         return s.replaceAll("^\"|\"$", "").replace("\\\"", "\"").replace("\\n", "\n");
     }
