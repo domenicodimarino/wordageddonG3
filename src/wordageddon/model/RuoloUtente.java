@@ -7,13 +7,7 @@ package wordageddon.model;
  * @author Gruppo 3
  */
 public enum RuoloUtente {
-    /**
-     * Utente normale.
-     */
+    
     USER,
-
-    /**
-     * Amministratore.
-     */
     ADMIN
 }
