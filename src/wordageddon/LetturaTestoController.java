@@ -25,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import wordageddon.config.AppConfig;
@@ -44,6 +45,9 @@ public class LetturaTestoController implements Initializable {
     @FXML private Button quitGameBtn;
     @FXML private Button nextBtn;
     @FXML private TextArea documentTextArea;
+    @FXML private ScrollPane scrollDocument;
+    @FXML private Label tempoRimastoLabel;
+    
 
     private Sessione sessione;
     private GameDifficultyConfig config;
@@ -52,6 +56,8 @@ public class LetturaTestoController implements Initializable {
     private int tempoResiduo;
     private Timeline timeline;
     private Set<String> vocabolarioGlobale;
+    
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -139,7 +145,11 @@ public class LetturaTestoController implements Initializable {
 
     private void mostraDocumento(int indice) {
         Document doc = documenti.get(indice);
-        documentLabel.setText("Documento " + (indice + 1) + " di " + documenti.size() + " (" + doc.getTitle() + ")");
+        String title = doc.getTitle();
+        if (title.endsWith(".txt")) {
+            title = title.substring(0, title.length() - 4);
+        }
+        documentLabel.setText("Documento " + (indice + 1) + " di " + documenti.size() + " (" + doc.getTitleWithoutExtension() + ")");
         documentTextArea.setText(leggiTestoDaFile(doc.getPath()));
         tempoResiduo = config.getTempoLettura();
         aggiornaTimerLabel();
@@ -149,6 +159,7 @@ public class LetturaTestoController implements Initializable {
             nextBtn.setText("Vai al prossimo documento");
         }
     }
+
 
     private String leggiTestoDaFile(String path) {
         try {
@@ -173,10 +184,19 @@ public class LetturaTestoController implements Initializable {
     }
 
     private void aggiornaTimerLabel() {
-        int min = tempoResiduo / 60;
-        int sec = tempoResiduo % 60;
-        timer.setText(String.format("%02d:%02d", min, sec));
+    int min = tempoResiduo / 60;
+    int sec = tempoResiduo % 60;
+    timer.setText(String.format("%02d:%02d", min, sec));
+
+    if (tempoResiduo <= 10) {
+        timer.setStyle("-fx-text-fill: red;");
+    } else if (tempoResiduo <= 30) {
+        timer.setStyle("-fx-text-fill: orange;");
+    } else {
+        timer.setStyle("-fx-text-fill: green;");
     }
+}
+
 
     private void vaiAvanti() {
         if (indiceCorrente < documenti.size() - 1) {
