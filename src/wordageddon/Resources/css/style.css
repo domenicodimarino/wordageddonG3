@@ -22,12 +22,6 @@ HBox {
     -fx-font-weight: bold;
 }
 
-#documentLabel,#questionLabel{
-    -fx-text-fill: #222222;
-    -fx-font-size: 25px;
-    -fx-font-weight: bold;  
-}
-
 #appNameLabel,#titolo,#labelSignInUp,#Admin {
     -fx-text-fill: linear-gradient(to bottom, #111111, #555555);
     -fx-font-weight: 700;
@@ -127,11 +121,10 @@ Hyperlink:hover {
 }
 
 #questionNumberLabel{
-    -fx-font-size: 26px;
-    -fx-text-fill: #2c3e50;
-    -fx-font-weight: 800;
-    -fx-underline: true;
-    -fx-padding: 10 0 10 0;
+    -fx-font-family: "Helvetica Neue", "San Francisco", sans-serif;
+    -fx-font-size: 40px;
+    -fx-text-fill: #1C1C1E;
+    -fx-font-weight: bold;
 }
 
 #timer {
@@ -144,4 +137,56 @@ Hyperlink:hover {
     -fx-font-size: 20px;
     -fx-text-fill: #333333;
     -fx-font-weight: normal;
+}
+
+#documentLabel{
+    -fx-font-family: "Helvetica Neue", "San Francisco", sans-serif;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1C1C1E; /* testo primario stile iOS */
+}
+
+#questionLabel{
+    -fx-font-family: "Helvetica Neue", "San Francisco", sans-serif;
+    -fx-font-size: 20px;
+    -fx-text-fill: #1C1C1E;
+}
+
+#documentTextArea {
+    -fx-font-family: "Helvetica Neue", "San Francisco", sans-serif;
+    -fx-font-size: 15px;
+    -fx-text-fill: #1C1C1E; /* quasi nero */
+    -fx-control-inner-background: #F2F2F7; /* tipico sfondo iOS */
+    -fx-background-color: #F2F2F7;
+    -fx-border-color: #C7C7CC; /* grigio bordo leggero */
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+.option-button {
+    -fx-font-family: "Helvetica Neue", "San Francisco", sans-serif;
+    -fx-font-size: 15px;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #1C1C1E;
+    -fx-padding: 12 16 12 16;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-border-color: #C7C7CC;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 4, 0, 0, 1);
+    -fx-alignment: center-left;
+    -fx-wrap-text: true;
+    -fx-text-alignment: left;
+}
+
+
+.option-button:hover {
+    -fx-background-color: #F2F2F7;
+}
+
+.option-button:pressed {
+    -fx-background-color: #D1D1D6;
 }

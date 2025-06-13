@@ -47,8 +47,21 @@ public class ResultsController implements Initializable {
         resultsTable.setItems(dati);
 
         questionColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTestoDomanda()));
-        givenAnswerColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRispostaData()));
-        correctAnswerColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getRispostaCorretta()));
+        givenAnswerColumn.setCellValueFactory(data -> {
+            String rispostaData = data.getValue().getRispostaData();
+            if (rispostaData != null && rispostaData.endsWith(".txt")) {
+                rispostaData = rispostaData.substring(0, rispostaData.length() - 4);
+            }
+            return new SimpleStringProperty(rispostaData);
+        });
+        correctAnswerColumn.setCellValueFactory(data -> {
+            String rispostaCorretta = data.getValue().getRispostaCorretta();
+            if (rispostaCorretta != null && rispostaCorretta.endsWith(".txt")) {
+                rispostaCorretta = rispostaCorretta.substring(0, rispostaCorretta.length() - 4);
+            }
+            return new SimpleStringProperty(rispostaCorretta);
+        });
+
         scoreColumn.setCellValueFactory(data -> new SimpleBooleanProperty(data.getValue().isEsatto()));
 
         scoreColumn.setCellFactory(col -> new TableCell<RispostaUtente, Boolean>() {

@@ -80,7 +80,7 @@ public class GeneratoreDomande {
         String parola = scegliParolaMaiPresente();
         if (parola == null) return null;
         List<String> opzioni = new ArrayList<>();
-        for (Document doc : documenti) opzioni.add(doc.getTitle());
+        for (Document doc : documenti) opzioni.add(doc.getTitleWithoutExtension());
         Collections.shuffle(opzioni);
         return new Domanda(
             "In quale documento NON appare la parola \"" + parola + "\"?",
@@ -97,9 +97,9 @@ public class GeneratoreDomande {
         String parola = scegliParolaPresenteIn(doc);
         if (parola == null) return null;
         Set<String> opzioniSet = new LinkedHashSet<>();
-        opzioniSet.add(doc.getTitle());
+        opzioniSet.add(doc.getTitleWithoutExtension());
         while (opzioniSet.size() < 4 && opzioniSet.size() < documenti.size()) {
-            String tit = scegliDocumentoRandom().getTitle();
+            String tit = scegliDocumentoRandom().getTitleWithoutExtension();
             opzioniSet.add(tit);
         }
         List<String> opzioni = new ArrayList<>(opzioniSet);
@@ -107,7 +107,7 @@ public class GeneratoreDomande {
         return new Domanda(
             "In quale documento appare la parola \"" + parola + "\"?",
             opzioni,
-            doc.getTitle(),
+            doc.getTitleWithoutExtension(),
             "parola-documento"
         );
     }

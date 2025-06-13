@@ -26,7 +26,7 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="142.0" prefWidth="880.0">
                <children>
-                  <RadioButton fx:id="option1Btn" mnemonicParsing="false" prefHeight="75.0" prefWidth="330.0" text="Opzione 1">
+                  <RadioButton fx:id="option1Btn" mnemonicParsing="false" prefHeight="75.0" prefWidth="330.0" styleClass="option-button" text="Opzione 1">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -34,7 +34,7 @@
                         <ToggleGroup fx:id="optionsGroup" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="option2Btn" mnemonicParsing="false" prefHeight="75.0" prefWidth="330.0" text="Opzione 2" toggleGroup="$optionsGroup">
+                  <RadioButton fx:id="option2Btn" mnemonicParsing="false" prefHeight="75.0" prefWidth="330.0" text="Opzione 2" styleClass="option-button" toggleGroup="$optionsGroup">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -43,12 +43,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="142.0" prefWidth="880.0">
                <children>
-                  <RadioButton fx:id="option3Btn" mnemonicParsing="false" prefHeight="75.0" prefWidth="330.0" text="Opzione 3" toggleGroup="$optionsGroup">
+                  <RadioButton fx:id="option3Btn" mnemonicParsing="false" prefHeight="75.0" prefWidth="330.0" text="Opzione 3" styleClass="option-button" toggleGroup="$optionsGroup">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </RadioButton>
-                  <RadioButton fx:id="option4Btn" mnemonicParsing="false" prefHeight="75.0" prefWidth="330.0" text="Opzione 4" toggleGroup="$optionsGroup">
+                  <RadioButton fx:id="option4Btn" mnemonicParsing="false" prefHeight="75.0" prefWidth="330.0" text="Opzione 4" styleClass="option-button" toggleGroup="$optionsGroup">
                      <font>
                         <Font size="24.0" />
                      </font>
