@@ -128,11 +128,11 @@ public class StoricoController implements Initializable {
         if (file != null) {
             try (FileWriter writer = new FileWriter(file)) {
                 // Intestazione CSV
-                writer.append("Risposte Corrette,Tempo Residuo,Punteggio,Difficoltà,Data\n");
+                writer.append("Risposte Corrette;Tempo Residuo;Punteggio;Difficoltà;Data\n");
                 for (Punteggio p : resultsTable.getItems()) {
-                    writer.append(p.getRisposteCorrette() + ",");
-                    writer.append(p.getTempoResiduo() + ",");
-                    writer.append(p.getValore() + ",");
+                    writer.append(p.getRisposteCorrette() + ";");
+                    writer.append(p.getTempoResiduo() + ";");
+                    writer.append(p.getValore() + ";");
                     // Difficoltà come stringa
                     String diff;
                     switch (p.getDifficolta()) {
@@ -141,7 +141,7 @@ public class StoricoController implements Initializable {
                         case 3: diff = "Difficile"; break;
                         default: diff = "Sconosciuta";
                     }
-                    writer.append(diff + ",");
+                    writer.append(diff + ";");
                     writer.append('"' + p.getData().toString() + '"');
                     writer.append("\n");
                 }

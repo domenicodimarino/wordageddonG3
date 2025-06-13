@@ -1,13 +1,14 @@
 package wordageddon.config;
 
+import wordageddon.util.PathUtils;
 import java.io.*;
 import java.util.Properties;
 
 public class AppConfig {
-    private static String documentiBasePath = "DocumentFolder";
-    private static String stopwordsPathIT = "stopwords-it.txt";
-    private static String stopwordsPathEN = "stopwords-en.txt";
-    private static final String CONFIG_FILE = "config.properties";
+    private static String documentiBasePath = PathUtils.getDataFolder("DocumentFolder").getAbsolutePath();
+    private static String stopwordsPathIT = PathUtils.getDataFilePath("stopwords-it.txt");
+    private static String stopwordsPathEN = PathUtils.getDataFilePath("stopwords-en.txt");
+    private static final String CONFIG_FILE = PathUtils.getDataFilePath("config.properties");
 
     static {
         loadConfig();
